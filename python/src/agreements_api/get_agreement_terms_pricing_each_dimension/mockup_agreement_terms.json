@@ -1,0 +1,178 @@
+{
+   "acceptedTerms": [
+    {
+        "legalTerm": {
+            "type": "LegalTerm",
+            "id": "term-abc27fb2",
+            "documents": [
+                {
+                    "type": "StandardEula",
+                    "url": "url",
+                    "version": "2022-07-14"
+                }
+            ]
+        }
+    },
+    {
+        "supportTerm": {
+            "type": "SupportTerm",
+            "id": "term-abc27fb2",
+            "refundPolicy": "No refunds"
+        }
+    },
+    {
+        "renewalTerm": {
+            "type": "RenewalTerm",
+            "id": "term-abc27fb2",
+            "configuration": {
+                "enableAutoRenew": false
+            }
+        }
+    },
+    {
+        "usageBasedPricingTerm": {
+            "type": "UsageBasedPricingTerm",
+            "id": "term-abc27fb2",
+            "currencyCode": "USD",
+            "rateCards": [
+                {
+                    "rateCard": [
+                        {
+                            "dimensionKey": "m5.large",
+                            "price": "0.62233388"
+                        },
+                        {
+                            "dimensionKey": "m5.8xlarge",
+                            "price": "0.00000001"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "configurableUpfrontPricingTerm": {
+            "type": "ConfigurableUpfrontPricingTerm",
+            "id": "term-abc27fb2",
+            "currencyCode": "USD",
+            "rateCards": [
+                {
+                    "selector": {
+                        "type": "Duration",
+                        "value": "P36M"
+                    },
+                    "constraints": {
+                        "multipleDimensionSelection": "Allowed",
+                        "quantityConfiguration": "Allowed"
+                    },
+                    "rateCard": [
+                        {
+                            "dimensionKey": "Premium1",
+                            "price": "20.000"
+                        }
+                    ]
+                }
+            ],
+            "configuration": {
+                "selectorValue": "P36M",
+                "dimensions": [
+                    {
+                        "dimensionKey": "Premium1",
+                        "dimensionValue": 1
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "byolPricingTerm": {
+            "type": "ByolPricingTerm",
+            "id": "term-abc27fb2"
+        }
+    },
+    {
+        "recurringPaymentTerm": {
+            "type": "RecurringPaymentTerm",
+            "id": "term-abc27fb2",
+            "currencyCode": "USD",
+            "billingPeriod": "Monthly",
+            "price": "100.00"
+        }
+    },
+    {
+        "validityTerm": {
+            "type": "ValidityTerm",
+            "id": "term-abc27fb2",
+            "agreementDuration": "P1Y",
+            "agreementStartDate": "2007-03-01T13:00:00Z",
+            "agreementEndDate": "2020-03-01T13:00:00Z"
+        }
+    },
+    {
+        "paymentScheduleTerm": {
+            "type": "PaymentScheduleTerm",
+            "id": "term-abc27fb2",
+            "currencyCode": "USD",
+            "schedule": [
+                {
+                    "chargeDate": "2020-12-01T00:00:00.000Z",
+                    "chargeAmount": "1000.00"
+                }
+            ]
+        }
+    },
+    {
+        "freeTrialPricingTerm": {
+            "type": "FreeTrialPricingTerm",
+            "id": "term-abc27fb2",
+            "duration": "P30D",
+            "grants": [
+                {
+                    "dimensionKey": "t2.medium",
+                    "maxQuantity": 1
+                }
+            ]
+        }
+    },
+    {
+        "fixedUpfrontPricingTerm": {
+            "type": "FixedUpfrontPricingTerm",
+            "id": "term-abc27fb2",
+            "currencyCode": "USD",
+            "price": "200.00",
+            "grants": [
+                {
+                    "dimensionKey": "Users",
+                    "maxQuantity": 10
+                }
+            ]
+        }
+    },
+    {
+        "customerVerificationTerm": {
+            "type": "CustomerVerificationTerm",
+            "id": "term-abc27fb2",
+            "approvalStrategy": "AutoApproveOnExpiration",
+            "expirationDuration": "P21D",
+            "acceptorInformation": [
+                {
+                    "type": "ShortText",
+                    "name": "company name"
+                }
+            ]
+        }
+    }
+   ],
+   "ResponseMetadata": {
+       "RequestId": "83a951e1-fe42-41c2-8e8e-fa0eb29ce61c",
+       "HTTPStatusCode": 200,
+       "HTTPHeaders": {
+           "date": "Wed, 26 Jul 2023 23:42:37 GMT",
+           "content-type": "application/x-amz-json-1.0",
+           "content-length": "1522",
+           "connection": "keep-alive",
+           "x-amzn-requestid": "83a951e1-fe42-41c2-8e8e-fa0eb29ce61c"
+       },
+       "RetryAttempts": 0
+   }
+}

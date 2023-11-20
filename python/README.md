@@ -1,29 +1,14 @@
 
-# AWS Marketplace Catalog API Reference Code Library
-
-The AWS Marketplace Catalog API service provides an API interface to manage AWS Marketplace for sellers'
-AWS organization or AWS account. Approved sellers can manage their products programmatically, including
-the self-service publishing capabilities on the AWS Marketplace Management Portal. More information about
-Catalog API is available [here](https://docs.aws.amazon.com/marketplace-catalog/latest/api-reference/welcome.html).
-
-This repository hosts a variety useful reference code examples to help partners automate their workflows with the
-AWS Marketplace Catalog API. All reference code examples are currently written in Python 3.x, and will be expanded to
-other programming languages based on your feedback.
-
-Access to and usage of this beta feature is subject to and governed by the Beta Service Participation terms found [here](https://aws.amazon.com/service-terms/)
+# AWS Marketplace Catalog API Reference Code Library - Python
 
 ## How to use the reference code examples
 
-You will need to have credentials to an AWS seller account, a [Git client](https://git-scm.com/downloads) installed, and [Python 3.x](https://www.python.org/downloads/) installed.
+You will need to have [Python 3.x](https://www.python.org/downloads/) installed.
 
-### Clone the Git repository to your local workstation:
-```
-git clone git@github.com:aws-ia/marketplace-api-reference-code.git
-```
 
-### Change directories into the newly created folder:
+### Change directories into the Python source code folder:
 ```
-cd marketplace-api-reference-code
+cd aws-marketplace-reference-code/python
 ```
 
 ### Create a python virtual environment:
@@ -47,36 +32,8 @@ venv\scripts\activate
 pip install .
 ```
 
-### If you need to run Agreement API reference code, follow the following steps; If not, skip to next step
-
-1. Download the AWS SDK for Python and unzip the two whl files to the root project folder: [AWS SDK for Python](https://s3.console.aws.amazon.com/s3/object/agreements-api-integration-artifacts?region=us-east-1&prefix=sdks/SDK+Release-20231103/agreement-api-20231103-pythoncli.zip)
-
-  * boto3-1.28.69-py3-none-any.whl
-  * botocore-1.31.69-py3-none-any.whl
-
-2. Remove installed boto3 and botocore libraries if they are already installed.
-```
-pip3 uninstall boto3
-pip3 uninstall botocore
-```
-
-3. Create a new file called requirements-agreements.txt and put the following two lines in the file:
-```
-boto3-1.28.69-py3-none-any.whl
-botocore-1.31.69-py3-none-any.whl
-```
-4. Install the private beta sdk containing the agreements api by pip installing the private wheel files
-```
-pip3 install -r requirements-agreements.txt
-```
-
-5. Verify the wheel files required for the agreements samples are installed properly
-```
-pip list
-```
-
 ### Executing the reference code
-Once you have cloned the reference code repository, installed Python, and configured your virtual environment, you can explore the reference code and customize it based on your requirements.  Click on any of the use cases below to explore the reference code.   Most of the reference code use cases will consist of a json file named **changeset.json** and a small execution function named **start_changeset.py**.  The execution function code is nearly identical for every use case, while the specific Catalog API possibilities and options are represented in the changeset.json file.
+Once you have cloned the reference code repository, installed Python, and configured your virtual environment, you can explore the reference code and customize it based on your requirements.  Click on any of the use cases below to explore the reference code.   Many of the reference code use cases will consist of a json file named **changeset.json** and a small execution function named **start_changeset.py**.  The execution function code is nearly identical for every use case, while the specific Catalog API possibilities and options are represented in the changeset.json file.
 
 ![Typical use case folder contents](./images/use-case-folder.png)
 
@@ -184,18 +141,8 @@ It is important to note, in each changeset.json file there are one or more **Det
 |ag-29|[Obtain pricing per each dimension in the agreement](./src/agreements_api/get_agreement_terms_pricing_each_dimension)|
 |ag-30|[Obtain instances of each dimension that buyer has purchased in the agreement](./src/agreements_api/get_agreement_terms_dimension_instances)|
 
-
-## Support resources
-
-### Solution Architect Support
-We have AWS Solution Architects available to provide guidance on API implementation. If you have questions on implementation, email us at aws-mp-api-private-beta@amazon.com to connect with one of the Solution Architects
-
-### Office Hours with Product Team
-We will have office hours on Thursdays from 9:00 AM-10:00 AM PST to provide an opportunity for you to get any questions answered.
-If you would like to join us for office hours you can [reserve your spot here](https://prelude.amazon.com/s/3NpXNdwQ/TRdmab/-/aws-mp-api-private-beta-office-hours)
-
-### Submit Defects & Questions
-If you find any defects with the APIs, need help troubleshooting, or have general questions or feedback, [use this form to contact us](https://app.smartsheet.com/b/form/f32ca7712dce4abd96efc73ae68eb4bb)
+### Submit defects & questions
+If you find any defects with the APIs, need help troubleshooting, or have general questions or feedback, [use this form to contact us](https://aws.amazon.com/marketplace/management/contact-us/)
 
 
 ## AWS SDK for Python (Boto3)

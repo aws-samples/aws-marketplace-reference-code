@@ -1,0 +1,13 @@
+{
+    "catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "RestrictResaleAuthorization",
+            "Entity": {
+                "Type": "ResaleAuthorization@1.0",
+                "Identifier": "resaleauthz-1111111111111"
+            },
+            "Details": {}
+        }
+    ]
+}

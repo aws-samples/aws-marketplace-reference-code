@@ -1,0 +1,72 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType" : "CreateOfferUsingResaleAuthorization",
+            "Entity": {
+            "Type": "Offer@1.0"
+            },
+            "ChangeName": "CreateCPPOoffer",
+            "Details": {
+                "ResaleAuthorizationId":"resaleauthz-1111111111111",
+                "Name": "Test Offer",
+                "Description":"Test product"
+            }
+        },
+        {
+            "ChangeType": "UpdateMarkup",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+            },
+            "Details": {
+                "Percentage" : "5.0"
+        }
+        },
+        {
+            "ChangeType": "UpdateTargeting",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+            },
+            "Details": {
+                "PositiveTargeting": {
+                    "BuyerAccounts": ["111111111111"]
+                    }
+            }
+        },
+        {
+            "ChangeType": "UpdateAvailability",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+            },
+            "Details": {
+                "AvailabilityEndDate": "2023-05-31"
+                }
+        },
+        {
+            "ChangeType": "UpdateValidityTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+            },
+            "Details": {
+                "Terms": [
+                    {
+                        "Type": "ValidityTerm",
+                        "AgreementDuration": "P450D"
+                    }
+                ]
+             }
+        },
+        {
+            "ChangeType":"ReleaseOffer",
+            "Entity":{
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+            },
+            "Details": "{}"
+        }
+    ]
+}

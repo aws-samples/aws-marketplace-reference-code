@@ -1,0 +1,228 @@
+{
+    "Catalog":"AWSMarketplace",
+    "changeSet":[
+        {
+            "ChangeType": "CreateProduct",
+            "ChangeName": "CreateProductChange",
+            "Entity": {
+                "Type": "SaaSProduct@1.0"
+            },
+            "Details": "{}"
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "SaaSProduct@1.0",
+                "Identifier": "$CreateProductChange.Entity.Identifier"
+            },
+            "Details": {
+                "ProductTitle": "Sample product",
+                "ShortDescription": "Brief description",
+                "LongDescription": "Detailed description",
+                "Highlights": [
+                    "Sample highlight"
+                ],
+                "SearchKeywords": [
+                    "Sample keyword"
+                ],
+                "Categories": [
+                    "Data Catalogs"
+                ],
+                "LogoUrl": "https://bucketname.s3.amazonaws.com/logo.png",
+                "VideoUrls": [
+                    "https://sample.amazonaws.com/awsmp-video-1"
+                ],
+                "AdditionalResources": []
+            }
+        },
+        {
+            "ChangeType": "AddDimensions",
+            "Entity": {
+                "Type": "SaaSProduct@1.0",
+                "Identifier": "$CreateProductChange.Entity.Identifier"
+            },
+            "Details": [
+                {
+                    "Key": "BasicService",
+                    "Description": "Basic Service",
+                    "Name": "Basic Service",
+                    "Types": [
+                        "Entitled"
+                    ],
+                    "Unit": "Units"
+                },
+                {
+                    "Key": "PremiumService",
+                    "Description": "Premium Service",
+                    "Name": "Premium Service",
+                    "Types": [
+                        "Entitled"
+                    ],
+                    "Unit": "Units"
+                }
+            ]
+        },
+        {
+            "ChangeType": "AddDeliveryOptions",
+            "Entity": {
+                "Type": "SaaSProduct@1.0",
+                "Identifier": "$CreateProductChange.Entity.Identifier"
+            },
+            "Details": {
+                "DeliveryOptions": [
+                    {
+                        "Details": {
+                            "SaaSUrlDeliveryOptionDetails": {
+                                "FulfillmentUrl": "https://www.aws.amazon.com/marketplace/management"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "ReleaseProduct",
+            "Entity": {
+                "Type": "SaaSProduct@1.0",
+                "Identifier": "$CreateProductChange.Entity.Identifier"
+            },
+            "Details": "{}"
+        },
+        {
+            "ChangeType": "CreateOffer",
+            "ChangeName": "CreateOfferChange",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "Details": {
+                "ProductId": "$CreateProductChange.Entity.Identifier"
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "Name": "New Test Offer",
+                "Description": "New offer description"
+            }
+        },
+        {
+            "ChangeType": "UpdateLegalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "Terms": [
+                    {
+                        "Type": "LegalTerm",
+                        "Documents": [
+                            {
+                                "Type": "StandardEula",
+                                "Version": "2022-07-14"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateSupportTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "Terms": [
+                    {
+                        "Type": "SupportTerm",
+                        "RefundPolicy": "Updated refund policy description"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "PricingModel": "Contract",
+                "Terms": [
+                    {
+                        "Type": "ConfigurableUpfrontPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "Selector": {
+                                    "Type": "Duration",
+                                    "Value": "P1M"
+                                },
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "BasicService",
+                                        "Price": "20"
+                                    },
+                                    {
+                                        "DimensionKey": "PremiumService",
+                                        "Price": "25"
+                                    }
+                                ],
+                                "Constraints": {
+                                    "MultipleDimensionSelection": "Allowed",
+                                    "QuantityConfiguration": "Allowed"
+                                }
+                            },
+                            {
+                                "Selector": {
+                                    "Type": "Duration",
+                                    "Value": "P12M"
+                                },
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "BasicService",
+                                        "Price": "150"
+                                    },
+                                    {
+                                        "DimensionKey": "PremiumService",
+                                        "Price": "300"
+                                    }
+                                ],
+                                "Constraints": {
+                                    "MultipleDimensionSelection": "Allowed",
+                                    "QuantityConfiguration": "Allowed"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateRenewalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "Terms": [
+                    {
+                        "Type": "RenewalTerm"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType":"ReleaseOffer",
+            "Entity":{
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": "{}"
+        }
+    ]
+}

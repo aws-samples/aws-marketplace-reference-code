@@ -1,0 +1,142 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "CreateOffer",
+            "ChangeName": "CreateOfferChange",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "Details": {
+                "ProductId": "prod-1111111111111"
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "Name": "Test private offer for AmiProduct using AWS Marketplace API Reference Code",
+                "Description": "Test private offer with hourly annual pricing for AmiProduct using AWS Marketplace API Reference Code"
+            }
+        },
+        {
+            "ChangeType": "UpdateTargeting",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "PositiveTargeting": {
+                    "BuyerAccounts": [
+                        "111111111111",
+                        "222222222222"
+                    ]
+                }
+            }
+        },
+        {
+            "ChangeType": "UpdateLegalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "Terms": [
+                    {
+                        "Type": "LegalTerm",
+                        "Documents": [
+                            {
+                                "Type": "CustomEula",
+                                "Url": "https://s3.amazonaws.com/sample-bucket/custom-eula.pdf"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateAvailability",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "AvailabilityEndDate": "2023-12-31"
+            }
+        },
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "PricingModel": "Usage",
+                "Terms": [
+                    {
+                        "Type": "UsageBasedPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "t2.micro",
+                                        "Price": "0.17"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Type": "ConfigurableUpfrontPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "Selector": {
+                                    "Type": "Duration",
+                                    "Value": "P365D"
+                                },
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "t2.micro",
+                                        "Price": "220.00"
+                                    }
+                                ],
+                                "Constraints": {
+                                    "MultipleDimensionSelection": "Allowed",
+                                    "QuantityConfiguration": "Allowed"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateValidityTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": {
+                "Terms": [
+                    {
+                        "Type": "ValidityTerm",
+                        "AgreementDuration": "P650D"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "ReleaseOffer",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "Details": "{}"
+        }
+    ]
+}

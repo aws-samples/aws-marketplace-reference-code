@@ -1,0 +1,19 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "UpdateFutureRegionSupport",
+            "Entity": {
+                "Type": "AmiProduct@1.0",
+                "Identifier": "prod-1111111111111"
+            },
+            "Details": {
+                "FutureRegionSupport": {
+                    "SupportedRegions": [
+                        "All"
+                    ]
+                }
+            }
+        }
+    ]
+}

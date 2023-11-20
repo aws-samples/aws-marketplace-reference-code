@@ -1,0 +1,81 @@
+{
+   "acceptedTerms": [
+    {
+        "configurableUpfrontPricingTerm": {
+            "type": "ConfigurableUpfrontPricingTerm",
+            "id": "term-abc27fb2",
+            "currencyCode": "USD",
+            "rateCards": [
+                {
+                    "selector": {
+                        "type": "Duration",
+                        "value": "P24M"
+                    },
+                    "constraints": {
+                        "multipleDimensionSelection": "Allowed",
+                        "quantityConfiguration": "Allowed"
+                    },
+                    "rateCard": [
+                        {
+                            "dimensionKey": "AdminUsers",
+                            "price": "0.5"
+                        },
+                        {
+                            "dimensionKey": "ReadOnlyUsers",
+                            "price": "1"
+                        }
+                    ]
+                },
+                {
+                    "selector": {
+                        "type": "Duration",
+                        "value": "P36M"
+                    },
+                    "constraints": {
+                        "multipleDimensionSelection": "Allowed",
+                        "quantityConfiguration": "Allowed"
+                    },
+                    "rateCard": [
+                        {
+                            "dimensionKey": "AdminUsers",
+                            "price": "1"
+                        },
+                        {
+                            "dimensionKey": "ReadOnlyUsers",
+                            "price": "2"
+                        }
+                    ]
+                }
+            ],
+            "configuration": {
+                "dimensions": [
+                    {
+                        "dimensionKey": "AdminUsers",
+                        "dimensionValue": 1
+                    }
+                ],
+                "selectorValue": "P24M"
+            }
+        },
+        "renewalTerm": {
+            "type": "RenewalTerm",
+            "id": "term-abc27fb2",
+            "configuration": {
+                "enableAutoRenew": false
+            }
+        }
+    }
+   ],
+   "ResponseMetadata": {
+       "RequestId": "83a951e1-fe42-41c2-8e8e-fa0eb29ce61c",
+       "HTTPStatusCode": 200,
+       "HTTPHeaders": {
+           "date": "Wed, 26 Jul 2023 23:42:37 GMT",
+           "content-type": "application/x-amz-json-1.0",
+           "content-length": "1522",
+           "connection": "keep-alive",
+           "x-amzn-requestid": "83a951e1-fe42-41c2-8e8e-fa0eb29ce61c"
+       },
+       "RetryAttempts": 0
+   }
+}

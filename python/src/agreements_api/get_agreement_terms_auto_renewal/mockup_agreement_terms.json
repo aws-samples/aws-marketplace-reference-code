@@ -1,0 +1,53 @@
+{
+   "acceptedTerms": [
+       {
+           "configurableUpfrontPricingTerm": {
+               "type": "ConfigurableUpfrontPricingTerm",
+               "configuration": {
+                   "selectorValue": "P12M",
+                   "dimensions": [
+                       {
+                           "dimensionKey": "Node150Users",
+                           "dimensionValue": 1
+                       }
+                   ]
+               }
+           }
+       },
+       {
+           "renewalTerm": {
+               "type": "RenewalTerm",
+               "configuration": {
+                   "enableAutoRenew": false
+               }
+           }
+       },
+       {
+           "usageBasedPricingTerm": {
+               "type": "UsageBasedPricingTerm"
+           }
+       },
+       {
+           "supportTerm": {
+               "type": "SupportTerm"
+           }
+       },
+       {
+           "legalTerm": {
+               "type": "LegalTerm"
+           }
+       }
+   ],
+   "ResponseMetadata": {
+       "RequestId": "83a951e1-fe42-41c2-8e8e-fa0eb29ce61c",
+       "HTTPStatusCode": 200,
+       "HTTPHeaders": {
+           "date": "Wed, 26 Jul 2023 23:42:37 GMT",
+           "content-type": "application/x-amz-json-1.0",
+           "content-length": "1522",
+           "connection": "keep-alive",
+           "x-amzn-requestid": "83a951e1-fe42-41c2-8e8e-fa0eb29ce61c"
+       },
+       "RetryAttempts": 0
+   }
+}

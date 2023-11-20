@@ -1,0 +1,22 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "UpdateTargeting",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "offer-1111111111111"
+            },
+            "Details": {
+                "PositiveTargeting": {
+                    "CountryCodes": [
+                        "US",
+                        "ES",
+                        "FR",
+                        "AU"
+                    ]
+                }
+            }
+        }
+    ]
+}

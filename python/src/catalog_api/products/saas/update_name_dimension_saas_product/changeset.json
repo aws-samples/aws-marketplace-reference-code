@@ -1,0 +1,22 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "UpdateDimensions",
+            "Entity": {
+                "Type": "SaaSProduct@1.0",
+                "Identifier": "prod-111111111111"
+            },
+            "DetailsDocument": [
+                {
+                    "Key": "BasicService",
+                    "Types": [
+                        "Entitled"
+                    ],
+                    "Name": "Some new name",
+                    "Description": "Some new description"
+                }
+            ]
+        }
+    ]
+}

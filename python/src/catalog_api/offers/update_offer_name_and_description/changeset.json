@@ -1,0 +1,16 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "offer-1111111111111"
+            },
+            "Details": {
+                "Name": "New offer name",
+                "Description": "New offer description"
+            }
+        }
+    ]
+}
