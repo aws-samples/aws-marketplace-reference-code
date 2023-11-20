@@ -1,0 +1,20 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "UpdateSupportTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "offer-1111111111111"
+            },
+            "Details": {
+                "Terms": [
+                    {
+                        "Type": "SupportTerm",
+                        "RefundPolicy": "Updated refund policy description"
+                    }
+                ]
+            }
+        }
+    ]
+}

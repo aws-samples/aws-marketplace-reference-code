@@ -1,0 +1,21 @@
+# Environments
+.env
+.venv
+**/*.egg-info
+env/
+lib/
+venv/
+ENV/
+env.bak/
+venv.bak/
+temp/
+.pre-commit-config.yaml
+test-output/
+python/.mpy_cache/
+.DS_Store
+**/.DS_Store
+.mypy.ini
+__pycache__/
+.pytest_cache/
+utils.egg-info/
+*.whl

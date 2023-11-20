@@ -1,0 +1,29 @@
+{
+    "Catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "offer-1111111111111"
+            },
+            "Details": {
+                "PricingModel": "Usage",
+                "Terms": [
+                    {
+                        "Type": "FreeTrialPricingTerm",
+                        "Duration": "P21D",
+                        "Grants": [
+                            {
+                                "DimensionKey": "WorkloadSmall"
+                            },
+                            {
+                                "DimensionKey": "WorkloadMedium"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

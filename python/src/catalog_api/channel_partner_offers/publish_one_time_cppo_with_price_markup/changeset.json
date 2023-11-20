@@ -1,0 +1,57 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType" : "CreateOfferUsingResaleAuthorization",
+            "Entity": {
+            "Type": "Offer@1.0"
+            },
+            "ChangeName": "CreateCPPO",
+            "Details": {
+                "ResaleAuthorizationId":"resaleauthz-1111111111111",
+                "Name": "CreateCPPO ",
+                "Description":"Create CPPO using one-time resale authorization on AMI, SaaS or Container products and update price markup"
+            }
+        },
+        {
+            "ChangeType": "UpdateMarkup",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPO.Entity.Identifier"
+            },
+            "Details": {
+                "Percentage" : "5.0"
+        }
+        },
+        {
+            "ChangeType": "UpdateTargeting",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPO.Entity.Identifier"
+            },
+            "Details": {
+                "PositiveTargeting": {
+                    "BuyerAccounts": ["111111111111"]
+                    }
+            }
+        },
+        {
+            "ChangeType": "UpdateAvailability",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPO.Entity.Identifier"
+            },
+            "Details": {
+                "AvailabilityEndDate": "2023-12-31"
+                }
+        },
+        {
+            "ChangeType":"ReleaseOffer",
+            "Entity":{
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPO.Entity.Identifier"
+            },
+            "Details": "{}"
+        }
+    ]
+}

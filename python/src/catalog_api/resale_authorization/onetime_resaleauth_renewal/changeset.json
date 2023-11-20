@@ -1,0 +1,62 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "CreateResaleAuthorization",
+            "ChangeName": "ResaleAuthorization",
+            "Entity": {
+                "Type": "ResaleAuthorization@1.0"
+            },
+            "DetailsDocument": {
+                "ProductId": "prod-1111111111111",
+                "Name": "TestResaleAuthorization",
+                "Description": "Worldwide ResaleAuthorization for Test Product",
+                "ResellerAccountId": "111111111111"
+            }
+        },
+        {
+            "ChangeType": "UpdateBuyerTargetingTerms",
+            "Entity": {
+                "Type": "ResaleAuthorization@1.0",
+                "Identifier": "$ResaleAuthorization.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "BuyerTargetingTerm",
+                        "PositiveTargeting": {
+                            "BuyerAccounts": [
+                                "222222222222"
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateAvailability",
+            "Entity": {
+                "Type": "ResaleAuthorization@1.0",
+                "Identifier": "$ResaleAuthorization.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "OffersMaxQuantity": 1
+            }
+        },
+        {
+            "ChangeType":"UpdateInformation",
+            "Entity": {
+                "Type": "ResaleAuthorization@1.0",
+                "Identifier": "$ResaleAuthorization.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Name": "TestResaleAuthorization",
+                "Description": "Worldwide ResaleAuthorization for Test Product",
+                "PreExistingBuyerAgreement": {
+                    "AcquisitionChannel": "AwsMarketplace",
+                    "PricingModel": "Contract"
+                }
+             }
+        }
+    ]
+}
