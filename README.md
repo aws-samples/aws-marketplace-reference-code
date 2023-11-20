@@ -19,6 +19,7 @@ You will need to have credentials to an [AWS seller account](https://docs.aws.am
 ### Clone the Git repository to your local workstation:
 ```
 git clone git@github.com:aws-samples/aws-marketplace-reference-code.git
+```
 
 Instructions on setting up your environment to run the Python examples can found in the [Python sub-folder](./python) of this repository.
 Instructions on setting up your environment to run the Java examples can found in the [Java sub-folder](./java) of this repository.  
