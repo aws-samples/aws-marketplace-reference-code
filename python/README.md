@@ -112,7 +112,7 @@ It is important to note, in each changeset.json file there are one or more **Det
 |capi-94|[List all shared resale authorizations available to a channel partner](./src/catalog_api/channel_partner_offers/list_all_shared_resale_authorizations)|
 |capi-95|[Create a replacement private offer from an existing agreement with contract pricing](./src/catalog_api/offers/create_replacement_private_offer_with_contract_pricing)|
 |capi-96|[Create a resale authorization replacement private offer from an existing agreement with contract pricing](./src/catalog_api/channel_partner_offers/create_resale_authorization_replacement_offer)|
-
+|capi-97|[List and describe all Offers associated with a product](./src/catalog_api/entities/list_product_offers.py)|
 ## Agreement API reference code
 |Id|Use case|
 |-------|--------|
