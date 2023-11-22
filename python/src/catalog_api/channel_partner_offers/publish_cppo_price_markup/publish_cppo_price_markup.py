@@ -26,13 +26,18 @@ availabilityEndDate = "2023-06-30"
 
 agreementDuration = "P450D"
 
-details_offer_object = {
-    "ResaleAuthorizationId": resaleAuthorizationId,
-    "Name": "Test Offer",
-    "Description": "Test product",
+details_create_offer_object = {
+    "ResaleAuthorizationId": resaleAuthorizationId
 }
 
-details_offer_string = json.dumps(details_offer_object)
+details_create_offer_string = json.dumps(details_create_offer_object)
+
+details_information_object = {
+    "Name": "Test Offer name",
+    "Description": "Test Offer description"
+}
+
+details_information_string = json.dumps(details_information_object)
 
 details_price_object = {"Percentage": priceMarkupPer}
 
@@ -64,14 +69,22 @@ def publish_cppo_price_markup(mp_client):
                 {
                     "ChangeType": "CreateOfferUsingResaleAuthorization",
                     "Entity": {"Type": "Offer@1.0"},
-                    "ChangeName": "CreateCPPOoffer",
-                    "Details": details_offer_string,
+                    "ChangeName": "CreateCPPO",
+                    "Details": details_create_offer_string,
                 },
+                {
+                    "ChangeType": "UpdateInformation",
+                    "Entity": {
+                        "Type": "Offer@1.0",
+                        "Identifier": "$CreateCPPO.Entity.Identifier",
+                    },
+                    "Details": details_information_string,
+                },                
                 {
                     "ChangeType": "UpdateMarkup",
                     "Entity": {
                         "Type": "Offer@1.0",
-                        "Identifier": "$CreateCPPOoffer.Entity.Identifier",
+                        "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
                     "Details": details_price_string,
                 },
@@ -79,7 +92,7 @@ def publish_cppo_price_markup(mp_client):
                     "ChangeType": "UpdateTargeting",
                     "Entity": {
                         "Type": "Offer@1.0",
-                        "Identifier": "$CreateCPPOoffer.Entity.Identifier",
+                        "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
                     "Details": details_targeting_string,
                 },
@@ -87,7 +100,7 @@ def publish_cppo_price_markup(mp_client):
                     "ChangeType": "UpdateAvailability",
                     "Entity": {
                         "Type": "Offer@1.0",
-                        "Identifier": "$CreateCPPOoffer.Entity.Identifier",
+                        "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
                     "Details": details_availability_string,
                 },
@@ -95,7 +108,7 @@ def publish_cppo_price_markup(mp_client):
                     "ChangeType": "UpdateValidityTerms",
                     "Entity": {
                         "Type": "Offer@1.0",
-                        "Identifier": "$CreateCPPOoffer.Entity.Identifier",
+                        "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
                     "Details": details_validityTerms_string,
                 },
@@ -103,7 +116,7 @@ def publish_cppo_price_markup(mp_client):
                     "ChangeType": "ReleaseOffer",
                     "Entity": {
                         "Type": "Offer@1.0",
-                        "Identifier": "$CreateCPPOoffer.Entity.Identifier",
+                        "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
                     "Details": "{}",
                 },
