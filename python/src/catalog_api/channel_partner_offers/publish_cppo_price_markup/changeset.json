@@ -6,28 +6,37 @@
             "Entity": {
             "Type": "Offer@1.0"
             },
-            "ChangeName": "CreateCPPOoffer",
+            "ChangeName": "CreateCPPO",
             "Details": {
-                "ResaleAuthorizationId":"resaleauthz-1111111111111",
-                "Name": "Test Offer",
-                "Description":"Test product"
+                "ResaleAuthorizationId":"resaleauthz-1111111111111"
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPO.Entity.Identifier"
+            },
+            "Details": {
+                "Name": "Test Offer name",
+                "Description":"Test Offer description"
             }
         },
         {
             "ChangeType": "UpdateMarkup",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+                "Identifier": "$CreateCPPO.Entity.Identifier"
             },
             "Details": {
                 "Percentage" : "5.0"
-        }
+            }
         },
         {
             "ChangeType": "UpdateTargeting",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+                "Identifier": "$CreateCPPO.Entity.Identifier"
             },
             "Details": {
                 "PositiveTargeting": {
@@ -39,7 +48,7 @@
             "ChangeType": "UpdateAvailability",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+                "Identifier": "$CreateCPPO.Entity.Identifier"
             },
             "Details": {
                 "AvailabilityEndDate": "2023-05-31"
@@ -49,7 +58,7 @@
             "ChangeType": "UpdateValidityTerms",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+                "Identifier": "$CreateCPPO.Entity.Identifier"
             },
             "Details": {
                 "Terms": [
@@ -64,7 +73,7 @@
             "ChangeType":"ReleaseOffer",
             "Entity":{
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateCPPOoffer.Entity.Identifier"
+                "Identifier": "$CreateCPPO.Entity.Identifier"
             },
             "Details": "{}"
         }

@@ -8,9 +8,18 @@
             },
             "ChangeName": "CreateCPPO",
             "Details": {
-                "ResaleAuthorizationId":"resaleauthz-1111111111111",
-                "Name": "CreateCPPO ",
-                "Description":"Create CPPO using one-time resale authorization on AMI, SaaS or Container products and update price markup"
+                "ResaleAuthorizationId":"resaleauthz-1111111111111"
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateCPPO.Entity.Identifier"
+            },
+            "Details": {
+                "Name": "Test Offer name",
+                "Description":"Test Offer description"
             }
         },
         {
