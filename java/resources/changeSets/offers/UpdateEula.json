@@ -1,0 +1,25 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "UpdateLegalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "offer-1111111111111"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "LegalTerm",
+                        "Documents": [
+                            {
+                                "Type": "CustomEula",
+                                "Url": "https://s3.amazonaws.com/sample-bucket/custom-eula.pdf"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

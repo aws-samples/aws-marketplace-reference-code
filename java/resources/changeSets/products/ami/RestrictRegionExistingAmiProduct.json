@@ -1,0 +1,17 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "RestrictRegions",
+            "Entity": {
+                "Type": "AmiProduct@1.0",
+                "Identifier": "prod-1111111111111"
+            },
+            "DetailsDocument": {
+                "Regions": [
+                    "us-west-2"
+                ]
+            }
+        }
+    ]
+}

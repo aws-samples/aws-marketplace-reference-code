@@ -1,0 +1,15 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "CreateOffer",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "DetailsDocument": {
+                "ProductId": "prod-1111111111111",
+                "Name": "Test Private Offer"
+            }
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "CreateOfferUsingResaleAuthorization",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "DetailsDocument": {
+                "ResaleAuthorizationId": "11111111-1111-1111-1111-111111111111",
+                "Name": "Test Offer",
+                "Description": "Test product"
+            }
+        }
+    ]
+}

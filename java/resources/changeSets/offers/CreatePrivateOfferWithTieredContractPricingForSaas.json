@@ -1,0 +1,117 @@
+{
+    "Catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "CreateOffer",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "ChangeName": "CreateOfferChange",
+            "DetailsDocument": {
+                "ProductId": "prod-1111111111111"
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Name": "Test private offer for SaaSProduct using AWS Marketplace API Reference Code",
+                "Description": "Test private offer with subscription pricing for SaaSProduct using AWS Marketplace API Reference Code"
+            }
+        },
+        {
+            "ChangeType": "UpdateTargeting",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PositiveTargeting": {
+                    "BuyerAccounts": [
+                        "111111111111",
+                        "222222222222"
+                    ]
+                }
+            }
+        },
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PricingModel": "Contract",
+                "Terms": [
+                    {
+                        "Type": "ConfigurableUpfrontPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "Selector": {
+                                    "Type": "Duration",
+                                    "Value": "P12M"
+                                },
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "BasicService",
+                                        "Price": "120.00"
+                                    },
+                                    {
+                                        "DimensionKey": "PremiumService",
+                                        "Price": "200.00"
+                                    }
+                                ],
+                                "Constraints": {
+                                    "MultipleDimensionSelection": "Disallowed",
+                                    "QuantityConfiguration": "Disallowed"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateLegalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "LegalTerm",
+                        "Documents": [
+                            {
+                                "Type": "CustomEula",
+                                "Url": "https://s3.amazonaws.com/sample-bucket/custom-eula.pdf"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateAvailability",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "AvailabilityEndDate": "2023-12-31"
+            }
+        },
+        {
+            "ChangeType": "ReleaseOffer",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {}
+        }
+    ]
+}
