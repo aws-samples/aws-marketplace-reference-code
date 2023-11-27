@@ -28,7 +28,7 @@ mvn clean compile assembly:single
 |Id|Use case|
 |-------|--------|
 |capi-02|[Create an AMI draft product with a draft public offer](./resources/changeSets/products/ami/CreateDraftAmiProductWithDraftPublicOffer.json)|
-|capi-03|[Create a container draft product with a draft public offer](./resources/changeSets/products/container/CreateContainerProductWithPublicOffer.json)|
+|capi-03|[Create a container draft product with a draft public offer](./resources/changeSets/products/container/CreateDraftContainerProductWithDraftPublicOffer.json)|
 |capi-04|[Create a SaaS draft product with a draft public offer](./resources/changeSets/products/saas/CreateSaasProductWithPublicOffer.json)|
 |capi-05A|[Publish my SaaS product and associated public offer (product will be in limited state by default)](./resources/changeSets/products/saas/PublishSaasProductPublicOffer.json)|
 |capi-05A|[Publish my SaaS product and associated public offer (product will be in limited state by default)](./resources/changeSets/products/saas/PublishExistingSaas.json)|
