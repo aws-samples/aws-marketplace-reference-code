@@ -11,8 +11,9 @@ from botocore.exceptions import ClientError
 
 logger = logging.getLogger(__name__)
 
-# constants
-MAX_PAGE_RESULTS = 10
+# Constants
+MAX_RESULTS = 10
+CATALOG = "AWSMarketplace"
 ENTITY_TYPE = "Offer"
 
 
@@ -25,56 +26,50 @@ def list_private_offers(mp_client):
     """
     This method retrieves list of all Private Offers for this account.
     """
-    EntitySummaryList = []
+    entity_summary_list = []
+    filter_list_param = {
+        'OfferFilters': {
+            'Targeting': {
+                'ValueList': ["BuyerAccounts"]
+            }
+        }
+    }
     try:
         response = mp_client.list_entities(
-            Catalog="AWSMarketplace",
+            Catalog=CATALOG,
             EntityType=ENTITY_TYPE,
-            FilterList=[
-                {
-                    "Name": "Visibility",
-                    "ValueList": [
-                        "Private",
-                    ],
-                },
-            ],
-            MaxResults=MAX_PAGE_RESULTS,  # default 20 results shall be returned.
+            EntityTypeFilters=filter_list_param,
+            MaxResults=MAX_RESULTS
         )
-    except ClientError:
-        logger.exception("Error: Couldn't get list of Offers.")
+    except ClientError as e:
+        logger.error("Could not complete list_entities request: %s", e)
         raise
 
-    EntitySummaryList.extend(response["EntitySummaryList"])
-    logger.info("Number of results in first iteration: %d " % len(EntitySummaryList))
-    # Get subsequent pages of results if previous response contained a NextToken
-    while "NextToken" in response:
-        try:
-            logger.info("Getting Next Token results: %s " % response["NextToken"])
-            response = mp_client.list_entities(
-                Catalog="AWSMarketplace",
-                EntityType=ENTITY_TYPE,
-                FilterList=[
-                    {
-                        "Name": "Visibility",
-                        "ValueList": [
-                            "Private",
-                        ],
-                    },
-                ],
-                MaxResults=MAX_PAGE_RESULTS,
-                NextToken=response["NextToken"],
-            )
-        except ClientError as e:
-            logger.error("Could not complete list_entities request.")
-            raise
+    entity_summary_list.extend(response["EntitySummaryList"])
+    logger.info("Number of results in first iteration: %d " % len(entity_summary_list))
 
-        EntitySummaryList.extend(response["EntitySummaryList"])
-        logger.info(
-            "Number of results in the current iteration: %d "
-            % len(response["EntitySummaryList"])
-        )
+    # Uncomment below to get subsequent pages of results if previous response contained a NextToken
+    # while "NextToken" in response:
+    #     try:
+    #         logger.info("Getting Next Token results: %s " % response["NextToken"])
+    #         response = mp_client.list_entities(
+    #             Catalog=CATALOG,
+    #             EntityType=ENTITY_TYPE,
+    #             EntityTypeFilters=filter_list_param,
+    #             MaxResults=MAX_RESULTS,
+    #             NextToken=response["NextToken"]
+    #         )
+    #     except ClientError as e:
+    #         logger.error("Could not complete list_entities request: %s", e)
+    #         raise
+    #
+    #     entity_summary_list.extend(response["EntitySummaryList"])
+    #     logger.info(
+    #         "Number of results in the current iteration: %d "
+    #         % len(response["EntitySummaryList"])
+    #     )
 
-    return EntitySummaryList
+    return entity_summary_list
 
 
 def get_offer_details(mp_client, offer):
@@ -106,12 +101,12 @@ def usage_demo():
     count = len(private_offers)
 
     logger.info("Number of Offers: %d " % count)
-    offercounter = 0
+    offer_counter = 0
     # Display details of each Offer.
     for offer in private_offers:
         print("-" * 88)
-        offercounter += 1
-        print("Displaying Offer details for Offer# %d" % offercounter)
+        offer_counter += 1
+        print("Displaying Offer details for Offer# %d" % offer_counter)
         entity = get_offer_details(mp_client, offer)
         pretty_print(entity)
 
