@@ -1,0 +1,131 @@
+{
+    "Catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "AddDimensions",
+            "Entity": {
+                "Type": "SaaSProduct@1.0",
+                "Identifier": "prod-1111111111111"
+            },
+            "DetailsDocument": [
+                {
+                    "Types": [
+                        "Entitled"
+                    ],
+                    "Description": "Custom Pricing 4 w/ terms and coverage to be defined in Private Offer",
+                    "Unit": "Units",
+                    "Key": "Custom4",
+                    "Name": "Custom Pricing 4"
+                }
+            ]
+        },
+        {
+            "ChangeType": "CreateOffer",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "DetailsDocument": {
+                "ProductId": "prod-1111111111111"
+            },
+            "ChangeName": "CreateOfferChange"
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Name": "Private Test Offer - SaaS Contract Product",
+                "Description": "Private Test Offer - SaaS Contract Product"
+            }
+        },
+        {
+            "ChangeType": "UpdateTargeting",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PositiveTargeting": {
+                    "BuyerAccounts": [
+                        "111111111111"
+                    ]
+                }
+            }
+        },
+        {
+            "ChangeType": "UpdateLegalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "LegalTerm",
+                        "Documents": [
+                            {
+                                "Type": "StandardEula",
+                                "Version": "2022-07-14"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateAvailability",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "AvailabilityEndDate": "2023-12-31"
+            }
+        },
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PricingModel": "Contract",
+                "Terms": [
+                    {
+                        "Type": "ConfigurableUpfrontPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "Constraints": {
+                                    "MultipleDimensionSelection": "Allowed",
+                                    "QuantityConfiguration": "Allowed"
+                                },
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "Custom4",
+                                        "Price": "300.0"
+                                    }
+                                ],
+                                "Selector": {
+                                    "Type": "Duration",
+                                    "Value": "P36M"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "ReleaseOffer",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {}
+        }
+    ],
+    "ChangeSetName": "PrivateOfferWithCustomDimension"
+}

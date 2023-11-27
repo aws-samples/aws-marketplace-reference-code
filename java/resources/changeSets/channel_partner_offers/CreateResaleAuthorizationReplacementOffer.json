@@ -1,0 +1,125 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType" : "CreateReplacementOfferUsingResaleAuthorization",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "ChangeName": "CreateReplacementOfferResaleAuth",
+            "DetailsDocument": {
+                "AgreementId": "agmt-1111111111111111111111111",
+                "ResaleAuthorizationId": "resaleauthz-1111111111111"
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Name": "Test replacement offer for SaaSProduct using AWS Marketplace API Reference Codes",
+                "Description": "Test private resale replacement offer with contract pricing for SaaSProduct"
+            }
+        },
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PricingModel": "Contract",
+                "Terms": [
+                    {
+                        "Type": "FixedUpfrontPricingTerm",
+                        "CurrencyCode": "USD",
+                        "Price": "0.0",
+                        "Duration": "P12M",
+                        "Grants": [
+                            {
+                                "DimensionKey": "BasicService",
+                                "MaxQuantity": 2
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateValidityTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "ValidityTerm",
+                        "AgreementEndDate": "2024-01-30"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdatePaymentScheduleTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "PaymentScheduleTerm",
+                        "CurrencyCode": "USD",
+                        "Schedule": [
+                            {
+                                "ChargeDate": "2024-01-01",
+                                "ChargeAmount": "0"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateLegalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "LegalTerm",
+                        "Documents": [
+                            {
+                                "Type": "StandardEula",
+                                "Version": "2022-07-14"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateAvailability",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "AvailabilityEndDate": "2023-12-31"
+            }
+        },
+        {
+            "ChangeType": "ReleaseOffer",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
+            },
+            "DetailsDocument": {}
+        }
+    ]
+}
