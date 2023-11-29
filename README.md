@@ -9,7 +9,9 @@ AWS organization or AWS account. More information about Catalog API is available
 
 This repository hosts a variety of useful reference code examples to help partners automate their workflows with the
 AWS Marketplace Catalog API and Agreements API. Reference code examples found in this repository
-are written in [Python 3.x](./python) and [Java](./java).
+are written in [Python 3.x](./python).
+
+Java will be coming soon!!
 
 ## Getting started
 
@@ -22,7 +24,6 @@ git clone git@github.com:aws-samples/aws-marketplace-reference-code.git
 ```
 
 Instructions on setting up your environment to run the Python examples can found in the [Python sub-folder](./python) of this repository.
-Instructions on setting up your environment to run the Java examples can found in the [Java sub-folder](./java) of this repository.  
 
 ### Submit defects & questions
 If you find any defects with the APIs, need help troubleshooting, or have general questions or feedback, [use this form to contact us](https://aws.amazon.com/marketplace/management/contact-us/)
