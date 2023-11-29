@@ -5,7 +5,7 @@
 # AWS Marketplace API Reference Code Library
 
 The AWS Marketplace Catalog APIs and Agreements APIs provide API interfaces to manage AWS Marketplace for a seller's
-AWS organization or AWS account. More information about Catalog API is available [here](https://docs.aws.amazon.com/marketplace-catalog/latest/api-reference/welcome.html).  Information about Agreement API is available [here](https://docs.aws.amazon.com/marketplace-catalog/latest/api-reference/agreements-api.html)
+AWS organization or AWS account. More information about Catalog API is available [here](https://docs.aws.amazon.com/marketplace-catalog/latest/api-reference/welcome.html).  Information about Agreement API is available [here](https://docs.aws.amazon.com/marketplace-agreements/latest/api-reference/welcome.html)
 
 This repository hosts a variety of useful reference code examples to help partners automate their workflows with the
 AWS Marketplace Catalog API and Agreements API. Reference code examples found in this repository
