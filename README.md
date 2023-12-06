@@ -30,5 +30,5 @@ If you find any defects with the APIs, need help troubleshooting, or have genera
 
 ## License
 
-This library is licensed under the MIT-0 License. See the [LICENSE file](LICENSE).
+This library is licensed under the MIT-0 License. See the [LICENSE file](LICENSE)..
 
