@@ -9,9 +9,7 @@ AWS organization or AWS account. More information about Catalog API is available
 
 This repository hosts a variety of useful reference code examples to help partners automate their workflows with the
 AWS Marketplace Catalog API and Agreements API. Reference code examples found in this repository
-are written in [Python 3.x](./python).
-
-Java will be coming soon!!
+are written in [Python 3.x](./python) and [Java](./java).
 
 ## Getting started
 
