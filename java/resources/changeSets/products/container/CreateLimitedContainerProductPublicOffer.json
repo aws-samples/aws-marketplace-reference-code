@@ -1,0 +1,206 @@
+{
+    "Catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "CreateProduct",
+            "Entity": {
+                "Type": "ContainerProduct@1.0"
+            },
+            "DetailsDocument": {},
+            "ChangeName": "CreateProductChange"
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "ContainerProduct@1.0",
+                "Identifier": "$CreateProductChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "LogoUrl": "https://s3.amazonaws.com/logos/sample.png",
+                "Categories": [
+                    "Streaming solutions"
+                ],
+                "ProductTitle": "ContainerProduct",
+                "AdditionalResources": [],
+                "LongDescription": "Long description goes here",
+                "SearchKeywords": [
+                    "container streaming"
+                ],
+                "ShortDescription": "Description1",
+                "Highlights": [
+                    "Highlight 1",
+                    "Highlight 2"
+                ],
+                "SupportDescription": "No support available",
+                "VideoUrls": []
+            }
+        },
+        {
+            "ChangeType": "AddDimensions",
+            "Entity": {
+                "Type": "ContainerProduct@1.0",
+                "Identifier": "$CreateProductChange.Entity.Identifier"
+            },
+            "DetailsDocument": [
+                {
+                    "Key": "Cores",
+                    "Description": "Cores per cluster",
+                    "Name": "Cores",
+                    "Types": [
+                        "Entitled"
+                    ],
+                    "Unit": "Units"
+                }
+            ]
+        },
+        {
+            "ChangeType": "UpdateTargeting",
+            "Entity": {
+                "Type": "ContainerProduct@1.0",
+                "Identifier": "$CreateProductChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PositiveTargeting": {
+                    "BuyerAccounts": [
+                        "111111111111"
+                    ]
+                }
+            }
+        },
+        {
+            "ChangeType": "AddRepositories",
+            "Entity": {
+                "Type": "ContainerProduct@1.0",
+                "Identifier": "$CreateProductChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Repositories": [
+                    {
+                        "RepositoryName": "uniquerepositoryname",
+                        "RepositoryType": "ECR"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "ReleaseProduct",
+            "Entity": {
+                "Type": "ContainerProduct@1.0",
+                "Identifier": "$CreateProductChange.Entity.Identifier"
+            },
+            "DetailsDocument": {}
+        },
+        {
+            "ChangeType": "CreateOffer",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "DetailsDocument": {
+                "ProductId": "$CreateProductChange.Entity.Identifier"
+            },
+            "ChangeName": "CreateOfferChange"
+        },
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PricingModel": "Contract",
+                "Terms": [
+                    {
+                        "Type": "ConfigurableUpfrontPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "Selector": {
+                                    "Type": "Duration",
+                                    "Value": "P12M"
+                                },
+                                "Constraints": {
+                                    "MultipleDimensionSelection": "Disallowed",
+                                    "QuantityConfiguration": "Disallowed"
+                                },
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "Cores",
+                                        "Price": "0.25"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateLegalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "LegalTerm",
+                        "Documents": [
+                            {
+                                "Type": "StandardEula",
+                                "Version": "2022-07-14"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateSupportTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "SupportTerm",
+                        "RefundPolicy": "No refunds"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Name": "Some container offer Name",
+                "Description": "Some interesting container offer description"
+            }
+        },
+        {
+            "ChangeType": "UpdateRenewalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "RenewalTerm"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "ReleaseOffer",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {}
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "UpdateVisibility",
+            "Entity": {
+                "Type": "AmiProduct@1.0",
+                "Identifier": "prod-1111111111111"
+            },
+            "DetailsDocument": {
+                "TargetVisibility": "Restricted"
+            }
+        }
+    ]
+}

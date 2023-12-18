@@ -1,0 +1,20 @@
+{
+    "catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeSet": [
+                {
+                    "ChangeType":"UpdateInformation",
+                    "Entity": {
+                        "Type": "ResaleAuthorization@1.0",
+                        "Identifier": "resaleauthz-1111111111111"
+                    },
+                    "DetailsDocument": {
+                        "Name": "TestResaleAuthorization",
+                        "Description": "Worldwide ResaleAuthorization for Test Product"
+                    }
+                }
+            ]
+        }
+    ]
+}

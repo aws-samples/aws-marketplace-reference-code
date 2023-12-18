@@ -1,0 +1,146 @@
+{
+    "Catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "CreateOffer",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "ChangeName": "CreateOfferChange",
+            "DetailsDocument": {
+                "ProductId": "prod-1111111111111"
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Name": "Test private offer for SaaSProduct using AWS Marketplace API Reference Code",
+                "Description": "Test private offer with subscription pricing for SaaSProduct using AWS Marketplace API Reference Code"
+            }
+        },
+        {
+            "ChangeType": "UpdateTargeting",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PositiveTargeting": {
+                    "BuyerAccounts": [
+                        "111111111111",
+                        "222222222222"
+                    ]
+                }
+            }
+        },
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PricingModel": "Contract",
+                "Terms": [
+                    {
+                        "Type": "FixedUpfrontPricingTerm",
+                        "CurrencyCode": "USD",
+                        "Price": "0.0",
+                        "Grants": [
+                            {
+                                "DimensionKey": "BasicService",
+                                "MaxQuantity": 1
+                            },
+                            {
+                                "DimensionKey": "PremiumService",
+                                "MaxQuantity": 1
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateValidityTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "ValidityTerm",
+                        "AgreementDuration": "P12M"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdatePaymentScheduleTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "PaymentScheduleTerm",
+                        "CurrencyCode": "USD",
+                        "Schedule": [
+                            {
+                                "ChargeDate": "2024-01-01",
+                                "ChargeAmount": "200.00"
+                            },
+                            {
+                                "ChargeDate": "2024-02-01",
+                                "ChargeAmount": "170.00"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateLegalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "LegalTerm",
+                        "Documents": [
+                            {
+                                "Type": "CustomEula",
+                                "Url": "https://s3.amazonaws.com/sample-bucket/custom-eula.pdf"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateAvailability",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "AvailabilityEndDate": "2023-12-31"
+            }
+        },
+        {
+            "ChangeType": "ReleaseOffer",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {}
+        }
+    ]
+}
