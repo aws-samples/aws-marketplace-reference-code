@@ -1,0 +1,16 @@
+{
+    "Catalog":"AWSMarketplace",
+    "changeSet":[
+        {
+            "ChangeType": "UpdateVisibility",
+            "ChangeName": "CreateProductChange",
+            "Entity": {
+                "Type": "SaaSProduct@1.0",
+                "Identifier": "prod-1111111111111"
+            },
+            "DetailsDocument": {
+                "TargetVisibility": "Public"
+            }
+        }
+    ]
+}

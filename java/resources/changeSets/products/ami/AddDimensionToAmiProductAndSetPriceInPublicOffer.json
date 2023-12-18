@@ -1,0 +1,61 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "AddDimensions",
+            "Entity": {
+                "Identifier": "prod-1111111111111",
+                "Type": "AmiProduct@1.0"
+            },
+            "DetailsDocument": [
+                {
+                    "Key": "m7g.8xlarge",
+                    "Description": "m7g.8xlarge",
+                    "Name": "m7g.8xlarge",
+                    "Types": [
+                        "Metered"
+                    ],
+                    "Unit": "Hrs"
+                }
+            ]
+        },
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "offer-1111111111111"
+            },
+            "DetailsDocument": {
+                "PricingModel": "Usage",
+                "Terms": [
+                    {
+                        "Type": "UsageBasedPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "m5.large",
+                                        "Price": "0.15"
+                                    },
+                                    {
+                                        "DimensionKey": "m7g.4xlarge",
+                                        "Price": "0.45"
+                                    },
+                                    {
+                                        "DimensionKey": "m7g.2xlarge",
+                                        "Price": "0.45"
+                                    },
+                                    {
+                                        "DimensionKey": "m7g.8xlarge",
+                                        "Price": "0.55"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,53 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "offer-1111111111111"
+            },
+            "DetailsDocument": {
+                "PricingModel": "Usage",
+                "Terms": [
+                    {
+                        "Type": "UsageBasedPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "m5.large",
+                                        "Price": "0.13"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Type": "ConfigurableUpfrontPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "Selector": {
+                                    "Type": "Duration",
+                                    "Value": "P365D"
+                                },
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "m5.large",
+                                        "Price": "20.03"
+                                    }
+                                ],
+                                "Constraints": {
+                                    "MultipleDimensionSelection": "Allowed",
+                                    "QuantityConfiguration": "Allowed"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

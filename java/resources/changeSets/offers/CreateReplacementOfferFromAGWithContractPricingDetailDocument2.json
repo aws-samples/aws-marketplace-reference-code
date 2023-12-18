@@ -1,0 +1,124 @@
+{
+    "catalog": "AWSMarketplace",
+    "changeSet": [
+        {
+            "ChangeType" : "CreateReplacementOffer",
+            "Entity": {
+                "Type": "Offer@1.0"
+            },
+            "ChangeName": "CreateReplacementOffer",
+            "DetailsDocument": {
+                "AgreementId": "agmt-1111111111111111111111111", 
+                "Name": "Test Replacement Offer"
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Name": "Test replacement offer for SaaSProduct using AWS Marketplace API Reference Codes",
+                "Description": "Test private offer with subscription pricing for SaaSProduct using AWS Marketplace API Reference Code"
+            }
+        },
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PricingModel": "Contract",
+                "Terms": [
+                    {
+                        "Type": "FixedUpfrontPricingTerm",
+                        "CurrencyCode": "USD",
+                        "Price": "0.0",
+                        "Grants": [
+                            {
+                                "DimensionKey": "BasicService",
+                                "MaxQuantity": 2
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateValidityTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "ValidityTerm",
+                        "AgreementEndDate": "2024-01-30"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdatePaymentScheduleTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Terms": [
+                    {
+                        "Type": "PaymentScheduleTerm",
+                        "CurrencyCode": "USD",
+                        "Schedule": [
+                            {
+                                "ChargeDate": "2024-01-01",
+                                "ChargeAmount": "0"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateLegalTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+            },
+            "Details": {
+                "Terms": [
+                    {
+                        "Type": "LegalTerm",
+                        "Documents": [
+                            {
+                                "Type": "StandardEula",
+                                "Version": "2022-07-14"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "UpdateAvailability",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "AvailabilityEndDate": "2023-12-31"
+            }
+        },
+        {
+            "ChangeType": "ReleaseOffer",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+            },
+            "Details": "{}"
+        }
+    ]
+}
