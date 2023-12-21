@@ -49,7 +49,7 @@ def usage_demo():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
     print("-" * 88)
-    print("Looking for a entities in the AWS Marketplace Catalog.")
+    print("Looking for entities in the AWS Marketplace Catalog.")
     print("-" * 88)
 
     mp_client = boto3.client("marketplace-catalog")
