@@ -9,8 +9,11 @@ import software.amazon.awssdk.services.marketplacecatalog.MarketplaceCatalogClie
 import software.amazon.awssdk.services.marketplacecatalog.model.BatchDescribeEntitiesRequest;
 import software.amazon.awssdk.services.marketplacecatalog.model.EntityRequest;
 import software.amazon.awssdk.services.marketplacecatalog.model.BatchDescribeEntitiesResponse;
+import software.amazon.awssdk.services.marketplacecatalog.model.EntityDetail;
+import software.amazon.awssdk.services.marketplacecatalog.model.BatchDescribeErrorDetail;
 
 import java.util.Arrays;
+import java.util.Map;
 
 public class BatchDescribeEntities {
 
@@ -39,6 +42,18 @@ public class BatchDescribeEntities {
 
         BatchDescribeEntitiesResponse batchDescribeEntitiesResponse = marketplaceCatalogClient.batchDescribeEntities(batchDescribeEntitiesRequest);
 
-        ReferenceCodesUtils.formatOutput(batchDescribeEntitiesResponse);
+        // Reading the successful entities response
+        Map<String, EntityDetail> entityDetailsMap = batchDescribeEntitiesResponse.entityDetails();
+        for (Map.Entry<String, EntityDetail> entry : entityDetailsMap.entrySet()) {
+            System.out.println("EntityId: " + entry.getKey());
+            ReferenceCodesUtils.formatOutput(entry.getValue());
+        }
+
+        // Logging the failed entities error details
+        Map<String, BatchDescribeErrorDetail> entityErrorsMap = batchDescribeEntitiesResponse.errors();
+        for (Map.Entry<String, BatchDescribeErrorDetail> entry : entityErrorsMap.entrySet()) {
+            System.out.println(String.format("EntityId: %s, ErrorCode: %s, ErrorMessage: %s", entry.getKey(),
+                    entry.getValue().errorCode(), entry.getValue().errorMessage()));
+        }
     }
 }

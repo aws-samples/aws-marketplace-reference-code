@@ -54,7 +54,11 @@ def usage_demo():
 
     mp_client = boto3.client("marketplace-catalog")
 
-    pretty_print(get_entities_information(mp_client))
+    response = get_entities_information(mp_client)
+    print("Successful entities response -")
+    pretty_print(response["EntityDetails"])
+    print("Failed entities response -")
+    pretty_print(response["Errors"])
 
 
 if __name__ == "__main__":
