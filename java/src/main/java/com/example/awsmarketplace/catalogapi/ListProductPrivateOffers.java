@@ -18,6 +18,10 @@ import software.amazon.awssdk.services.marketplacecatalog.model.ListEntitiesResp
 import software.amazon.awssdk.services.marketplacecatalog.model.OfferFilters;
 import software.amazon.awssdk.services.marketplacecatalog.model.OfferProductIdFilter;
 import software.amazon.awssdk.services.marketplacecatalog.model.OfferTargetingFilter;
+import software.amazon.awssdk.services.marketplacecatalog.model.BatchDescribeEntitiesRequest;
+import software.amazon.awssdk.services.marketplacecatalog.model.EntityRequest;
+import software.amazon.awssdk.services.marketplacecatalog.model.BatchDescribeEntitiesResponse;
+import software.amazon.awssdk.services.marketplacecatalog.model.EntityDetail;
 
 public class ListProductPrivateOffers {
 
@@ -74,17 +78,31 @@ public class ListProductPrivateOffers {
 			entitySummaryList.addAll(listEntitiesResponse.entitySummaryList());
 		}
 		
-		// for each offer id, output the offer detail using DescribeEntity API
-		
+		// for each offer id, output the offer detail using BatchDescribeEntities API
+
+		List<EntityRequest> describeEntityRequestList = new ArrayList<EntityRequest>();
+		List<EntityDetail> describeEntityResponseList = new ArrayList<EntityDetail>();
 		for (EntitySummary entitySummary : entitySummaryList) {
-			DescribeEntityRequest describeEntityRequest = 
-					DescribeEntityRequest.builder()
+			EntityRequest describeEntityRequest = EntityRequest.builder()
 					.catalog(AWS_MP_CATALOG)
 					.entityId(entitySummary.entityId())
 					.build();
-			DescribeEntityResponse describeEntityResponse = marketplaceCatalogClient.describeEntity(describeEntityRequest);
-			ReferenceCodesUtils.formatOutput(describeEntityResponse);
+			describeEntityRequestList.add(describeEntityRequest);
+			if(describeEntityRequestList.size() == 20) {
+				BatchDescribeEntitiesRequest batchDescribeEntitiesRequest = BatchDescribeEntitiesRequest.builder()
+						.entityRequestList(describeEntityRequestList).build();
+				BatchDescribeEntitiesResponse batchDescribeEntitiesResponse = marketplaceCatalogClient.batchDescribeEntities(batchDescribeEntitiesRequest);
+				describeEntityResponseList.addAll(batchDescribeEntitiesResponse.entityDetails().values());
+				describeEntityRequestList.clear();
+			}
 		}
+		if(!describeEntityRequestList.isEmpty()) {
+			BatchDescribeEntitiesRequest batchDescribeEntitiesRequest = BatchDescribeEntitiesRequest.builder()
+					.entityRequestList(describeEntityRequestList).build();
+			BatchDescribeEntitiesResponse batchDescribeEntitiesResponse = marketplaceCatalogClient.batchDescribeEntities(batchDescribeEntitiesRequest);
+			describeEntityResponseList.addAll(batchDescribeEntitiesResponse.entityDetails().values());
+		}
+		describeEntityResponseList.forEach(response -> System.out.println(response));
 	}
 
 }
