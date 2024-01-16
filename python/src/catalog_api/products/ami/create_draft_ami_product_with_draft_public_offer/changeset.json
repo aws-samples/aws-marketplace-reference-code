@@ -1,13 +1,13 @@
 {
     "Catalog": "AWSMarketplace",
-    "changeSet": [
+    "ChangeSet": [
         {
             "ChangeType": "CreateProduct",
             "ChangeName": "CreateProductChange",
             "Entity": {
                 "Type": "AmiProduct@1.0"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         },
         {
             "ChangeType": "CreateOffer",
@@ -15,7 +15,7 @@
             "Entity": {
                 "Type": "Offer@1.0"
             },
-            "Details": {
+            "DetailsDocument": {
                 "ProductId": "$CreateProductChange.Entity.Identifier",
                 "Name": "Test Offer"
             }

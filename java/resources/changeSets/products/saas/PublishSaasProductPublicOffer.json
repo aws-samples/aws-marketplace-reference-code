@@ -1,6 +1,6 @@
 {
     "Catalog":"AWSMarketplace",
-    "changeSet":[
+    "ChangeSet": [
         {
             "ChangeType": "CreateProduct",
             "ChangeName": "CreateProductChange",
@@ -71,7 +71,7 @@
             "DetailsDocument": {
                 "DeliveryOptions": [
                     {
-                        "DetailsDocument": {
+                        "Details": {
                             "SaaSUrlDeliveryOptionDetails": {
                                 "FulfillmentUrl": "https://www.aws.amazon.com/marketplace/management"
                             }

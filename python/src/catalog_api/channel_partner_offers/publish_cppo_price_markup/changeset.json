@@ -1,13 +1,13 @@
 {
-    "catalog": "AWSMarketplace",
-    "changeSet": [
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
         {
             "ChangeType" : "CreateOfferUsingResaleAuthorization",
             "Entity": {
             "Type": "Offer@1.0"
             },
             "ChangeName": "CreateCPPO",
-            "Details": {
+            "DetailsDocument": {
                 "ResaleAuthorizationId":"resaleauthz-1111111111111"
             }
         },
@@ -17,7 +17,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateCPPO.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Name": "Test Offer name",
                 "Description":"Test Offer description"
             }
@@ -28,7 +28,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateCPPO.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Percentage" : "5.0"
             }
         },
@@ -38,7 +38,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateCPPO.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PositiveTargeting": {
                     "BuyerAccounts": ["111111111111"]
                     }
@@ -50,7 +50,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateCPPO.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "AvailabilityEndDate": "2023-05-31"
                 }
         },
@@ -60,7 +60,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateCPPO.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "ValidityTerm",
@@ -75,7 +75,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateCPPO.Entity.Identifier"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         }
     ]
 }

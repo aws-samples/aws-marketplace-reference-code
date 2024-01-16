@@ -1,13 +1,13 @@
 {
     "Catalog": "AWSMarketplace",
-    "changeSet": [
+    "ChangeSet": [
         {
             "ChangeType": "CreateOffer",
             "Entity": {
                 "Type": "Offer@1.0"
             },
             "ChangeName": "CreateOfferChange",
-            "Details": {
+            "DetailsDocument": {
                 "ProductId": "prod-1111111111111"
             }
         },
@@ -17,7 +17,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Name": "Test public free trial offer for SaaSProduct using AWS Marketplace API Reference Code",
                 "Description": "Test public free trial offer with subscription pricing for SaaSProduct using AWS Marketplace API Reference Code"
             }
@@ -28,7 +28,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PricingModel": "Free",
                 "Terms": [
                     {
@@ -52,7 +52,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "LegalTerm",
@@ -72,7 +72,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         }
     ]
 }

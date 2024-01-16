@@ -1,13 +1,13 @@
 {
-    "catalog": "AWSMarketplace",
-    "changeSet": [
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
         {
             "ChangeType": "UpdateAvailability",
             "Entity": {
                 "Type": "Offer@1.0",
                 "Identifier": "offer-1111111111111"
             },
-            "Details": {
+            "DetailsDocument": {
                 "AvailabilityEndDate": "2023-01-01"
             }
         }

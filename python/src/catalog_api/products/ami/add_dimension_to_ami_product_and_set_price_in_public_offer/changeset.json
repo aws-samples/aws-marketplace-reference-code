@@ -1,13 +1,13 @@
 {
-    "catalog": "AWSMarketplace",
-    "changeSet": [
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
         {
             "ChangeType": "AddDimensions",
             "Entity": {
                 "Identifier": "prod-1111111111111",
                 "Type": "AmiProduct@1.0"
             },
-            "Details": [
+            "DetailsDocument": [
                 {
                     "Key": "m7g.8xlarge",
                     "Description": "m7g.8xlarge",
@@ -25,7 +25,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "offer-1111111111111"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PricingModel": "Usage",
                 "Terms": [
                     {

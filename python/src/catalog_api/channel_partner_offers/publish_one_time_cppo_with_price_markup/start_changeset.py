@@ -23,7 +23,7 @@ def main(change_set=None):
 
     response = sc.usage_demo(
         stringified_change_set,
-        "Create CPPO using one-time resale authorization on AMI, SaaS or Container products and update price markup",
+        "Create CPPO using one-time resale authorization and update price markup"
     )
 
     return response

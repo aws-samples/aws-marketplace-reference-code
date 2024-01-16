@@ -1,13 +1,13 @@
 {
     "Catalog": "AWSMarketplace",
-    "changeSet": [
+    "ChangeSet": [
         {
             "ChangeType": "UpdatePricingTerms",
             "Entity": {
                 "Type": "Offer@1.0",
                 "Identifier": "offer-1111111111111"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PricingModel": "Usage",
                 "Terms": [
                     {

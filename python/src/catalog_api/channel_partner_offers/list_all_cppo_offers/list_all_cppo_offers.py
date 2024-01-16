@@ -73,8 +73,9 @@ def check_offer_resaleauth(offer_id):
     """
     offer_response = describe_entity(offer_id)
     offer_details = json.loads(offer_response["Details"])
-
-    if offer_details["ResaleAuthorizationId"] is not None:
+    if offer_details is None:
+        offer_details = offer_response["DetailsDocument"]
+    if "ResaleAuthorizationId" in offer_details and offer_details["ResaleAuthorizationId"] is not None:
         return offer_id
     else:
         return None
@@ -106,8 +107,8 @@ def get_resaleauth_offers():
     response_list = get_offer_entities()
     offer_list = build_offer_list(response_list)
     for offer in offer_list:
+        print ("offer id " + offer)
         offer_info = check_offer_resaleauth(offer)
-
         if offer_info is not None:
             resale_offer_list.append(offer_info)
 

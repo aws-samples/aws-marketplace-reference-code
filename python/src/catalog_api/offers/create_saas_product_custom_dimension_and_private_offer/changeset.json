@@ -1,13 +1,13 @@
 {
     "Catalog": "AWSMarketplace",
-    "changeSet": [
+    "ChangeSet": [
         {
             "ChangeType": "AddDimensions",
             "Entity": {
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "prod-1111111111111"
             },
-            "Details": [
+            "DetailsDocument": [
                 {
                     "Types": [
                         "Entitled"
@@ -24,7 +24,7 @@
             "Entity": {
                 "Type": "Offer@1.0"
             },
-            "Details": {
+            "DetailsDocument": {
                 "ProductId": "prod-1111111111111"
             },
             "ChangeName": "CreateOfferChange"
@@ -35,7 +35,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Name": "Private Test Offer - SaaS Contract Product",
                 "Description": "Private Test Offer - SaaS Contract Product"
             }
@@ -46,7 +46,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PositiveTargeting": {
                     "BuyerAccounts": [
                         "111111111111"
@@ -60,7 +60,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "LegalTerm",
@@ -80,7 +80,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "AvailabilityEndDate": "2023-12-31"
             }
         },
@@ -90,7 +90,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PricingModel": "Contract",
                 "Terms": [
                     {
@@ -124,7 +124,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         }
     ],
     "ChangeSetName": "PrivateOfferWithCustomDimension"

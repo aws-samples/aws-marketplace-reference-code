@@ -1,13 +1,13 @@
 {
     "Catalog":"AWSMarketplace",
-    "changeSet":[
+    "ChangeSet":[
         {
             "ChangeType": "CreateProduct",
             "ChangeName": "CreateProductChange",
             "Entity": {
                 "Type": "SaaSProduct@1.0"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         },
         {
             "ChangeType": "UpdateInformation",
@@ -15,7 +15,7 @@
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "$CreateProductChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "ProductTitle": "Sample product",
                 "ShortDescription": "Brief description",
                 "LongDescription": "Detailed description",
@@ -41,7 +41,7 @@
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "$CreateProductChange.Entity.Identifier"
             },
-            "Details": [
+            "DetailsDocument": [
                 {
                     "Key": "BasicService",
                     "Description": "Basic Service",
@@ -68,7 +68,7 @@
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "$CreateProductChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "DeliveryOptions": [
                     {
                         "Details": {
@@ -86,7 +86,7 @@
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "$CreateProductChange.Entity.Identifier"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         },
         {
             "ChangeType": "CreateOffer",
@@ -94,7 +94,7 @@
             "Entity": {
                 "Type": "Offer@1.0"
             },
-            "Details": {
+            "DetailsDocument": {
                 "ProductId": "$CreateProductChange.Entity.Identifier"
             }
         },
@@ -104,7 +104,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Name": "New Test Offer",
                 "Description": "New offer description"
             }
@@ -115,7 +115,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "LegalTerm",
@@ -135,7 +135,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "SupportTerm",
@@ -150,7 +150,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PricingModel": "Contract",
                 "Terms": [
                     {
@@ -208,7 +208,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "RenewalTerm"
@@ -222,7 +222,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         }
     ]
 }

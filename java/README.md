@@ -26,6 +26,8 @@ mvn clean compile assembly:single
 
 ### To run against one particular changeset, run RunChangesets.java as a java application by changing the changeset name inside the java file; or run with the changeset file path as the input parameter.
 
+### To run the code inside your IDE, add the resources folder to your build path -> source.
+
 ## Catalog API reference code
 
 | Id       | Use case                                                                                                                                                                                                                                                                                             |

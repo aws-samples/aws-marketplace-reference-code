@@ -23,7 +23,7 @@ def stringify_details_sections(json_object):
     Loops through every change type in the changeset to look for non-empty
     details section and stringifies them
     """
-    for change_type in json_object["changeSet"]:
+    for change_type in json_object["ChangeSet"]:
         # Only stringify details section if it is not empty
         if "Details" in change_type and change_type["Details"] != "{}":
             string_details = json.dumps(change_type["Details"])
@@ -31,7 +31,7 @@ def stringify_details_sections(json_object):
         else:
             pass
 
-    return json_object["changeSet"]
+    return json_object["ChangeSet"]
 
 
 def stringify_changeset(file_path):

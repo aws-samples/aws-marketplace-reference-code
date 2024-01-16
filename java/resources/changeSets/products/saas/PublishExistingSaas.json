@@ -1,6 +1,6 @@
 {
     "Catalog":"AWSMarketplace",
-    "changeSet":[
+    "ChangeSet": [
         {
             "ChangeType": "UpdateVisibility",
             "ChangeName": "CreateProductChange",

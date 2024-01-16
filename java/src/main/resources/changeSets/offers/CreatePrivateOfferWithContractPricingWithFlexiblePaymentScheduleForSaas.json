@@ -1,33 +1,47 @@
 {
-    "catalog": "AWSMarketplace",
-    "changeSet": [
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
         {
-            "ChangeType" : "CreateReplacementOffer",
+            "ChangeType": "CreateOffer",
             "Entity": {
                 "Type": "Offer@1.0"
             },
-            "ChangeName": "CreateReplacementOffer",
+            "ChangeName": "CreateOfferChange",
             "DetailsDocument": {
-                "AgreementId": "agmt-1111111111111111111111111", 
-                "Name": "Test Replacement Offer"
+                "ProductId": "prod-1111111111111"
             }
         },
         {
             "ChangeType": "UpdateInformation",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
             "DetailsDocument": {
-                "Name": "Test replacement offer for SaaSProduct using AWS Marketplace API Reference Codes",
+                "Name": "Test private offer for SaaSProduct using AWS Marketplace API Reference Code",
                 "Description": "Test private offer with subscription pricing for SaaSProduct using AWS Marketplace API Reference Code"
+            }
+        },
+        {
+            "ChangeType": "UpdateTargeting",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "PositiveTargeting": {
+                    "BuyerAccounts": [
+                        "111111111111",
+                        "222222222222"
+                    ]
+                }
             }
         },
         {
             "ChangeType": "UpdatePricingTerms",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
             "DetailsDocument": {
                 "PricingModel": "Contract",
@@ -39,7 +53,11 @@
                         "Grants": [
                             {
                                 "DimensionKey": "BasicService",
-                                "MaxQuantity": 2
+                                "MaxQuantity": 1
+                            },
+                            {
+                                "DimensionKey": "PremiumService",
+                                "MaxQuantity": 1
                             }
                         ]
                     }
@@ -50,13 +68,13 @@
             "ChangeType": "UpdateValidityTerms",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
             "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "ValidityTerm",
-                        "AgreementEndDate": "2024-01-30"
+                        "AgreementDuration": "P12M"
                     }
                 ]
             }
@@ -65,7 +83,7 @@
             "ChangeType": "UpdatePaymentScheduleTerms",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
             "DetailsDocument": {
                 "Terms": [
@@ -75,7 +93,11 @@
                         "Schedule": [
                             {
                                 "ChargeDate": "2024-01-01",
-                                "ChargeAmount": "0"
+                                "ChargeAmount": "200.00"
+                            },
+                            {
+                                "ChargeDate": "2024-02-01",
+                                "ChargeAmount": "170.00"
                             }
                         ]
                     }
@@ -86,16 +108,16 @@
             "ChangeType": "UpdateLegalTerms",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "LegalTerm",
                         "Documents": [
                             {
-                                "Type": "StandardEula",
-                                "Version": "2022-07-14"
+                                "Type": "CustomEula",
+                                "Url": "https://s3.amazonaws.com/sample-bucket/custom-eula.pdf"
                             }
                         ]
                     }
@@ -106,7 +128,7 @@
             "ChangeType": "UpdateAvailability",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
             "DetailsDocument": {
                 "AvailabilityEndDate": "2023-12-31"
@@ -116,9 +138,9 @@
             "ChangeType": "ReleaseOffer",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         }
     ]
 }

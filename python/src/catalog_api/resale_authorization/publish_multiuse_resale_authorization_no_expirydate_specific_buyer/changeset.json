@@ -1,13 +1,13 @@
 {
-    "catalog": "AWSMarketplace",
-    "changeSet": [
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
         {
             "ChangeType": "CreateResaleAuthorization",
             "ChangeName": "ResaleAuthorization",
             "Entity": {
                 "Type": "ResaleAuthorization@1.0"
             },
-            "Details": {
+            "DetailsDocument": {
                 "ProductId": "prod-1111111111111",
                 "Name": "TestResaleAuthorization",
                 "Description": "Worldwide ResaleAuthorization for Test Product",
@@ -20,7 +20,7 @@
                 "Type": "ResaleAuthorization@1.0",
                 "Identifier": "$ResaleAuthorization.Entity.Identifier"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         },
         {
             "ChangeType": "UpdatePricingTerms",
@@ -28,7 +28,7 @@
                 "Type": "ResaleAuthorization@1.0",
                 "Identifier": "$ResaleAuthorization.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PricingModel": "Contract",
                 "Terms": [
                     {
@@ -62,7 +62,7 @@
                 "Type": "ResaleAuthorization@1.0",
                 "Identifier": "$ResaleAuthorization.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "BuyerTargetingTerm",
@@ -81,7 +81,7 @@
                 "Type": "ResaleAuthorization@1.0",
                 "Identifier": "$ResaleAuthorization.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "BuyerLegalTerm",

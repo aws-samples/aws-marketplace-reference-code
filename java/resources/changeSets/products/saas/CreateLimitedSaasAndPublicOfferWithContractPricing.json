@@ -1,6 +1,6 @@
 {
     "Catalog": "AWSMarketplace",
-    "changeSet": [
+    "ChangeSet": [
         {
             "ChangeType": "CreateProduct",
             "Entity": {
@@ -59,7 +59,7 @@
             "DetailsDocument": {
                 "DeliveryOptions": [
                     {
-                        "DetailsDocument": {
+                        "Details": {
                             "SaaSUrlDeliveryOptionDetails": {
                                 "FulfillmentUrl":"https://sample.amazonaws.com/sample-saas-fulfillment-url"
                             }

@@ -1,5 +1,5 @@
 {
-    "catalog": "AWSMarketplace",
+    "Catalog": "AWSMarketplace",
     "ChangeSet": [
         {
             "ChangeType": "RestrictResaleAuthorization",
@@ -7,7 +7,7 @@
                 "Type": "ResaleAuthorization@1.0",
                 "Identifier": "resaleauthz-1111111111111"
             },
-            "Details": {}
+            "DetailsDocument": {}
         }
     ]
 }
