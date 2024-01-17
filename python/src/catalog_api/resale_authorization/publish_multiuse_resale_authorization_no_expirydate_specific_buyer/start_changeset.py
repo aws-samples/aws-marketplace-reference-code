@@ -19,7 +19,7 @@ change_set = sd.stringify_changeset(change_set_file)
 def main():
     sc.usage_demo(
         change_set,
-        "publish multi-use resale authorization without expiry date for any product type and add specific buyer account for the resale",
+        "publish multi-use resale authorization without expiry date and add specific buyer account",
     )
 
 

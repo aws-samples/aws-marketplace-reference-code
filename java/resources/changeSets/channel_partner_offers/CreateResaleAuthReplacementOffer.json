@@ -1,6 +1,6 @@
 {
-    "catalog": "AWSMarketplace",
-    "changeSet": [
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
         {
             "ChangeType" : "CreateReplacementOfferUsingResaleAuthorization",
             "Entity": {

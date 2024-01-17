@@ -70,7 +70,7 @@ def publish_cppo_price_markup(mp_client):
                     "ChangeType": "CreateOfferUsingResaleAuthorization",
                     "Entity": {"Type": "Offer@1.0"},
                     "ChangeName": "CreateCPPO",
-                    "Details": details_create_offer_string,
+                    "DetailsDocument": details_create_offer_string,
                 },
                 {
                     "ChangeType": "UpdateInformation",
@@ -78,7 +78,7 @@ def publish_cppo_price_markup(mp_client):
                         "Type": "Offer@1.0",
                         "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
-                    "Details": details_information_string,
+                    "DetailsDocument": details_information_string,
                 },                
                 {
                     "ChangeType": "UpdateMarkup",
@@ -86,7 +86,7 @@ def publish_cppo_price_markup(mp_client):
                         "Type": "Offer@1.0",
                         "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
-                    "Details": details_price_string,
+                    "DetailsDocument": details_price_string,
                 },
                 {
                     "ChangeType": "UpdateTargeting",
@@ -94,7 +94,7 @@ def publish_cppo_price_markup(mp_client):
                         "Type": "Offer@1.0",
                         "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
-                    "Details": details_targeting_string,
+                    "DetailsDocument": details_targeting_string,
                 },
                 {
                     "ChangeType": "UpdateAvailability",
@@ -102,7 +102,7 @@ def publish_cppo_price_markup(mp_client):
                         "Type": "Offer@1.0",
                         "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
-                    "Details": details_availability_string,
+                    "DetailsDocument": details_availability_string,
                 },
                 {
                     "ChangeType": "UpdateValidityTerms",
@@ -110,7 +110,7 @@ def publish_cppo_price_markup(mp_client):
                         "Type": "Offer@1.0",
                         "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
-                    "Details": details_validityTerms_string,
+                    "DetailsDocument": details_validityTerms_string,
                 },
                 {
                     "ChangeType": "ReleaseOffer",
@@ -118,7 +118,7 @@ def publish_cppo_price_markup(mp_client):
                         "Type": "Offer@1.0",
                         "Identifier": "$CreateCPPO.Entity.Identifier",
                     },
-                    "Details": "{}",
+                    "DetailsDocument": "{}",
                 },
             ],
             ChangeSetName="Publish CPPO offer using resale authorization update price markup",

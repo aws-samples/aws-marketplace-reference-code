@@ -1,6 +1,6 @@
 {
-    "catalog": "AWSMarketplace",
-    "changeSet": [
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
         {
             "ChangeType": "CreateProduct",
             "ChangeName": "CreateProductChange",
@@ -72,7 +72,7 @@
                 },
                 "DeliveryOptions": [
                     {
-                        "DetailsDocument": {
+                        "Details": {
                             "AmiDeliveryOptionDetails": {
                                 "AmiSource": {
                                     "AmiId": "ami-11111111111111111",

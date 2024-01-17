@@ -1,13 +1,13 @@
 {
     "Catalog": "AWSMarketplace",
-    "changeSet": [
+    "ChangeSet": [
         {
             "ChangeType": "CreateProduct",
             "Entity": {
                 "Type": "SaaSProduct@1.0"
             },
             "ChangeName": "CreateProductChange",
-            "Details": "{}"
+            "DetailsDocument": {}
         },
         {
             "ChangeType": "UpdateInformation",
@@ -15,7 +15,7 @@
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "$CreateProductChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "ProductTitle": "Sample product",
                 "ShortDescription": "Brief description",
                 "LongDescription": "Detailed description",
@@ -41,7 +41,7 @@
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "$CreateProductChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PositiveTargeting": {
                     "BuyerAccounts": [
                         "111111111111",
@@ -56,7 +56,7 @@
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "$CreateProductChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "DeliveryOptions": [
                     {
                         "Details": {
@@ -74,7 +74,7 @@
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "$CreateProductChange.Entity.Identifier"
             },
-            "Details": [
+            "DetailsDocument": [
                 {
                     "Key": "BasicService",
                     "Description": "Basic Service",
@@ -101,7 +101,7 @@
                 "Type": "SaaSProduct@1.0",
                 "Identifier": "$CreateProductChange.Entity.Identifier"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         },
         {
             "ChangeType": "CreateOffer",
@@ -109,7 +109,7 @@
                 "Type": "Offer@1.0"
             },
             "ChangeName": "CreateOfferChange",
-            "Details": {
+            "DetailsDocument": {
                 "ProductId": "$CreateProductChange.Entity.Identifier"
             }
         },
@@ -119,7 +119,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Name": "Test public offer for SaaSProduct using AWS Marketplace API Reference Code",
                 "Description": "Test public offer with contract pricing for SaaSProduct using AWS Marketplace API Reference Code"
             }
@@ -130,7 +130,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "PricingModel": "Contract",
                 "Terms": [
                     {
@@ -188,7 +188,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "LegalTerm",
@@ -208,7 +208,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "SupportTerm",
@@ -223,7 +223,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "RenewalTerm"
@@ -237,7 +237,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": "{}"
+            "DetailsDocument": {}
         }
     ]
 }

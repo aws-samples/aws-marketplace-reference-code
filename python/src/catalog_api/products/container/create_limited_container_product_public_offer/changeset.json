@@ -1,6 +1,6 @@
 {
     "Catalog": "AWSMarketplace",
-    "changeSet": [
+    "ChangeSet": [
         {
             "ChangeType": "CreateProduct",
             "Entity": {
@@ -186,7 +186,7 @@
                 "Type": "Offer@1.0",
                 "Identifier": "$CreateOfferChange.Entity.Identifier"
             },
-            "Details": {
+            "DetailsDocument": {
                 "Terms": [
                     {
                         "Type": "RenewalTerm"

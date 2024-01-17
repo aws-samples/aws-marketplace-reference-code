@@ -18,7 +18,7 @@ change_set = sd.stringify_changeset(change_set_file)
 def main():
     sc.usage_demo(
         change_set,
-        "update name and description of one-time or multi-use resale authorization before publishing for any product type",
+        "update name and description of one-time or multi-use resale authorization before publishing",
     )
 
 

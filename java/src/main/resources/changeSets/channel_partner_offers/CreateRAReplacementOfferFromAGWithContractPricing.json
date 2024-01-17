@@ -1,22 +1,23 @@
 {
-    "catalog": "AWSMarketplace",
-    "changeSet": [
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
         {
-            "ChangeType" : "CreateReplacementOffer",
+            "ChangeType" : "CreateReplacementOfferUsingResaleAuthorization",
             "Entity": {
                 "Type": "Offer@1.0"
             },
-            "ChangeName": "CreateReplacementOffer",
+            "ChangeName": "CreateReplacementOfferResaleAuth",
             "DetailsDocument": {
                 "AgreementId": "agmt-1111111111111111111111111",
-                "Name": "Test Replacement Offer"
+                "ResaleAuthorizationId": "resaleauthz-1111111111111",
+                "Name": "Test Replacement Offer for Resale Auth"
             }
         },
         {
             "ChangeType": "UpdateInformation",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
             },
             "DetailsDocument": {
                 "Name": "Test replacement offer for SaaSProduct using AWS Marketplace API Reference Codes",
@@ -27,7 +28,7 @@
             "ChangeType": "UpdatePricingTerms",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
             },
             "DetailsDocument": {
                 "PricingModel": "Contract",
@@ -36,6 +37,7 @@
                         "Type": "FixedUpfrontPricingTerm",
                         "CurrencyCode": "USD",
                         "Price": "0.0",
+                        "Duration": "P6M",
                         "Grants": [
                             {
                                 "DimensionKey": "BasicService",
@@ -50,7 +52,7 @@
             "ChangeType": "UpdateValidityTerms",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
             },
             "DetailsDocument": {
                 "Terms": [
@@ -65,7 +67,7 @@
             "ChangeType": "UpdatePaymentScheduleTerms",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
             },
             "DetailsDocument": {
                 "Terms": [
@@ -86,7 +88,7 @@
             "ChangeType": "UpdateLegalTerms",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
             },
             "DetailsDocument": {
                 "Terms": [
@@ -106,7 +108,7 @@
             "ChangeType": "UpdateAvailability",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
             },
             "DetailsDocument": {
                 "AvailabilityEndDate": "2023-12-31"
@@ -116,7 +118,7 @@
             "ChangeType": "ReleaseOffer",
             "Entity": {
                 "Type": "Offer@1.0",
-                "Identifier": "$CreateReplacementOffer.Entity.Identifier"
+                "Identifier": "$CreateReplacementOfferResaleAuth.Entity.Identifier"
             },
             "DetailsDocument": {}
         }
