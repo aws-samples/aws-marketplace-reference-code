@@ -1,0 +1,2559 @@
+{
+	"info": {
+		"_postman_id": "4de540a7-36b7-4c85-beb0-6a5030e8aa08",
+		"name": "AWS Marketplace Labs by Use Cases",
+		"description": "The labs in this section cover end-to-end use cases.\n\n- [Lab: Create SaaS private offer with API](https://catalog.workshops.aws/mpseller/en-US/use-cases/create-saas-private-offer-with-api)\n    \n- [Lab: Authorize SaaS reseller with API](https://catalog.workshops.aws/mpseller/en-US/use-cases/authorize-saas-reseller-with-api)\n    \n\n## Use the Lab\n\nTo run the lab, you can choose to run each request one by one. Or you can choose to run the whole lab by selecting Run Folder.\n\n<img src=\"https://content.pstmn.io/f2f32137-3020-4549-9496-42314520c321/cnVuRm9sZGVyLW1hcmt1cC5wbmc=\">\n\nYou can also choose to Persist responses for a session by modifying Run Folder settings before running the folder.\n\n<img src=\"https://content.pstmn.io/e6a9c5e6-2a9b-4d97-b963-4cf1e5118fa8/cnVuRm9sZGVyU2V0dGluZ3MucG5n\">\n\nFlow control is accomplished by Post-response script in each API call.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create SaaS Private Offer",
+			"item": [
+				{
+					"name": "1_CreateSaaSPrivateOffer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "394624db-5eb9-4704-8317-f75fceb92de7",
+								"exec": [
+									"let response = pm.response.json()",
+									"let changeSetId = response[\"ChangeSetId\"]",
+									"pm.collectionVariables.set(\"changeSetId\", changeSetId)",
+									"console.log(pm.info.requestName + \" changesetId=\" + changeSetId)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "46c5a039-a3cf-40d7-9e73-637249cade4b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "31497739-73d3-4619-bc4c-d09e9c85c225",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n            \"ChangeName\": \"MyCreateOfferChange\",\n            \"ChangeType\": \"CreateOffer\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"ProductId\": \"{{PRODUCT_ID}}\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateInformation\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"$MyCreateOfferChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"Name\": \"Demo Private Offer\",\n                \"Description\": \"Demo Private Offer Description\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateTargeting\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"$MyCreateOfferChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"PositiveTargeting\": {\n                    \"BuyerAccounts\": [\n                        \"{{BUYER_ID}}\",\n                        \"{{SELLER_ID}}\"\n                    ]\n                }\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateAvailability\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"$MyCreateOfferChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"AvailabilityEndDate\": \"{{EXPIRY_DATE}}\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateLegalTerms\",\n            \"Entity\": {\n                \"Identifier\": \"$MyCreateOfferChange.Entity.Identifier\",\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"LegalTerm\",\n                    \"Documents\": [{\n                        \"Type\": \"StandardEula\",\n                        \"Version\": \"2022-07-14\"\n                    }]\n                }]\n            }\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{_.CAPI_PROD}}/StartChangeSet"
+					},
+					"response": [
+						{
+							"id": "1c4dd814-423a-471c-9a71-e2d59ee200b3",
+							"name": "1_CreateSaaSPrivateOffer",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n            \"ChangeName\": \"MyCreateOfferChange\",\n            \"ChangeType\": \"CreateOffer\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"ProductId\": \"{{PRODUCT_ID}}\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateInformation\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"$MyCreateOfferChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"Name\": \"Demo Private Offer\",\n                \"Description\": \"Demo Private Offer Description\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateTargeting\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"$MyCreateOfferChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"PositiveTargeting\": {\n                    \"BuyerAccounts\": [\n                        \"{{BUYER_ID}}\",\n                        \"{{SELLER_ID}}\"\n                    ]\n                }\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateAvailability\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"$MyCreateOfferChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"AvailabilityEndDate\": \"{{EXPIRY_DATE}}\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateLegalTerms\",\n            \"Entity\": {\n                \"Identifier\": \"$MyCreateOfferChange.Entity.Identifier\",\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"LegalTerm\",\n                    \"Documents\": [{\n                        \"Type\": \"StandardEula\",\n                        \"Version\": \"2022-07-14\"\n                    }]\n                }]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{_.CAPI_PROD}}/StartChangeSet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:16:37 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "1224ca78-092f-40b0-80c9-4d3cd3c88f91"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+						}
+					]
+				},
+				{
+					"name": "2_CheckStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eaf72d2-4308-4963-ac43-2fcd4ea58519",
+								"exec": [
+									"let retryInterval = pm.collectionVariables.get(\"retryInterval\");",
+									"",
+									"let response = pm.response.json();",
+									"let status = response.Status; ",
+									"",
+									"console.log(\"Status = \" + status);",
+									"",
+									"if ( status == \"SUCCEEDED\") {",
+									"    console.log(\"Status is SUCCEEDED. Setting OFFER_ID variable. Continue on next request.\")",
+									"    const identifier = response.ChangeSet[0].Entity.Identifier;",
+									"    const offerId = identifier.split('@')[0];",
+									"    pm.collectionVariables.set(\"OFFER_ID\", offerId);",
+									"} else if (status == \"FAILED\") {",
+									"    console.log(\"Status is FAILED. Stopping the RUN.\");",
+									"    pm.execution.setNextRequest(null);",
+									"} else {",
+									"    console.log(\"Status is not SUCCEEDED. Waiting for \" + retryInterval/1000 + \" seconds to re-check.\")",
+									"    setTimeout(() => {",
+									"        pm.execution.setNextRequest(pm.info.requestName);",
+									"    }, retryInterval);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a369368-0290-4608-b444-dacd772bd1c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "5ab7c77e-cfe0-4fc5-83c7-8b184b050f6b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{ _.CAPI_PROD }}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+							"host": [
+								"{{ _.CAPI_PROD }}"
+							],
+							"path": [
+								"DescribeChangeSet"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "changeSetId",
+									"value": "{{changeSetId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "7242cc17-c46c-4b59-833a-6f2b17ebd13d",
+							"name": "2_CheckStatus",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeChangeSet"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "changeSetId",
+											"value": "{{changeSetId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:18:08 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "2199962d-a1ef-4168-b939-6954f48df6e1"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetId\": \"test_ChangeSetId\",\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetName\": \"Submitted by 111111111111\",\n    \"Intent\": \"APPLY\",\n    \"StartTime\": \"2024-10-07T22:30:48Z\",\n    \"EndTime\": \"2024-10-07T22:31:22Z\",\n    \"Status\": \"SUCCEEDED\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"CreateOffer\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890@1\"\n            },\n            \"Details\": \"{\\\"ProductId\\\":\\\"prod-1234567890\\\"}\",\n            \"DetailsDocument\": {\n                \"ProductId\": \"prod-1234567890\"\n            },\n            \"ErrorDetailList\": [],\n            \"ChangeName\": \"MyCreateOfferChange\"\n        },\n        {\n            \"ChangeType\": \"UpdateAvailability\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890@1\"\n            },\n            \"Details\": \"{\\\"AvailabilityEndDate\\\":\\\"2024-12-12\\\"}\",\n            \"DetailsDocument\": {\n                \"AvailabilityEndDate\": \"2024-12-12\"\n            },\n            \"ErrorDetailList\": []\n        },\n        {\n            \"ChangeType\": \"UpdateTargeting\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890@1\"\n            },\n            \"Details\": \"{\\\"PositiveTargeting\\\":{\\\"BuyerAccounts\\\":[\\\"222222222222\\\",\\\"333333333333\\\"]}}\",\n            \"DetailsDocument\": {\n                \"PositiveTargeting\": {\n                    \"BuyerAccounts\": [\n                        \"222222222222\",\n                        \"333333333333\"\n                    ]\n                }\n            },\n            \"ErrorDetailList\": []\n        },\n        {\n            \"ChangeType\": \"UpdateLegalTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890@1\"\n            },\n            \"Details\": \"{\\\"Terms\\\":[{\\\"Type\\\":\\\"LegalTerm\\\",\\\"Documents\\\":[{\\\"Version\\\":\\\"2022-07-14\\\",\\\"Type\\\":\\\"StandardEula\\\"}]}]}\",\n            \"DetailsDocument\": {\n                \"Terms\": [\n                    {\n                        \"Type\": \"LegalTerm\",\n                        \"Documents\": [\n                            {\n                                \"Version\": \"2022-07-14\",\n                                \"Type\": \"StandardEula\"\n                            }\n                        ]\n                    }\n                ]\n            },\n            \"ErrorDetailList\": []\n        },\n        {\n            \"ChangeType\": \"UpdateInformation\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890@1\"\n            },\n            \"Details\": \"{\\\"Name\\\":\\\"Demo Private Offer\\\",\\\"Description\\\":\\\"Demo Private Offer Description\\\"}\",\n            \"DetailsDocument\": {\n                \"Name\": \"Demo Private Offer\",\n                \"Description\": \"Demo Private Offer Description\"\n            },\n            \"ErrorDetailList\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "3_UpdatePricingTermToFixedUpfrontPricing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "394624db-5eb9-4704-8317-f75fceb92de7",
+								"exec": [
+									"let response = pm.response.json()",
+									"let changeSetId = response[\"ChangeSetId\"]",
+									"pm.collectionVariables.set(\"changeSetId\", changeSetId)",
+									"console.log(\"changesetId=\" + changeSetId)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8b0d7b50-ab32-4436-8bb5-4c63f0d04305",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "3cd726a8-4236-45ec-9ba5-e04268429b81",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Identifier\": \"{{OFFER_ID}}\",\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"PricingModel\": \"Contract\",\n                \"Terms\": [{\n                    \"Type\": \"FixedUpfrontPricingTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"Price\": \"0\",\n                    \"Duration\": \"{{CONTRACT_DURATION_MONTHS}}\",\n                    \"Grants\": [{\n                        \"DimensionKey\": \"dimension_1_id\",\n                        \"MaxQuantity\": 22000\n                    }, {\n                        \"DimensionKey\": \"dimension_2_id\",\n                        \"MaxQuantity\": 22000\n                    }, {\n                        \"DimensionKey\": \"dimension_3_id\",\n                        \"MaxQuantity\": 22000\n                    }]\n                }, {\n                    \"Type\": \"UsageBasedPricingTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"RateCards\": [{\n                        \"RateCard\": [{\n                            \"DimensionKey\": \"metered_1_id\",\n                            \"Price\": \"0.001\"\n                        }, {\n                            \"DimensionKey\": \"metered_2_id\",\n                            \"Price\": \"0.001\"\n                        }, {\n                            \"DimensionKey\": \"metered_3_id\",\n                            \"Price\": \"0.001\"\n                        }]\n                    }]\n                }]\n            }\n        },\n        {\n            \"ChangeType\": \"UpdatePaymentScheduleTerms\",\n            \"Entity\": {\n                \"Identifier\": \"{{OFFER_ID}}\",\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"PaymentScheduleTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"Schedule\": [{\n                        \"ChargeDate\": \"2025-01-01\",\n                        \"ChargeAmount\": \"30.00\"\n                    }, {\n                        \"ChargeDate\": \"2025-01-15\",\n                        \"ChargeAmount\": \"30.00\"\n                    }]\n                }]\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateValidityTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"{{OFFER_ID}}\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"ValidityTerm\",\n                    \"AgreementDuration\": \"{{CONTRACT_DURATION_MONTHS}}\"\n                }]\n            }\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{_.CAPI_PROD}}/StartChangeSet"
+					},
+					"response": [
+						{
+							"id": "5e40637f-c6e5-4e6c-81ab-f8408133761b",
+							"name": "3_UpdatePricingTermToFixedUpfrontPricing Copy",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Identifier\": \"{{OFFER_ID}}\",\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"PricingModel\": \"Contract\",\n                \"Terms\": [{\n                    \"Type\": \"FixedUpfrontPricingTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"Price\": \"0\",\n                    \"Duration\": \"{{CONTRACT_DURATION_MONTHS}}\",\n                    \"Grants\": [{\n                        \"DimensionKey\": \"dimension_1_id\",\n                        \"MaxQuantity\": 22000\n                    }, {\n                        \"DimensionKey\": \"dimension_2_id\",\n                        \"MaxQuantity\": 22000\n                    }, {\n                        \"DimensionKey\": \"dimension_3_id\",\n                        \"MaxQuantity\": 22000\n                    }]\n                }, {\n                    \"Type\": \"UsageBasedPricingTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"RateCards\": [{\n                        \"RateCard\": [{\n                            \"DimensionKey\": \"metered_1_id\",\n                            \"Price\": \"0.001\"\n                        }, {\n                            \"DimensionKey\": \"metered_2_id\",\n                            \"Price\": \"0.001\"\n                        }, {\n                            \"DimensionKey\": \"metered_3_id\",\n                            \"Price\": \"0.001\"\n                        }]\n                    }]\n                }]\n            }\n        },\n        {\n            \"ChangeType\": \"UpdatePaymentScheduleTerms\",\n            \"Entity\": {\n                \"Identifier\": \"{{OFFER_ID}}\",\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"PaymentScheduleTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"Schedule\": [{\n                        \"ChargeDate\": \"2025-01-01\",\n                        \"ChargeAmount\": \"30.00\"\n                    }, {\n                        \"ChargeDate\": \"2025-01-15\",\n                        \"ChargeAmount\": \"30.00\"\n                    }]\n                }]\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateValidityTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"{{OFFER_ID}}\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"ValidityTerm\",\n                    \"AgreementDuration\": \"{{CONTRACT_DURATION_MONTHS}}\"\n                }]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{_.CAPI_PROD}}/StartChangeSet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:22:43 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "4c3814cf-e0dc-418d-b08c-96ab0dc87eb4"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+						}
+					]
+				},
+				{
+					"name": "4_CheckStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eaf72d2-4308-4963-ac43-2fcd4ea58519",
+								"exec": [
+									"let retryInterval = pm.collectionVariables.get(\"retryInterval\");",
+									"",
+									"let response = pm.response.json();",
+									"let status = response.Status; ",
+									"",
+									"console.log(\"Status = \" + status);",
+									"",
+									"if ( status == \"SUCCEEDED\") {",
+									"    console.log(\"Status is SUCCEEDED. Continue on next request.\")",
+									"} else if (status == \"FAILED\") {",
+									"    console.log(\"Status is FAILED. Stopping the RUN.\");",
+									"    pm.execution.setNextRequest(null);",
+									"} else {",
+									"    console.log(\"Status is not SUCCEEDED. Waiting for \" + retryInterval/1000 + \" seconds to re-check \" + pm.info.requestName )",
+									"    setTimeout(() => {",
+									"        pm.execution.setNextRequest(pm.info.requestName);",
+									"    }, retryInterval);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a369368-0290-4608-b444-dacd772bd1c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "58250671-862b-4c58-a17d-cd07ea463197",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeChangeSet"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "changeSetId",
+									"value": "{{changeSetId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "835385cb-fd25-47c8-885d-4a893bf26248",
+							"name": "4_CheckStatus",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeChangeSet"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "changeSetId",
+											"value": "{{changeSetId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:23:46 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "64cd5c73-5a6c-4146-b7f6-e5ca59393a62"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetId\": \"test_ChangeSetId\",\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetName\": \"Submitted by 111111111111\",\n    \"Intent\": \"APPLY\",\n    \"StartTime\": \"2024-10-07T22:34:30Z\",\n    \"EndTime\": \"2024-10-07T22:34:53Z\",\n    \"Status\": \"SUCCEEDED\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890\"\n            },\n            \"Details\": \"{\\\"Terms\\\":[{\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Type\\\":\\\"FixedUpfrontPricingTerm\\\",\\\"Duration\\\":\\\"P12M\\\",\\\"Grants\\\":[{\\\"DimensionKey\\\":\\\"dimension_1_id\\\",\\\"MaxQuantity\\\":22000},{\\\"DimensionKey\\\":\\\"dimension_2_id\\\",\\\"MaxQuantity\\\":22000},{\\\"DimensionKey\\\":\\\"dimension_3_id\\\",\\\"MaxQuantity\\\":22000}],\\\"Price\\\":\\\"0\\\"},{\\\"CurrencyCode\\\":\\\"USD\\\",\\\"RateCards\\\":[{\\\"RateCard\\\":[{\\\"DimensionKey\\\":\\\"metered_1_id\\\",\\\"Price\\\":\\\"0.001\\\"},{\\\"DimensionKey\\\":\\\"metered_2_id\\\",\\\"Price\\\":\\\"0.001\\\"},{\\\"DimensionKey\\\":\\\"metered_3_id\\\",\\\"Price\\\":\\\"0.001\\\"}]}],\\\"Type\\\":\\\"UsageBasedPricingTerm\\\"}],\\\"PricingModel\\\":\\\"Contract\\\"}\",\n            \"DetailsDocument\": {\n                \"Terms\": [\n                    {\n                        \"CurrencyCode\": \"USD\",\n                        \"Type\": \"FixedUpfrontPricingTerm\",\n                        \"Duration\": \"P12M\",\n                        \"Grants\": [\n                            {\n                                \"DimensionKey\": \"dimension_1_id\",\n                                \"MaxQuantity\": 22000\n                            },\n                            {\n                                \"DimensionKey\": \"dimension_2_id\",\n                                \"MaxQuantity\": 22000\n                            },\n                            {\n                                \"DimensionKey\": \"dimension_3_id\",\n                                \"MaxQuantity\": 22000\n                            }\n                        ],\n                        \"Price\": \"0\"\n                    },\n                    {\n                        \"CurrencyCode\": \"USD\",\n                        \"RateCards\": [\n                            {\n                                \"RateCard\": [\n                                    {\n                                        \"DimensionKey\": \"metered_1_id\",\n                                        \"Price\": \"0.001\"\n                                    },\n                                    {\n                                        \"DimensionKey\": \"metered_2_id\",\n                                        \"Price\": \"0.001\"\n                                    },\n                                    {\n                                        \"DimensionKey\": \"metered_3_id\",\n                                        \"Price\": \"0.001\"\n                                    }\n                                ]\n                                }\n                        ],\n                        \"Type\": \"UsageBasedPricingTerm\"\n                    }\n                ],\n                \"PricingModel\": \"Contract\"\n            },\n            \"ErrorDetailList\": []\n        },\n        {\n            \"ChangeType\": \"UpdatePaymentScheduleTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890\"\n            },\n            \"Details\": \"{\\\"Terms\\\":[{\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Type\\\":\\\"PaymentScheduleTerm\\\",\\\"Schedule\\\":[{\\\"ChargeAmount\\\":\\\"30.00\\\",\\\"ChargeDate\\\":\\\"2025-01-01\\\"},{\\\"ChargeAmount\\\":\\\"30.00\\\",\\\"ChargeDate\\\":\\\"2025-01-15\\\"}]}]}\",\n            \"DetailsDocument\": {\n                \"Terms\": [\n                    {\n                        \"CurrencyCode\": \"USD\",\n                        \"Type\": \"PaymentScheduleTerm\",\n                        \"Schedule\": [\n                            {\n                                \"ChargeAmount\": \"30.00\",\n                                \"ChargeDate\": \"2025-01-01\"\n                            },\n                            {\n                                \"ChargeAmount\": \"30.00\",\n                                \"ChargeDate\": \"2025-01-15\"\n                            }\n                        ]\n                    }\n                ]\n            },\n            \"ErrorDetailList\": []\n        },\n        {\n            \"ChangeType\": \"UpdateValidityTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890\"\n            },\n            \"Details\": \"{\\\"Terms\\\":[{\\\"AgreementDuration\\\":\\\"P12M\\\",\\\"Type\\\":\\\"ValidityTerm\\\"}]}\",\n            \"DetailsDocument\": {\n                \"Terms\": [\n                    {\n                        \"AgreementDuration\": \"P12M\",\n                        \"Type\": \"ValidityTerm\"\n                    }\n                ]\n            },\n            \"ErrorDetailList\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "5_ReleaseOffer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "394624db-5eb9-4704-8317-f75fceb92de7",
+								"exec": [
+									"let response = pm.response.json()",
+									"let changeSetId = response[\"ChangeSetId\"]",
+									"pm.collectionVariables.set(\"changeSetId\", changeSetId)",
+									"console.log(pm.info.requestName + \" changesetId=\" + changeSetId)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4ae3f259-ca23-431f-8618-279a23b4379b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "381af2f6-79d6-47ff-9fce-01f043e21e2f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n      \"ChangeType\": \"ReleaseOffer\",\n      \"DetailsDocument\": {},\n      \"Entity\": {\n        \"Identifier\": \"{{OFFER_ID}}\",\n        \"Type\": \"Offer@1.0\"\n      }\n    }]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{_.CAPI_PROD}}/StartChangeSet"
+					},
+					"response": [
+						{
+							"id": "0a65df19-585c-4f54-913c-1d240605089a",
+							"name": "5_ReleaseOffer",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n      \"ChangeType\": \"ReleaseOffer\",\n      \"DetailsDocument\": {},\n      \"Entity\": {\n        \"Identifier\": \"{{OFFER_ID}}\",\n        \"Type\": \"Offer@1.0\"\n      }\n    }]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{_.CAPI_PROD}}/StartChangeSet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:24:58 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "a5ee8f54-1ec6-49b6-a29a-e7b2d9c8619c"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+						}
+					]
+				},
+				{
+					"name": "6_CheckStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eaf72d2-4308-4963-ac43-2fcd4ea58519",
+								"exec": [
+									"let retryInterval = pm.collectionVariables.get(\"retryInterval\");",
+									"",
+									"let response = pm.response.json();",
+									"let status = response.Status; ",
+									"",
+									"console.log(\"Status = \" + status);",
+									"",
+									"if ( status == \"SUCCEEDED\") {",
+									"    console.log(\"Status is SUCCEEDED. Continue on next request.\")",
+									"} else if (status == \"FAILED\") {",
+									"    console.log(\"Status is FAILED. Stopping the RUN.\");",
+									"    pm.execution.setNextRequest(null);",
+									"} else {",
+									"    console.log(\"Status is not SUCCEEDED. Waiting for \" + retryInterval/1000 + \" seconds to re-check.\")",
+									"    setTimeout(() => {",
+									"        pm.execution.setNextRequest(pm.info.requestName);",
+									"    }, retryInterval);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a369368-0290-4608-b444-dacd772bd1c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "16da61f8-de4e-4206-aa97-ac1c6a94b2f8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeChangeSet"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "changeSetId",
+									"value": "{{changeSetId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "37d879da-bb29-4f81-94c9-fc8d22758d46",
+							"name": "6_CheckStatus",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeChangeSet"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "changeSetId",
+											"value": "{{changeSetId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:25:41 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "2c3a1e11-650e-426b-a478-46bc603faf40"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetId\": \"test_ChangeSetId\",\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetName\": \"Submitted by 111111111111\",\n    \"Intent\": \"APPLY\",\n    \"StartTime\": \"2024-10-07T22:36:46Z\",\n    \"EndTime\": \"2024-10-07T22:38:48Z\",\n    \"Status\": \"SUCCEEDED\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"ReleaseOffer\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890\"\n            },\n            \"Details\": \"{}\",\n            \"DetailsDocument\": {},\n            \"ErrorDetailList\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "7_DescribeOffer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fccaea73-71eb-4eff-b42f-c763ad733157",
+								"exec": [
+									"let privateOfferLink = \"https://aws.amazon.com/marketplace/saas/ordering?productId=\" + pm.variables.get(\"PRODUCT_ID\") + \"&offerId=\" + pm.variables.get(\"OFFER_ID\")",
+									"",
+									"console.log(\"Private offer link is \" + privateOfferLink)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "eceeff91-7bd7-4661-9c13-b04ebeefd9e9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "4ab21ac0-8304-4046-877d-7dc20b47cbe5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeEntity?catalog=AWSMarketplace&entityId={{OFFER_ID}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeEntity"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "entityId",
+									"value": "{{OFFER_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "ac69b3bd-c58c-45ab-a606-f178e7fddb28",
+							"name": "7_DescribeOffer",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeEntity?catalog=AWSMarketplace&entityId={{OFFER_ID}}",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeEntity"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "entityId",
+											"value": "{{OFFER_ID}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:27:25 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "9b1596da-ac1d-4e5a-b71e-72db7f44178d"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"EntityType\": \"Offer@1.0\",\n    \"EntityIdentifier\": \"offer-1234567890@3\",\n    \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-1234567890\",\n    \"LastModifiedDate\": \"2024-10-07T22:36:53Z\",\n    \"Details\": \"{\\\"Id\\\":\\\"offer-1234567890\\\",\\\"Name\\\":\\\"Demo Private Offer\\\",\\\"Description\\\":\\\"Demo Private Offer Description\\\",\\\"ProductId\\\":\\\"prod-1234567890\\\",\\\"Terms\\\":[{\\\"Type\\\":\\\"UsageBasedPricingTerm\\\",\\\"CurrencyCode\\\":\\\"USD\\\",\\\"RateCards\\\":[{\\\"RateCard\\\":[{\\\"DimensionKey\\\":\\\"metered_1_id\\\",\\\"Price\\\":\\\"0.001\\\"},{\\\"DimensionKey\\\":\\\"metered_2_id\\\",\\\"Price\\\":\\\"0.001\\\"},{\\\"DimensionKey\\\":\\\"metered_3_id\\\",\\\"Price\\\":\\\"0.001\\\"}]}]},{\\\"Type\\\":\\\"LegalTerm\\\",\\\"Documents\\\":[{\\\"Type\\\":\\\"StandardEula\\\",\\\"Version\\\":\\\"2022-07-14\\\",\\\"Url\\\":\\\"https://aws-mp-offer-legal-artifacts-us-east-1-prod.s3.amazonaws.com/offer-x52lclvbyma3a/36b99325-4fe1-4a38-b2d6-0f247b4fc71b?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEN3%2F%2F%2F%2\\\"}]},{\\\"Type\\\":\\\"FixedUpfrontPricingTerm\\\",\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Price\\\":\\\"0\\\",\\\"Grants\\\":[{\\\"DimensionKey\\\":\\\"dimension_1_id\\\",\\\"MaxQuantity\\\":22000},{\\\"DimensionKey\\\":\\\"dimension_2_id\\\",\\\"MaxQuantity\\\":22000},{\\\"DimensionKey\\\":\\\"dimension_3_id\\\",\\\"MaxQuantity\\\":22000}]},{\\\"Type\\\":\\\"ValidityTerm\\\",\\\"AgreementDuration\\\":\\\"P12M\\\"},{\\\"Type\\\":\\\"PaymentScheduleTerm\\\",\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Schedule\\\":[{\\\"ChargeDate\\\":\\\"2025-01-01T00:00:00.000Z\\\",\\\"ChargeAmount\\\":\\\"30.00\\\"},{\\\"ChargeDate\\\":\\\"2025-01-15T00:00:00.000Z\\\",\\\"ChargeAmount\\\":\\\"30.00\\\"}]}],\\\"Rules\\\":[{\\\"Type\\\":\\\"AvailabilityRule\\\",\\\"AvailabilityEndDate\\\":\\\"2024-12-12T23:59:59.999Z\\\"},{\\\"Type\\\":\\\"TargetingRule\\\",\\\"PositiveTargeting\\\":{\\\"BuyerAccounts\\\":[\\\"222222222222\\\",\\\"333333333333\\\"]}}],\\\"State\\\":\\\"Released\\\"}\",\n    \"DetailsDocument\": {\n        \"Id\": \"offer-x52lclvbyma3a\",\n        \"Name\": \"Demo Private Offer\",\n        \"Description\": \"Demo Private Offer Description\",\n        \"ProductId\": \"prod-1234567890\",\n        \"Terms\": [\n            {\n                \"Type\": \"UsageBasedPricingTerm\",\n                \"CurrencyCode\": \"USD\",\n                \"RateCards\": [\n                    {\n                        \"RateCard\": [\n                            {\n                                \"DimensionKey\": \"metered_1_id\",\n                                \"Price\": \"0.001\"\n                            },\n                            {\n                                \"DimensionKey\": \"metered_2_id\",\n                                \"Price\": \"0.001\"\n                            },\n                            {\n                                \"DimensionKey\": \"metered_3_id\",\n                                \"Price\": \"0.001\"\n                            }\n                        ]\n                    }\n                ]\n            },\n            {\n                \"Type\": \"LegalTerm\",\n                \"Documents\": [\n                    {\n                        \"Type\": \"StandardEula\",\n                        \"Version\": \"2022-07-14\",\n                        \"Url\": \"https://aws-mp-offer-legal-artifacts-us-east-1-prod.s3.amazonaws.com/offer-x52lclvbyma3a/36b99325-4fe1-4a38-b2d6-0f247b4fc71b\"\n                    }\n                ]\n                },\n            {\n                \"Type\": \"FixedUpfrontPricingTerm\",\n                \"CurrencyCode\": \"USD\",\n                \"Price\": \"0\",\n                \"Grants\": [\n                    {\n                        \"DimensionKey\": \"dimension_1_id\",\n                        \"MaxQuantity\": 22000\n                    },\n                    {\n                        \"DimensionKey\": \"dimension_2_id\",\n                        \"MaxQuantity\": 22000\n                    },\n                    {\n                        \"DimensionKey\": \"dimension_3_id\",\n                        \"MaxQuantity\": 22000\n                    }\n                ]\n            },\n            {\n                \"Type\": \"ValidityTerm\",\n                \"AgreementDuration\": \"P12M\"\n            },\n            {\n                \"Type\": \"PaymentScheduleTerm\",\n                \"CurrencyCode\": \"USD\",\n                \"Schedule\": [\n                    {\n                        \"ChargeDate\": \"2025-01-01T00:00:00.000Z\",\n                        \"ChargeAmount\": \"30.00\"\n                    },\n                    {\n                        \"ChargeDate\": \"2025-01-15T00:00:00.000Z\",\n                        \"ChargeAmount\": \"30.00\"\n                    }\n                ]\n            }\n        ],\n        \"Rules\": [\n            {\n                \"Type\": \"AvailabilityRule\",\n                \"AvailabilityEndDate\": \"2024-12-12T23:59:59.999Z\"\n            },\n            {\n                \"Type\": \"TargetingRule\",\n                \"PositiveTargeting\": {\n                    \"BuyerAccounts\": [\n                        \"222222222222\",\n                        \"333333333333\"\n                    ]\n                }\n            }\n        ],\n        \"State\": \"Released\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "9_ExpirePrivateOffer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f149be3a-88d5-496c-a35b-87f944315b37",
+								"exec": [
+									"let response = pm.response.json()",
+									"let changeSetId = response[\"ChangeSetId\"]",
+									"pm.collectionVariables.set(\"changeSetId\", changeSetId)",
+									"console.log(pm.info.requestName + \" changesetId=\" + changeSetId)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5eebfcd9-6667-49e7-a6fc-5e7c053075e2",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "215e0195-7e0a-4efd-9b59-63a856507954",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"UpdateAvailability\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"{{OFFER_ID}}\"\n            },\n            \"DetailsDocument\": {\n                \"AvailabilityEndDate\": \"2023-01-01\"\n            }\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{_.CAPI_PROD}}/StartChangeSet"
+					},
+					"response": [
+						{
+							"id": "965be459-49ce-4981-9237-e150cc37c9d8",
+							"name": "9_ExpirePrivateOffer",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"UpdateAvailability\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"{{OFFER_ID}}\"\n            },\n            \"DetailsDocument\": {\n                \"AvailabilityEndDate\": \"2023-01-01\"\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{_.CAPI_PROD}}/StartChangeSet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:29:16 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "4b9b1d6f-6d20-43dc-bfd5-c8770627541d"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+						}
+					]
+				},
+				{
+					"name": "10_CheckStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eaf72d2-4308-4963-ac43-2fcd4ea58519",
+								"exec": [
+									"let retryInterval = pm.collectionVariables.get(\"retryInterval\");",
+									"",
+									"let response = pm.response.json();",
+									"let status = response.Status; ",
+									"",
+									"console.log(\"Status = \" + status);",
+									"",
+									"if ( status == \"SUCCEEDED\") {",
+									"    console.log(\"Status is SUCCEEDED. End of this RUN.\")",
+									"} else if (status == \"FAILED\") {",
+									"    console.log(\"Status is FAILED. Stopping the RUN.\");",
+									"} else {",
+									"    console.log(\"Status is not SUCCEEDED. Waiting for \" + retryInterval/1000 + \" seconds to re-check.\")",
+									"    setTimeout(() => {",
+									"        pm.execution.setNextRequest(pm.info.requestName);",
+									"    }, retryInterval);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a369368-0290-4608-b444-dacd772bd1c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "85361116-b79a-41b3-b681-b5e20f75e4d6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeChangeSet"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "changeSetId",
+									"value": "{{changeSetId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "3337bfca-ff20-4c47-a348-bccd0bdc3c43",
+							"name": "10_CheckStatus",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeChangeSet"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "changeSetId",
+											"value": "{{changeSetId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:29:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "034a58c2-a350-4703-aead-6fd817fe0765"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetId\": \"test_ChangeSetId\",\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetName\": \"Submitted by 111111111111\",\n    \"Intent\": \"APPLY\",\n    \"StartTime\": \"2024-10-07T22:42:01Z\",\n    \"EndTime\": \"2024-10-07T22:44:33Z\",\n    \"Status\": \"SUCCEEDED\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"UpdateAvailability\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1234567890\"\n            },\n            \"Details\": \"{\\\"AvailabilityEndDate\\\":\\\"2024-09-30\\\"}\",\n            \"DetailsDocument\": {\n                \"AvailabilityEndDate\": \"2024-09-30\"\n            },\n            \"ErrorDetailList\": []\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"id": "e6234364-b81f-4b5e-90aa-247299c63255",
+			"description": "## **Background**\n\nAWS Marketplace Catalog API allows sellers to programmatically create and manage custom offers that only specific buyers can subscribe to (also known as _private offers_) instead of using the [AWS Marketplace Management Portal&nbsp;](https://aws.amazon.com/marketplace/management/)  (seller portal). Sellers can also authorize specific resellers (also known as _channel partners_) to create private offers on their behalf (also known as _channel partner private offers_).\n\n<img src=\"https://content.pstmn.io/a779d76a-711f-47df-a35b-7ae03dd7e2db/Q3JlYXRlU2FhU1ByaXZhdGVPZmZlckZsb3cuanBn\">\n\n## **Lab overview**\n\nIn this lab, you use an API to create a private offer for a SaaS product with the pricing model [<i>Contract with Consumption</i>](https://catalog.workshops.aws/mpseller/en-US/saas#pricing-models).\n\n- [Task 1: Create private offer](https://catalog.workshops.aws/mpseller/en-US/use-cases/create-saas-private-offer-with-api#task-1:-create-private-offer)\n    \n- [Task 2: View private offer](https://catalog.workshops.aws/mpseller/en-US/use-cases/create-saas-private-offer-with-api#task-2:-view-private-offer)\n    \n- [Task 3: Share private offer link](https://catalog.workshops.aws/mpseller/en-US/use-cases/create-saas-private-offer-with-api#task-3:-share-private-offer-link)\n    \n\n## **Prerequisites**\n\n- You must have an existing and public SaaS-based product in your seller AWS account with the pricing model [<i>Contract with Consumption</i>](https://catalog.workshops.aws/mpseller/en-US/saas#pricing-models)\n    \n- **Public product required** The resulting SaaS product created in the [Lab: Publish a SaaS](https://catalog.workshops.aws/mpseller/en-US/use-cases/publish-saas) does not meet this prerequisite because that lab does not integrate with a real SaaS application and subsequently does not make the product public in AWS Marketplace.\n    \n- You must have the following policy permissions in your AWS account\n    \n\nIAM policies required\n\n[AWSMarketplaceSellerFullAccess: ](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AWSMarketplaceSellerFullAccess$jsonEditor) _To submit offers for publishing._\n\n## Environment\n\nMake sure to configure environment variables under your **Lab Create SaaS Private Offer** Environment."
+		},
+		{
+			"name": "Authorize SaaS Reseller",
+			"item": [
+				{
+					"name": "1_CreateResaleAuthorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "394624db-5eb9-4704-8317-f75fceb92de7",
+								"exec": [
+									"let response = pm.response.json()",
+									"let changeSetId = response[\"ChangeSetId\"]",
+									"pm.collectionVariables.set(\"changeSetId\", changeSetId)",
+									"console.log(pm.info.requestName + \" changesetId=\" + changeSetId)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "47d21a15-5043-44e5-8f5b-91d1490133be",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "23ef58af-3eef-47e3-b7ee-a03484486062",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n            \"ChangeName\": \"MyCreateResaleAuthorizationChange\",\n            \"ChangeType\": \"CreateResaleAuthorization\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"ProductId\": \"{{PRODUCT_ID}}\",\n                \"ResellerAccountId\": \"{{RESELLER_ID}}\",\n                \"Name\": \"DemoResaleAuthorization\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateInformation\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"$MyCreateResaleAuthorizationChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"Name\": \"DemoResaleAuthorization\",\n                \"Description\": \"Demo Resale Authorization Description\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateAvailability\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"$MyCreateResaleAuthorizationChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"AvailabilityEndDate\": \"{{EXPIRY_DATE}}\",\n                \"OffersMaxQuantity\": 1\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateLegalTerms\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"$MyCreateResaleAuthorizationChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"BuyerLegalTerm\",\n                    \"Documents\": [{\n                        \"Type\": \"StandardEula\"\n                    }]\n                }, {\n                    \"Type\": \"ResaleLegalTerm\",\n                    \"Documents\": [{\n                        \"Type\": \"StandardResellerContract\"\n                    }]\n                }]\n            }\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{_.CAPI_PROD}}/StartChangeSet"
+					},
+					"response": [
+						{
+							"id": "a91a7b3f-850f-45ac-8418-a0a5f5cd059f",
+							"name": "1_CreateResaleAuthorization",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n            \"ChangeName\": \"MyCreateResaleAuthorizationChange\",\n            \"ChangeType\": \"CreateResaleAuthorization\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"ProductId\": \"{{PRODUCT_ID}}\",\n                \"ResellerAccountId\": \"{{RESELLER_ID}}\",\n                \"Name\": \"DemoResaleAuthorization\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateInformation\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"$MyCreateResaleAuthorizationChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"Name\": \"DemoResaleAuthorization\",\n                \"Description\": \"Demo Resale Authorization Description\"\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateAvailability\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"$MyCreateResaleAuthorizationChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"AvailabilityEndDate\": \"{{EXPIRY_DATE}}\",\n                \"OffersMaxQuantity\": 1\n            }\n        },\n        {\n            \"ChangeType\": \"UpdateLegalTerms\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"$MyCreateResaleAuthorizationChange.Entity.Identifier\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"BuyerLegalTerm\",\n                    \"Documents\": [{\n                        \"Type\": \"StandardEula\"\n                    }]\n                }, {\n                    \"Type\": \"ResaleLegalTerm\",\n                    \"Documents\": [{\n                        \"Type\": \"StandardResellerContract\"\n                    }]\n                }]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{_.CAPI_PROD}}/StartChangeSet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:31:31 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "6c84a183-2cad-4323-a806-ca0b8c9486b9"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+						}
+					]
+				},
+				{
+					"name": "2_CheckStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eaf72d2-4308-4963-ac43-2fcd4ea58519",
+								"exec": [
+									"let retryInterval = pm.collectionVariables.get(\"retryInterval\");",
+									"",
+									"let response = pm.response.json();",
+									"let status = response.Status; ",
+									"",
+									"console.log(\"Status = \" + status);",
+									"",
+									"if ( status == \"SUCCEEDED\") {",
+									"    console.log(\"Status is SUCCEEDED. Setting RESALE_AUTHORIZATION_ID variable. Continue on next request.\")",
+									"    const identifier = response.ChangeSet[0].Entity.Identifier;",
+									"    const resaleAuthorizationId = identifier.split('@')[0];",
+									"    pm.collectionVariables.set(\"RESALE_AUTHORIZATION_ID\", resaleAuthorizationId);",
+									"} else if (status == \"FAILED\") {",
+									"    console.log(\"Status is FAILED. Stopping the RUN.\");",
+									"    pm.execution.setNextRequest(null);",
+									"} else {",
+									"    console.log(\"Status is not SUCCEEDED. Waiting for \" + retryInterval/1000 + \" seconds to re-check.\")",
+									"    setTimeout(() => {",
+									"        pm.execution.setNextRequest(pm.info.requestName);",
+									"    }, retryInterval);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a369368-0290-4608-b444-dacd772bd1c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "2ec3454c-20a4-4152-9f77-a76271cbdd0c",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeChangeSet"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "changeSetId",
+									"value": "{{changeSetId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "41fdd55d-f178-4bf3-ba60-3eef77560e86",
+							"name": "2_CheckStatus",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeChangeSet"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "changeSetId",
+											"value": "{{changeSetId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:34:13 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "dbf4d4a9-0834-474c-8c11-511cba9d4e6f"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetId\": \"test_ChangeSetId\",\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetName\": \"Submitted by 111111111111\",\n    \"Intent\": \"APPLY\",\n    \"StartTime\": \"2024-10-07T20:48:53Z\",\n    \"EndTime\": \"2024-10-07T20:49:19Z\",\n    \"Status\": \"SUCCEEDED\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"CreateResaleAuthorization\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"resaleauthz-1234567890@1\"\n            },\n            \"Details\": \"{\\\"ResellerAccountId\\\":\\\"222222222222\\\",\\\"ProductId\\\":\\\"prod-1234567890\\\",\\\"Name\\\":\\\"DemoResaleAuthorization\\\"}\",\n            \"DetailsDocument\": {\n                \"ResellerAccountId\": \"222222222222\",\n                \"ProductId\": \"prod-1234567890\",\n                \"Name\": \"DemoResaleAuthorization\"\n            },\n            \"ErrorDetailList\": [],\n            \"ChangeName\": \"MyCreateResaleAuthorizationChange\"\n        },\n        {\n            \"ChangeType\": \"UpdateAvailability\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"resaleauthz-1234567890@1\"\n            },\n            \"Details\": \"{\\\"OffersMaxQuantity\\\":1,\\\"AvailabilityEndDate\\\":\\\"2024-12-12\\\"}\",\n            \"DetailsDocument\": {\n                \"OffersMaxQuantity\": 1,\n                \"AvailabilityEndDate\": \"2024-12-12\"\n            },\n            \"ErrorDetailList\": []\n        },\n        {\n            \"ChangeType\": \"UpdateLegalTerms\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"resaleauthz-1234567890@1\"\n            },\n            \"Details\": \"{\\\"Terms\\\":[{\\\"Type\\\":\\\"BuyerLegalTerm\\\",\\\"Documents\\\":[{\\\"Type\\\":\\\"StandardEula\\\"}]},{\\\"Type\\\":\\\"ResaleLegalTerm\\\",\\\"Documents\\\":[{\\\"Type\\\":\\\"StandardResellerContract\\\"}]}]}\",\n            \"DetailsDocument\": {\n                \"Terms\": [\n                    {\n                        \"Type\": \"BuyerLegalTerm\",\n                        \"Documents\": [\n                            {\n                                \"Type\": \"StandardEula\"\n                            }\n                        ]\n                    },\n                    {\n                        \"Type\": \"ResaleLegalTerm\",\n                        \"Documents\": [\n                            {\n                                \"Type\": \"StandardResellerContract\"\n                            }\n                        ]\n                    }\n                ]\n            },\n            \"ErrorDetailList\": []\n        },\n        {\n            \"ChangeType\": \"UpdateInformation\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"resaleauthz-1234567890@1\"\n            },\n            \"Details\": \"{\\\"Name\\\":\\\"DemoResaleAuthorization\\\",\\\"Description\\\":\\\"Demo Resale Authorization Description\\\"}\",\n            \"DetailsDocument\": {\n                \"Name\": \"DemoResaleAuthorization\",\n                \"Description\": \"Demo Resale Authorization Description\"\n            },\n            \"ErrorDetailList\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "3. UpdatePricingTermToFixedUpfrontPricing",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "394624db-5eb9-4704-8317-f75fceb92de7",
+								"exec": [
+									"let response = pm.response.json()",
+									"let changeSetId = response[\"ChangeSetId\"]",
+									"pm.collectionVariables.set(\"changeSetId\", changeSetId)",
+									"console.log(\"changesetId=\" + changeSetId)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8b0d7b50-ab32-4436-8bb5-4c63f0d04305",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "c4c20225-f08c-4688-988e-a06686b7ecb0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Identifier\": \"{{RESALE_AUTHORIZATION_ID}}\",\n                \"Type\": \"ResaleAuthorization@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"PricingModel\": \"Contract\",\n                \"Terms\": [{\n                    \"Type\": \"ResaleFixedUpfrontPricingTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"Price\": \"0\",\n                    \"Duration\": \"{{CONTRACT_DURATION_MONTHS}}\",\n                    \"Grants\": [{\n                        \"DimensionKey\": \"dimension_1_id\",\n                        \"MaxQuantity\": 22000\n                    }, {\n                        \"DimensionKey\": \"dimension_2_id\",\n                        \"MaxQuantity\": 22000\n                    }, {\n                        \"DimensionKey\": \"dimension_3_id\",\n                        \"MaxQuantity\": 22000\n                    }]\n                }, {\n                    \"Type\": \"ResaleUsageBasedPricingTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"RateCards\": [{\n                        \"RateCard\": [{\n                            \"DimensionKey\": \"metered_1_id\",\n                            \"Price\": \"0.001\"\n                        }, {\n                            \"DimensionKey\": \"metered_2_id\",\n                            \"Price\": \"0.001\"\n                        }, {\n                            \"DimensionKey\": \"metered_3_id\",\n                            \"Price\": \"0.001\"\n                        }]\n                    }]\n                }]\n            }\n        },\n        {\n            \"ChangeType\": \"UpdatePaymentScheduleTerms\",\n            \"Entity\": {\n                \"Identifier\": \"{{RESALE_AUTHORIZATION_ID}}\",\n                \"Type\": \"ResaleAuthorization@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"ResalePaymentScheduleTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"Schedule\": [{\n                        \"ChargeDate\": \"2025-01-01\",\n                        \"ChargeAmount\": \"30.00\"\n                    }, {\n                        \"ChargeDate\": \"2025-01-15\",\n                        \"ChargeAmount\": \"30.00\"\n                    }]\n                }]\n            }\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{_.CAPI_PROD}}/StartChangeSet"
+					},
+					"response": [
+						{
+							"id": "268ae077-055d-43db-a7b7-12dc08ed1684",
+							"name": "3. UpdatePricingTermToFixedUpfrontPricing",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Identifier\": \"{{RESALE_AUTHORIZATION_ID}}\",\n                \"Type\": \"ResaleAuthorization@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"PricingModel\": \"Contract\",\n                \"Terms\": [{\n                    \"Type\": \"ResaleFixedUpfrontPricingTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"Price\": \"0\",\n                    \"Duration\": \"{{CONTRACT_DURATION_MONTHS}}\",\n                    \"Grants\": [{\n                        \"DimensionKey\": \"dimension_1_id\",\n                        \"MaxQuantity\": 22000\n                    }, {\n                        \"DimensionKey\": \"dimension_2_id\",\n                        \"MaxQuantity\": 22000\n                    }, {\n                        \"DimensionKey\": \"dimension_3_id\",\n                        \"MaxQuantity\": 22000\n                    }]\n                }, {\n                    \"Type\": \"ResaleUsageBasedPricingTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"RateCards\": [{\n                        \"RateCard\": [{\n                            \"DimensionKey\": \"metered_1_id\",\n                            \"Price\": \"0.001\"\n                        }, {\n                            \"DimensionKey\": \"metered_2_id\",\n                            \"Price\": \"0.001\"\n                        }, {\n                            \"DimensionKey\": \"metered_3_id\",\n                            \"Price\": \"0.001\"\n                        }]\n                    }]\n                }]\n            }\n        },\n        {\n            \"ChangeType\": \"UpdatePaymentScheduleTerms\",\n            \"Entity\": {\n                \"Identifier\": \"{{RESALE_AUTHORIZATION_ID}}\",\n                \"Type\": \"ResaleAuthorization@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"Terms\": [{\n                    \"Type\": \"ResalePaymentScheduleTerm\",\n                    \"CurrencyCode\": \"USD\",\n                    \"Schedule\": [{\n                        \"ChargeDate\": \"2025-01-01\",\n                        \"ChargeAmount\": \"30.00\"\n                    }, {\n                        \"ChargeDate\": \"2025-01-15\",\n                        \"ChargeAmount\": \"30.00\"\n                    }]\n                }]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{_.CAPI_PROD}}/StartChangeSet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:35:49 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "5fcefc98-5f22-4fd0-a9ca-bbb23ec3c3a1"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+						}
+					]
+				},
+				{
+					"name": "4_CheckStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eaf72d2-4308-4963-ac43-2fcd4ea58519",
+								"exec": [
+									"let retryInterval = pm.collectionVariables.get(\"retryInterval\");",
+									"",
+									"let response = pm.response.json();",
+									"let status = response.Status; ",
+									"",
+									"console.log(\"Status = \" + status);",
+									"",
+									"if ( status == \"SUCCEEDED\") {",
+									"    console.log(\"Status is SUCCEEDED. Continue on next request.\")",
+									"} else if (status == \"FAILED\") {",
+									"    console.log(\"Status is FAILED. Stopping the RUN.\");",
+									"    pm.execution.setNextRequest(null);",
+									"} else {",
+									"    console.log(\"Status is not SUCCEEDED. Waiting for \" + retryInterval/1000 + \" seconds to re-check.\")",
+									"    setTimeout(() => {",
+									"        pm.execution.setNextRequest(pm.info.requestName);",
+									"    }, retryInterval);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a369368-0290-4608-b444-dacd772bd1c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e0147c78-2d72-473e-ab36-7310fc0f9da2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeChangeSet"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "changeSetId",
+									"value": "{{changeSetId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "3dcd1477-f241-446c-aa1b-142ea15007e4",
+							"name": "4_CheckStatus",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeChangeSet"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "changeSetId",
+											"value": "{{changeSetId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:37:06 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "d83ef20d-241c-44ee-8a1f-281b832afa47"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetId\": \"test_ChangeSetId\",\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetName\": \"Submitted by 111111111111\",\n    \"Intent\": \"APPLY\",\n    \"StartTime\": \"2024-10-07T20:56:38Z\",\n    \"EndTime\": \"2024-10-07T20:56:54Z\",\n    \"Status\": \"SUCCEEDED\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"resaleauthz-1234567890\"\n            },\n            \"Details\": \"{\\\"Terms\\\":[{\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Type\\\":\\\"ResaleFixedUpfrontPricingTerm\\\",\\\"Duration\\\":\\\"P12M\\\",\\\"Grants\\\":[{\\\"DimensionKey\\\":\\\"dimension_1_id\\\",\\\"MaxQuantity\\\":22000},{\\\"DimensionKey\\\":\\\"dimension_2_id\\\",\\\"MaxQuantity\\\":22000},{\\\"DimensionKey\\\":\\\"dimension_3_id\\\",\\\"MaxQuantity\\\":22000}],\\\"Price\\\":\\\"0\\\"},{\\\"CurrencyCode\\\":\\\"USD\\\",\\\"RateCards\\\":[{\\\"RateCard\\\":[{\\\"DimensionKey\\\":\\\"metered_1_id\\\",\\\"Price\\\":\\\"0.001\\\"},{\\\"DimensionKey\\\":\\\"metered_2_id\\\",\\\"Price\\\":\\\"0.001\\\"},{\\\"DimensionKey\\\":\\\"metered_3_id\\\",\\\"Price\\\":\\\"0.001\\\"}]}],\\\"Type\\\":\\\"ResaleUsageBasedPricingTerm\\\"}],\\\"PricingModel\\\":\\\"Contract\\\"}\",\n            \"DetailsDocument\": {\n                \"Terms\": [\n                    {\n                        \"CurrencyCode\": \"USD\",\n                        \"Type\": \"ResaleFixedUpfrontPricingTerm\",\n                        \"Duration\": \"P12M\",\n                        \"Grants\": [\n                            {\n                                \"DimensionKey\": \"dimension_1_id\",\n                                \"MaxQuantity\": 22000\n                            },\n                            {\n                                \"DimensionKey\": \"dimension_2_id\",\n                                \"MaxQuantity\": 22000\n                            },\n                            {\n                                \"DimensionKey\": \"dimension_3_id\",\n                                \"MaxQuantity\": 22000\n                            }\n                        ],\n                        \"Price\": \"0\"\n                    },\n                    {\n                        \"CurrencyCode\": \"USD\",\n                        \"RateCards\": [\n                            {\n                                \"RateCard\": [\n                                    {\n                                        \"DimensionKey\": \"metered_1_id\",\n                                        \"Price\": \"0.001\"\n                                    },\n                                    {\n                                        \"DimensionKey\": \"metered_2_id\",\n                                        \"Price\": \"0.001\"\n                                    },\n                                    {\n                                        \"DimensionKey\": \"metered_3_id\",\n                                        \"Price\": \"0.001\"\n                                    }\n                                ]\n                            }\n                        ],\n                        \"Type\": \"ResaleUsageBasedPricingTerm\"\n                    }\n                ],\n                \"PricingModel\": \"Contract\"\n            },\n            \"ErrorDetailList\": []\n        },\n        {\n            \"ChangeType\": \"UpdatePaymentScheduleTerms\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"resaleauthz-1234567890\"\n            },\n            \"Details\": \"{\\\"Terms\\\":[{\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Type\\\":\\\"ResalePaymentScheduleTerm\\\",\\\"Schedule\\\":[{\\\"ChargeAmount\\\":\\\"30.00\\\",\\\"ChargeDate\\\":\\\"2025-01-01\\\"},{\\\"ChargeAmount\\\":\\\"30.00\\\",\\\"ChargeDate\\\":\\\"2025-01-15\\\"}]}]}\",\n            \"DetailsDocument\": {\n                \"Terms\": [\n                    {\n                        \"CurrencyCode\": \"USD\",\n                        \"Type\": \"ResalePaymentScheduleTerm\",\n                        \"Schedule\": [\n                            {\n                                \"ChargeAmount\": \"30.00\",\n                                \"ChargeDate\": \"2025-01-01\"\n                            },\n                            {\n                                \"ChargeAmount\": \"30.00\",\n                                \"ChargeDate\": \"2025-01-15\"\n                            }\n                        ]\n                    }\n                ]\n            },\n            \"ErrorDetailList\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "5. ReleaseResaleAuthorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "394624db-5eb9-4704-8317-f75fceb92de7",
+								"exec": [
+									"let response = pm.response.json()",
+									"let changeSetId = response[\"ChangeSetId\"]",
+									"pm.collectionVariables.set(\"changeSetId\", changeSetId)",
+									"console.log(\"changesetId=\" + changeSetId)",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4ae3f259-ca23-431f-8618-279a23b4379b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "6809aec8-1f1e-43f2-99a0-a448bbc91a45",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n\n      \"ChangeType\": \"ReleaseResaleAuthorization\",\n      \"DetailsDocument\": {},\n      \"Entity\": {\n        \"Identifier\": \"{{RESALE_AUTHORIZATION_ID}}\",\n        \"Type\": \"ResaleAuthorization@1.0\"\n      }\n    }]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{_.CAPI_PROD}}/StartChangeSet"
+					},
+					"response": [
+						{
+							"id": "a5670ad3-9faa-4b2c-9fe0-6e846e50daac",
+							"name": "5. ReleaseResaleAuthorization",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [{\n\n      \"ChangeType\": \"ReleaseResaleAuthorization\",\n      \"DetailsDocument\": {},\n      \"Entity\": {\n        \"Identifier\": \"{{RESALE_AUTHORIZATION_ID}}\",\n        \"Type\": \"ResaleAuthorization@1.0\"\n      }\n    }]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{_.CAPI_PROD}}/StartChangeSet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:37:33 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "f2f52a0b-44a4-4844-a522-30162eb123b7"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+						}
+					]
+				},
+				{
+					"name": "6_CheckStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eaf72d2-4308-4963-ac43-2fcd4ea58519",
+								"exec": [
+									"let retryInterval = pm.collectionVariables.get(\"retryInterval\");",
+									"",
+									"let response = pm.response.json();",
+									"let status = response.Status; ",
+									"",
+									"console.log(\"Status = \" + status);",
+									"",
+									"if ( status == \"SUCCEEDED\") {",
+									"    console.log(\"Status is SUCCEEDED. Continue on next request.\")",
+									"} else if (status == \"FAILED\") {",
+									"    console.log(\"Status is FAILED. Stopping the RUN.\");",
+									"    pm.execution.setNextRequest(null);",
+									"} else {",
+									"    console.log(\"Status is not SUCCEEDED. Waiting for \" + retryInterval/1000 + \" seconds to re-check.\")",
+									"    setTimeout(() => {",
+									"        pm.execution.setNextRequest(pm.info.requestName);",
+									"    }, retryInterval);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a369368-0290-4608-b444-dacd772bd1c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "7541027d-f42b-4e6d-85bf-82bfe503e2de",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeChangeSet"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "changeSetId",
+									"value": "{{changeSetId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "d71857ab-ac77-438b-9815-7198fe6850d8",
+							"name": "6_CheckStatus",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeChangeSet"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "changeSetId",
+											"value": "{{changeSetId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:38:12 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "d794b032-faff-42f2-96ef-2eeaad5a4012"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetId\": \"test_ChangeSetId\",\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetName\": \"Submitted by 111111111111\",\n    \"Intent\": \"APPLY\",\n    \"StartTime\": \"2024-10-07T21:00:10Z\",\n    \"EndTime\": \"2024-10-07T21:00:24Z\",\n    \"Status\": \"SUCCEEDED\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"ReleaseResaleAuthorization\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"resaleauthz-1234567890\"\n            },\n            \"Details\": \"{}\",\n            \"DetailsDocument\": {},\n            \"ErrorDetailList\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "7. DescribeResaleAuthorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fccaea73-71eb-4eff-b42f-c763ad733157",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "eceeff91-7bd7-4661-9c13-b04ebeefd9e9",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "6a4e598f-430b-4347-8737-11d1ccf2976d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeEntity?catalog=AWSMarketplace&entityId={{RESALE_AUTHORIZATION_ID}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeEntity"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "entityId",
+									"value": "{{RESALE_AUTHORIZATION_ID}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "9bfcb450-995a-4059-b2ac-baec5fa3bf86",
+							"name": "7. DescribeResaleAuthorization",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeEntity?catalog=AWSMarketplace&entityId={{RESALE_AUTHORIZATION_ID}}&query=DetailsDocument",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeEntity"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "entityId",
+											"value": "{{RESALE_AUTHORIZATION_ID}}"
+										},
+										{
+											"key": "query",
+											"value": "DetailsDocument"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:41:09 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "77297b03-a62e-4de5-902a-51980f518467"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n   \"Name\":\"DemoResaleAuthorization\",\n   \"Description\":\"Demo Resale Authorization Description\",\n   \"ProductId\":\"prod-1234567890\",\n   \"ProductName\":\"My SaaS Product - Contract with Consumption pricing model\",\n   \"Status\":\"Active\",\n   \"Dimensions\":[\n      {\n         \"Name\":\"Dimension 1\",\n         \"Description\":\"Dimension 1 description goes here\",\n         \"Key\":\"dimension_1_id\",\n         \"Unit\":\"Units\",\n         \"Types\":[\n            \"Entitled\"\n         ]\n      },\n      {\n         \"Name\":\"Dimension 2\",\n         \"Description\":\"Dimension 2 description goes here\",\n         \"Key\":\"dimension_2_id\",\n         \"Unit\":\"Units\",\n         \"Types\":[\n            \"Entitled\"\n         ]\n      },\n      {\n         \"Name\":\"Dimension 3\",\n         \"Description\":\"Dimension 3 description goes here\",\n         \"Key\":\"dimension_3_id\",\n         \"Unit\":\"Units\",\n         \"Types\":[\n            \"Entitled\"\n         ]\n      },\n      {\n         \"Name\":\"Metered 1\",\n         \"Description\":\"Metered dimension 1 desc goes here\",\n         \"Key\":\"metered_1_id\",\n         \"Unit\":\"Units\",\n         \"Types\":[\n            \"Metered\",\n            \"ExternallyMetered\"\n         ]\n      },\n      {\n         \"Name\":\"Metered 2\",\n         \"Description\":\"Metered dimension 2 desc goes here\",\n         \"Key\":\"metered_2_id\",\n         \"Unit\":\"Units\",\n         \"Types\":[\n            \"Metered\",\n            \"ExternallyMetered\"\n         ]\n      },\n      {\n         \"Name\":\"Metered 3\",\n         \"Description\":\"Metered dimension 3 desc goes here\",\n         \"Key\":\"metered_3_id\",\n         \"Unit\":\"Units\",\n         \"Types\":[\n            \"Metered\",\n            \"ExternallyMetered\"\n         ]\n      }\n   ],\n   \"OfferDetails\":{\n      \"OfferExtendedStatus\":\"Not Started\",\n      \"OfferCreatedCount\":0\n   },\n   \"Terms\":[\n      {\n         \"Type\":\"ResalePaymentScheduleTerm\",\n         \"Id\":\"term-12345678901\",\n         \"CurrencyCode\":\"USD\",\n         \"Schedule\":[\n            {\n               \"ChargeDate\":\"2025-01-01T00:00:00.000Z\",\n               \"ChargeAmount\":\"30.00\"\n            },\n            {\n               \"ChargeDate\":\"2025-01-15T00:00:00.000Z\",\n               \"ChargeAmount\":\"30.00\"\n            }\n         ]\n      },\n      {\n         \"Type\":\"ResaleFixedUpfrontPricingTerm\",\n         \"Id\":\"term-12345678902\",\n         \"CurrencyCode\":\"USD\",\n         \"Duration\":\"P12M\",\n         \"Price\":\"0\",\n         \"Grants\":[\n            {\n               \"DimensionKey\":\"dimension_1_id\",\n               \"MaxQuantity\":22000\n            },\n            {\n               \"DimensionKey\":\"dimension_2_id\",\n               \"MaxQuantity\":22000\n            },\n            {\n               \"DimensionKey\":\"dimension_3_id\",\n               \"MaxQuantity\":22000\n            }\n         ]\n      },\n      {\n         \"Type\":\"ResaleUsageBasedPricingTerm\",\n         \"Id\":\"term-12345678903\",\n         \"CurrencyCode\":\"USD\",\n         \"RateCards\":[\n            {\n               \"RateCard\":[\n                  {\n                     \"DimensionKey\":\"metered_1_id\",\n                     \"Price\":\"0.001\"\n                  },\n                  {\n                     \"DimensionKey\":\"metered_2_id\",\n                     \"Price\":\"0.001\"\n                  },\n                  {\n                     \"DimensionKey\":\"metered_3_id\",\n                     \"Price\":\"0.001\"\n                  }\n               ]\n            }\n         ]\n      },\n      {\n         \"Type\":\"BuyerLegalTerm\",\n         \"Id\":\"term-12345678904\",\n         \"Documents\":[\n            {\n               \"Type\":\"StandardEula\",\n               \"Url\":\"https://resale-auth-legal-terms-iad-prod.s3.amazonaws.com/resaleauthz-wlmpaurnfdqmi/46a2b817-2e3\"\n            }\n         ]\n      },\n      {\n         \"Type\":\"ResaleLegalTerm\",\n         \"Id\":\"term-12345678905\",\n         \"Documents\":[\n            {\n               \"Type\":\"StandardResellerContract\",\n               \"Url\":\"https://resale-auth-legal-terms-iad-prod.s3.amazonaws.com/resaleauthz-wl\"\n            }\n         ]\n      }\n   ],\n   \"Rules\":[\n      {\n         \"Type\":\"AvailabilityRule\",\n         \"Id\":\"rule-12345678901\",\n         \"Usage\":\"Limited\",\n         \"OffersMaxQuantity\":1,\n         \"AvailabilityEndDate\":\"2024-12-12T23:59:59.999Z\"\n      },\n      {\n         \"Type\":\"PartnerTargetingRule\",\n         \"Id\":\"rule-123456789012\",\n         \"ResellerAccountId\":\"205695857470\",\n         \"ResellerLegalName\":\"AWSMP CP Test Account\"\n      }\n   ],\n   \"CreatedDate\":\"2024-10-07T20:48:55.720Z\",\n   \"ManufacturerLegalName\":\"Test Company-tasriami\",\n   \"ManufacturerAccountId\":\"045694257970\"\n}"
+						}
+					]
+				},
+				{
+					"name": "8_RestrictResaleAuthorization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f149be3a-88d5-496c-a35b-87f944315b37",
+								"exec": [
+									"let response = pm.response.json()",
+									"let changeSetId = response[\"ChangeSetId\"]",
+									"pm.collectionVariables.set(\"changeSetId\", changeSetId)",
+									"console.log(\"changesetId=\" + changeSetId)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8e6a5ccf-c342-4d57-9fec-adae237c7ba7",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "063f0171-b8d6-403f-ae84-78c132b62fd5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"RestrictResaleAuthorization\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"{{RESALE_AUTHORIZATION_ID}}\"\n            },\n            \"DetailsDocument\": {}\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{_.CAPI_PROD}}/StartChangeSet"
+					},
+					"response": [
+						{
+							"id": "c47edef4-837d-4461-a701-792cea5677f9",
+							"name": "8_RestrictResaleAuthorization",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"RestrictResaleAuthorization\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"{{RESALE_AUTHORIZATION_ID}}\"\n            },\n            \"DetailsDocument\": {}\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{_.CAPI_PROD}}/StartChangeSet"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:48:12 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "2eceda32-c137-41ee-a563-2b7d9ad42e93"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+						}
+					]
+				},
+				{
+					"name": "9_CheckStatus",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eaf72d2-4308-4963-ac43-2fcd4ea58519",
+								"exec": [
+									"let retryInterval = pm.collectionVariables.get(\"retryInterval\");",
+									"",
+									"let response = pm.response.json();",
+									"let status = response.Status; ",
+									"",
+									"console.log(\"Status = \" + status);",
+									"",
+									"if ( status == \"SUCCEEDED\") {",
+									"    console.log(\"Status is SUCCEEDED. End of this RUN.\")",
+									"} else if (status == \"FAILED\") {",
+									"    console.log(\"Status is FAILED. Stopping the RUN.\");",
+									"    pm.execution.setNextRequest(null);",
+									"} else {",
+									"    console.log(\"Status is not SUCCEEDED. Waiting for \" + retryInterval/1000 + \" seconds to re-check.\")",
+									"    setTimeout(() => {",
+									"        pm.execution.setNextRequest(pm.info.requestName);",
+									"    }, retryInterval);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a369368-0290-4608-b444-dacd772bd1c8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "3ec7dcdc-b765-4db9-89db-a7f8eac884cb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeChangeSet"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "changeSetId",
+									"value": "{{changeSetId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "6c4090fa-bfda-453c-ae57-0e4606148f74",
+							"name": "9_CheckStatus",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId=",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeChangeSet"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "changeSetId",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:48:40 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "0798b5da-73d3-4745-8ef0-f3b05908f4e3"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSetId\": \"test_ChangeSetId\",\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetName\": \"Submitted by 111111111111\",\n    \"Intent\": \"APPLY\",\n    \"StartTime\": \"2024-10-07T21:23:27Z\",\n    \"EndTime\": \"2024-10-07T21:23:39Z\",\n    \"Status\": \"SUCCEEDED\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"RestrictResaleAuthorization\",\n            \"Entity\": {\n                \"Type\": \"ResaleAuthorization@1.0\",\n                \"Identifier\": \"resaleauthz-1234567890\"\n            },\n            \"Details\": \"{}\",\n            \"DetailsDocument\": {},\n            \"ErrorDetailList\": []\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"id": "9c0306a3-536b-413d-8759-d15258eb5336",
+			"description": "## **Background**\n\nAWS Marketplace Catalog API allows sellers to programmatically create and manage custom offers that only specific buyers can subscribe to (also known as _private offers_ on AWS Marketplace) instead of using the [AWS Marketplace Management Portal&nbsp;](https://aws.amazon.com/marketplace/management/)  (seller-facing portal on AWS Marketplace). Sellers can also authorize specific resellers (also known as _channel partners_) to create private offers on their behalf (also known as _channel partner private offers_).\n\n## **Lab overview**\n\nIn this lab, you use an API to authorize a reseller to create private offers on your behalf for a SaaS product with the pricing model [<i>Contract with Consumption</i>](https://catalog.workshops.aws/mpseller/en-US/saas#pricing-models).\n\n- [Task 1: Create resale authorization](https://catalog.workshops.aws/mpseller/en-US/use-cases/authorize-saas-reseller-with-api#task-1:-create-resale-authorization)\n    \n- [Task 2: View resale authorization](https://catalog.workshops.aws/mpseller/en-US/use-cases/authorize-saas-reseller-with-api#task-2:-view-resale-authorization)\n    \n\n## **Prerequisites**\n\n- You must have an existing and public SaaS-based product in your seller AWS account with the pricing model [<i>Contract with Consumption</i>](https://catalog.workshops.aws/mpseller/en-US/saas#pricing-models)\n    \n- **Public product required** The resulting SaaS product created in the [Lab: Publish a SaaS](https://catalog.workshops.aws/mpseller/en-US/use-cases/publish-saas) does not meet this prerequisite because that lab does not integrate with a real SaaS application and subsequently does not make the product public in AWS Marketplace.\n    \n- You must have the following policy permissions in your AWS account\n    \n\nIAM policies required\n\n[AWSMarketplaceSellerFullAccess: ](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/AWSMarketplaceSellerFullAccess$jsonEditor) _To submit offers for publishing._\n\n[IAMFullAccess: ](https://console.aws.amazon.com/iam/home#/policies/arn:aws:iam::aws:policy/IAMFullAccess$jsonEditor) _To create a service role that allows AWS Marketplace to share your product with resellers so that they can create offers on your behalf._\n\nYou also need to create a [service-linked role that allows AWS Marketplace to share your product with resellers](https://docs.aws.amazon.com/marketplace/latest/userguide/using-roles-for-resale-authorization.html#slr-permissions)"
+		},
+		{
+			"name": "Tools",
+			"item": [
+				{
+					"name": "DescribeChangeSet",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9eaf72d2-4308-4963-ac43-2fcd4ea58519",
+								"exec": [
+									"let privateOfferLink = \"https://aws.amazon.com/marketplace/saas/ordering?productId=\" + pm.variables.get(\"PRODUCT_ID\") + \"&offerId=\" + pm.variables.get(\"OFFER_ID\")",
+									"",
+									"console.log(\"Private offer link is \" + privateOfferLink)",
+									"pm.collectionVariables.set(\"retryCount\", 0); "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "add9cf8b-d73f-47eb-890e-16dfdb054a93",
+								"exec": [
+									"let status = pm.collectionVariables.get(\"status\");",
+									"console.log(\"status in pre-request \" + pm.info.requestName + \" is \" + status);",
+									"if (status !== \"SUCCEEDED\") {",
+									"    console.log(\"status not 'SUCCEEDED'. Skipping \" + pm.info.requestName + \" request for now. Running 6_CheckStatus again\");",
+									"    let changeSetId = pm.collectionVariables.get(\"changeSetId\");",
+									"    pm.collectionVariables.set(\"changeSetId\", changeSetId)",
+									"    console.log(\"changesetId in pre-request \" + pm.info.requestName + \"=\" + changeSetId)",
+									"    pm.execution.setNextRequest(\"6_CheckStatus\")",
+									"} else {",
+									"    console.log(\"status is 'SUCCEEDED'. Proceeding with \" + pm.info.requestName + \" request.\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "15fed507-4285-4b8e-ab95-036e82921c6b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": false,
+						"followRedirects": true,
+						"disableUrlEncoding": false,
+						"disableCookies": false
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+							"host": [
+								"{{_.CAPI_PROD}}"
+							],
+							"path": [
+								"DescribeChangeSet"
+							],
+							"query": [
+								{
+									"key": "catalog",
+									"value": "AWSMarketplace"
+								},
+								{
+									"key": "changeSetId",
+									"value": "{{changeSetId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "723cb8d1-f528-4f96-b25c-2d1c9afd8a16",
+							"name": "DescribeChangeSet",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{_.CAPI_PROD}}/DescribeChangeSet?catalog=AWSMarketplace&changeSetId={{changeSetId}}",
+									"host": [
+										"{{_.CAPI_PROD}}"
+									],
+									"path": [
+										"DescribeChangeSet"
+									],
+									"query": [
+										{
+											"key": "catalog",
+											"value": "AWSMarketplace"
+										},
+										{
+											"key": "changeSetId",
+											"value": "{{changeSetId}}"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 01 Oct 2024 23:49:17 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "176"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "b26b12ba-6c3f-429c-87bc-9a336006f68c"
+								},
+								{
+									"key": "x-amzn-ErrorType",
+									"value": "IncompleteSignatureException:com.amazonaws.services.marketplacecatalog.model"
+								}
+							],
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"ChangeSet\": [\n        {\n            \"ChangeName\": \"CreateProductChange\",\n            \"ChangeType\": \"CreateProduct\",\n            \"Details\": \"{\\\"ProductTitle\\\":\\\"Sample product\\\"}\",\n            \"DetailsDocument\": {\n                \"ProductTitle\": \"Sample product\"\n            },\n            \"Entity\": {\n                \"Identifier\": \"prod-1234567890@1\",\n                \"Type\": \"ContainerProduct@1.0\"\n            },\n            \"ErrorDetailList\": []\n        },\n        {\n            \"ChangeName\": \"CreateOfferChange\",\n            \"ChangeType\": \"CreateOffer\",\n            \"Details\": \"{\\\"ProductId\\\":\\\"prod-1234567890\\\",\\\"Name\\\":\\\"Test Offer\\\"}\",\n            \"DetailsDocument\": {\n                \"ProductId\": \"prod-1234567890\",\n                \"Name\": \"Test Offer\"\n            },\n            \"Entity\": {\n                \"Identifier\": \"offer-1234567890@1\",\n                \"Type\": \"Offer@1.0\"\n            },\n            \"ErrorDetailList\": []\n        }\n    ],\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\",\n    \"ChangeSetName\": \"Submitted by 111111111111\",\n    \"EndTime\": null,\n    \"FailureCode\": null,\n    \"FailureDescription\": null,\n    \"Intent\": \"APPLY\",\n    \"StartTime\": \"2024-10-01T18:25:36Z\",\n    \"Status\": \"SUCCEEDED\"\n}"
+						}
+					]
+				}
+			],
+			"id": "351f3f25-aad7-4aa1-9fc5-0f6c73ef4032"
+		}
+	],
+	"auth": {
+		"type": "awsv4",
+		"awsv4": {
+			"secretKey": "{{vault:aws.secretAccessKey}}",
+			"accessKey": "{{vault:aws.accessKeyId}}",
+			"service": "{{aws.service}}",
+			"region": "{{aws.region}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b5fab33a-b76d-461c-85e3-5e0e2a09f8c2",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7f6d4d03-c3c4-485b-a666-5c5d94e0ee44",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "EXPIRY_DATE",
+			"value": "2024-12-12",
+			"type": "string"
+		},
+		{
+			"key": "CONTRACT_DURATION_MONTHS",
+			"value": "P12M",
+			"type": "string"
+		},
+		{
+			"key": "retryCount",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "maxRetries",
+			"value": "50",
+			"type": "string"
+		},
+		{
+			"key": "retryInterval",
+			"value": "4000",
+			"type": "string"
+		},
+		{
+			"key": "changeSetId",
+			"value": ""
+		},
+		{
+			"key": "status",
+			"value": ""
+		},
+		{
+			"key": "OFFER_ID",
+			"value": ""
+		},
+		{
+			"key": "RESALE_AUTHORIZATION_ID",
+			"value": ""
+		}
+	]
+}
