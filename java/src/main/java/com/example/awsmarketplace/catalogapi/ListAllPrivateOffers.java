@@ -1,9 +1,9 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.catalogapi;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.example.awsmarketplace.utils.ReferenceCodesConstants.*;
 import com.example.awsmarketplace.utils.ReferenceCodesUtils;
@@ -24,10 +24,6 @@ import software.amazon.awssdk.services.marketplacecatalog.model.OfferFilters;
 import software.amazon.awssdk.services.marketplacecatalog.model.OfferReleaseDateFilter;
 import software.amazon.awssdk.services.marketplacecatalog.model.OfferReleaseDateFilterDateRange;
 import software.amazon.awssdk.services.marketplacecatalog.model.OfferTargetingFilter;
-import software.amazon.awssdk.services.marketplacecatalog.model.BatchDescribeEntitiesRequest;
-import software.amazon.awssdk.services.marketplacecatalog.model.EntityRequest;
-import software.amazon.awssdk.services.marketplacecatalog.model.BatchDescribeEntitiesResponse;
-import software.amazon.awssdk.services.marketplacecatalog.model.EntityDetail;
 
 public class ListAllPrivateOffers {
 
@@ -39,16 +35,35 @@ public class ListAllPrivateOffers {
 	 * OfferAvailabilityEndDateFilter : Offer Expiry Date filter
 	 * OfferReleaseDateFilter : Offer Publish Date filter
 	 */
+	
+	private static MarketplaceCatalogClient marketplaceCatalogClient = 
+			MarketplaceCatalogClient.builder()
+			.httpClient(ApacheHttpClient.builder().build())
+			.credentialsProvider(ProfileCredentialsProvider.create())
+			.build();
+	
 	public static void main(String[] args) {
-
-		MarketplaceCatalogClient marketplaceCatalogClient = 
-				MarketplaceCatalogClient.builder()
-				.httpClient(ApacheHttpClient.builder().build())
-				.credentialsProvider(ProfileCredentialsProvider.create())
-				.build();
 
 		String offerReleaseDateAfterValue = "2023-01-01T23:59:59Z";
 		String offerAvailableEndDateAfterValue = "2040-12-24T23:59:59Z";
+		
+		List<EntitySummary> entitySummaryList = getEntitySummaryList(offerReleaseDateAfterValue, offerAvailableEndDateAfterValue);
+		
+		// for each offer id, output the offer detail using DescribeEntity API
+		
+		
+		for (EntitySummary entitySummary : entitySummaryList) {
+			DescribeEntityRequest describeEntityRequest = 
+					DescribeEntityRequest.builder()
+					.catalog(AWS_MP_CATALOG)
+					.entityId(entitySummary.entityId())
+					.build();
+			DescribeEntityResponse describeEntityResponse = marketplaceCatalogClient.describeEntity(describeEntityRequest);
+			ReferenceCodesUtils.formatOutput(describeEntityResponse);
+		}
+	}
+	
+	public static List<EntitySummary> getEntitySummaryList (String offerReleaseDateAfterValue, String offerAvailableEndDateAfterValue) {
 		
 		EntityTypeFilters entityTypeFilters = 
 				EntityTypeFilters.builder()
@@ -96,32 +111,8 @@ public class ListAllPrivateOffers {
 			listEntitiesResponse = marketplaceCatalogClient.listEntities(listEntitiesRequest);
 			entitySummaryList.addAll(listEntitiesResponse.entitySummaryList());
 		}
-
-		// for each offer id, output the offer detail using BatchDescribeEntities API
-
-		List<EntityRequest> describeEntityRequestList = new ArrayList<EntityRequest>();
-		List<EntityDetail> describeEntityResponseList = new ArrayList<EntityDetail>();
-		for (EntitySummary entitySummary : entitySummaryList) {
-			EntityRequest describeEntityRequest = EntityRequest.builder()
-					.catalog(AWS_MP_CATALOG)
-					.entityId(entitySummary.entityId())
-					.build();
-			describeEntityRequestList.add(describeEntityRequest);
-			if(describeEntityRequestList.size() == 20) {
-				BatchDescribeEntitiesRequest batchDescribeEntitiesRequest = BatchDescribeEntitiesRequest.builder()
-						.entityRequestList(describeEntityRequestList).build();
-				BatchDescribeEntitiesResponse batchDescribeEntitiesResponse = marketplaceCatalogClient.batchDescribeEntities(batchDescribeEntitiesRequest);
-				describeEntityResponseList.addAll(batchDescribeEntitiesResponse.entityDetails().values());
-				describeEntityRequestList.clear();
-			}
-		}
-		if(!describeEntityRequestList.isEmpty()) {
-			BatchDescribeEntitiesRequest batchDescribeEntitiesRequest = BatchDescribeEntitiesRequest.builder()
-					.entityRequestList(describeEntityRequestList).build();
-			BatchDescribeEntitiesResponse batchDescribeEntitiesResponse = marketplaceCatalogClient.batchDescribeEntities(batchDescribeEntitiesRequest);
-			describeEntityResponseList.addAll(batchDescribeEntitiesResponse.entityDetails().values());
-		}
-		describeEntityResponseList.forEach(response -> System.out.println(response));
+		
+		return entitySummaryList;
 	}
 
 }

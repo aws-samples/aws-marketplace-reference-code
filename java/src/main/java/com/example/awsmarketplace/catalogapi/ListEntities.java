@@ -1,3 +1,5 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.catalogapi;
 
 import java.util.ArrayList;
@@ -22,16 +24,23 @@ import software.amazon.awssdk.services.marketplacecatalog.model.OfferTargetingFi
 
 public class ListEntities {
 
-	private static MarketplaceCatalogClient marketplaceCatalogClient = 
-			MarketplaceCatalogClient.builder()
-			.httpClient(ApacheHttpClient.builder().build())
-			.credentialsProvider(ProfileCredentialsProvider.create())
-			.build();
-
 	/*
 	 * List all my AMI or SaaS or Container products and associated public offers
 	 */
 	public static void main(String[] args) {
+		
+		Map<String, List<EntitySummary>> allProductsWithOffers = getAllProductsWithOffers();
+	
+		ReferenceCodesUtils.formatOutput(allProductsWithOffers);
+	}
+
+	public static Map<String, List<EntitySummary>> getAllProductsWithOffers() {
+		MarketplaceCatalogClient marketplaceCatalogClient = 
+				MarketplaceCatalogClient.builder()
+				.httpClient(ApacheHttpClient.builder().build())
+				.credentialsProvider(ProfileCredentialsProvider.create())
+				.build();
+		
 		Map<String, List<EntitySummary>> allProductsWithOffers = new HashMap<String, List<EntitySummary>> ();
 
 		// get all product entities
@@ -115,8 +124,7 @@ public class ListEntities {
 			
 			allProductsWithOffers.put(productEntitySummary.entityId(), offerEntitySummaryList);
 		}
-	
-		ReferenceCodesUtils.formatOutput(allProductsWithOffers);
+		return allProductsWithOffers;
 	}
 
 }

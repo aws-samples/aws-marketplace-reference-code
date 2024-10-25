@@ -1,8 +1,9 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.catalogapi;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.example.awsmarketplace.utils.ReferenceCodesConstants.*;
 import com.example.awsmarketplace.utils.ReferenceCodesUtils;
@@ -16,10 +17,6 @@ import software.amazon.awssdk.services.marketplacecatalog.model.DescribeEntityRe
 import software.amazon.awssdk.services.marketplacecatalog.model.EntitySummary;
 import software.amazon.awssdk.services.marketplacecatalog.model.ListEntitiesRequest;
 import software.amazon.awssdk.services.marketplacecatalog.model.ListEntitiesResponse;
-import software.amazon.awssdk.services.marketplacecatalog.model.BatchDescribeEntitiesRequest;
-import software.amazon.awssdk.services.marketplacecatalog.model.EntityRequest;
-import software.amazon.awssdk.services.marketplacecatalog.model.BatchDescribeEntitiesResponse;
-import software.amazon.awssdk.services.marketplacecatalog.model.EntityDetail;
 
 public class ListAllCppoOffers {
 
@@ -28,6 +25,12 @@ public class ListAllCppoOffers {
 	 */
 	public static void main(String[] args) {
 		
+		List<String> cppoOfferIds = getAllCppoOfferIds();
+
+		ReferenceCodesUtils.formatOutput(cppoOfferIds);
+	}
+
+	public static List<String> getAllCppoOfferIds() {
 		MarketplaceCatalogClient marketplaceCatalogClient = 
 				MarketplaceCatalogClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -69,38 +72,20 @@ public class ListAllCppoOffers {
 		// filter for CPPO offers: ResaleAuthorizationId exists in Details
 
 		List<String> cppoOfferIds = new ArrayList<String>();
-		List<EntityRequest> describeEntityRequestList = new ArrayList<EntityRequest>();
+		
 		for (String entityId : entityIdList) {
-			EntityRequest describeEntityRequest = EntityRequest.builder()
+			DescribeEntityRequest describeEntityRequest = 
+					DescribeEntityRequest.builder()
 					.catalog(AWS_MP_CATALOG)
 					.entityId(entityId)
 					.build();
-			describeEntityRequestList.add(describeEntityRequest);
-			if(describeEntityRequestList.size() == 20) {
-				BatchDescribeEntitiesRequest batchDescribeEntitiesRequest = BatchDescribeEntitiesRequest.builder()
-						.entityRequestList(describeEntityRequestList).build();
-				BatchDescribeEntitiesResponse batchDescribeEntitiesResponse = marketplaceCatalogClient.batchDescribeEntities(batchDescribeEntitiesRequest);
-				cppoOfferIds.addAll(getResaleAuthorizationIdsFromOfferDocuments(batchDescribeEntitiesResponse.entityDetails()));
-				describeEntityRequestList.clear();
-			}
-		}
-		if(!describeEntityRequestList.isEmpty()) {
-			BatchDescribeEntitiesRequest batchDescribeEntitiesRequest = BatchDescribeEntitiesRequest.builder()
-					.entityRequestList(describeEntityRequestList).build();
-			BatchDescribeEntitiesResponse batchDescribeEntitiesResponse = marketplaceCatalogClient.batchDescribeEntities(batchDescribeEntitiesRequest);
-			cppoOfferIds.addAll(getResaleAuthorizationIdsFromOfferDocuments(batchDescribeEntitiesResponse.entityDetails()));
-		}
-
-		ReferenceCodesUtils.formatOutput(cppoOfferIds);
-	}
-
-	private static List<String> getResaleAuthorizationIdsFromOfferDocuments(Map<String, EntityDetail> entityDetailsMap) {
-		List<String> cppoOfferIds = new ArrayList<String>();
-		for (Map.Entry<String, EntityDetail> entry : entityDetailsMap.entrySet()) {
-			Document resaleAuthorizationDocument = entry.getValue().detailsDocument().asMap().get(ATTRIBUTE_RESALE_AUTHORIZATION_ID);
+			DescribeEntityResponse describeEntityResponse = marketplaceCatalogClient.describeEntity(describeEntityRequest);
+			
+			Document resaleAuthorizationDocument = describeEntityResponse.detailsDocument().asMap().get(ATTRIBUTE_RESALE_AUTHORIZATION_ID);
 			String resaleAuthorizationId = resaleAuthorizationDocument != null ? resaleAuthorizationDocument.asString() : "";
+
 			if (!resaleAuthorizationId.isEmpty()) {
-				cppoOfferIds.add(resaleAuthorizationId);
+			    cppoOfferIds.add(resaleAuthorizationId);
 			}
 		}
 		return cppoOfferIds;

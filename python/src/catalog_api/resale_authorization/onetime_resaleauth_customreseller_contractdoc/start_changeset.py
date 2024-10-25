@@ -1,3 +1,5 @@
+﻿# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Purpose
 Publish a one-time resale authorization on my SaaS/AMI/Container product and add reseller contract documentation between the ISV and channel partner
