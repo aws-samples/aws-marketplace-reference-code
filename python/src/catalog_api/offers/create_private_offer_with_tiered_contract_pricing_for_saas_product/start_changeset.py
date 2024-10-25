@@ -1,3 +1,5 @@
+﻿# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Purpose
 Shows how to use the AWS SDK for Python (Boto3) to create a private offer with tiered contract pricing for my SaaS product

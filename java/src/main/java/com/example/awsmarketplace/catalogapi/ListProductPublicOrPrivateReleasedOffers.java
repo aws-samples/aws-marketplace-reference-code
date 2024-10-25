@@ -1,3 +1,5 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.catalogapi;
 
 import java.util.ArrayList;
@@ -27,6 +29,11 @@ public class ListProductPublicOrPrivateReleasedOffers {
 	 */
 	public static void main(String[] args) {
 
+		List<EntitySummary> entitySummaryList = getEntitySummaryLIst();
+		ReferenceCodesUtils.formatOutput(entitySummaryList);
+	}
+
+	public static List<EntitySummary> getEntitySummaryLIst() {
 		MarketplaceCatalogClient marketplaceCatalogClient = 
 				MarketplaceCatalogClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -79,7 +86,7 @@ public class ListProductPublicOrPrivateReleasedOffers {
 			listEntitiesResponse = marketplaceCatalogClient.listEntities(listEntitiesRequest);
 			entitySummaryList.addAll(listEntitiesResponse.entitySummaryList());
 		}
-		ReferenceCodesUtils.formatOutput(entitySummaryList);
+		return entitySummaryList;
 	}
 
 }

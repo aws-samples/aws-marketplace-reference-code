@@ -1,3 +1,5 @@
+﻿# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Purpose
 Update name/description of one-time or multi-use resale authorization before publishing for any product type (AMI/SaaS/Container)

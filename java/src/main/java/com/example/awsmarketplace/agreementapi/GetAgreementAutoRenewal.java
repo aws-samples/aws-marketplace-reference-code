@@ -1,3 +1,5 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.agreementapi;
 
 import static com.example.awsmarketplace.utils.ReferenceCodesConstants.*;
@@ -17,6 +19,14 @@ public class GetAgreementAutoRenewal {
 	
 	public static void main(String[] args) {
 		
+		String agreementId = args.length > 0 ? args[0] : AGREEMENT_ID;
+		
+		String autoRenewal = getAutoRenewal(agreementId);
+
+		System.out.println("Auto-Renewal status is " + autoRenewal);
+	}
+
+	public static String getAutoRenewal(String agreementId) {
 		MarketplaceAgreementClient marketplaceAgreementClient = 
 				MarketplaceAgreementClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -25,7 +35,7 @@ public class GetAgreementAutoRenewal {
 
 		GetAgreementTermsRequest getAgreementTermsRequest = 
 				GetAgreementTermsRequest.builder()
-				.agreementId(AGREEMENT_ID)
+				.agreementId(agreementId)
 				.build();
 
 		GetAgreementTermsResponse getAgreementTermsResponse = marketplaceAgreementClient.getAgreementTerms(getAgreementTermsRequest);
@@ -39,8 +49,7 @@ public class GetAgreementAutoRenewal {
 				break;
 			}
 		}
-
-		System.out.println("Auto-Renewal status is " + autoRenewal);
+		return autoRenewal;
 	}
 
 }

@@ -1,3 +1,5 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.agreementapi;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
@@ -21,6 +23,14 @@ public class GetAgreementTermsDimensionPurchased {
 	 */
 	public static void main(String[] args) {
 
+		String agreementId = args.length > 0 ? args[0] : AGREEMENT_ID;
+
+		List<String> dimensionKeys = getDimensionKeys(agreementId);
+
+		ReferenceCodesUtils.formatOutput(dimensionKeys);
+	}
+
+	public static List<String> getDimensionKeys(String agreementId) {
 		MarketplaceAgreementClient marketplaceAgreementClient = 
 				MarketplaceAgreementClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -28,7 +38,7 @@ public class GetAgreementTermsDimensionPurchased {
 				.build();
 
 		GetAgreementTermsRequest getAgreementTermsRequest = 
-				GetAgreementTermsRequest.builder().agreementId(AGREEMENT_ID)
+				GetAgreementTermsRequest.builder().agreementId(agreementId)
 				.build();
 
 		GetAgreementTermsResponse getAgreementTermsResponse = marketplaceAgreementClient.getAgreementTerms(getAgreementTermsRequest);
@@ -45,7 +55,6 @@ public class GetAgreementTermsDimensionPurchased {
 
 			}
 		}
-
-		ReferenceCodesUtils.formatOutput(dimensionKeys);
+		return dimensionKeys;
 	}
 }

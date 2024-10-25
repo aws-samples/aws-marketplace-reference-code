@@ -1,3 +1,5 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.agreementapi;
 
 import static com.example.awsmarketplace.utils.ReferenceCodesConstants.AGREEMENT_ID;
@@ -12,6 +14,15 @@ public class GetAgreementStatus {
 
 	public static void main(String[] args) {
 
+		String agreementId = args.length > 0 ? args[0] : AGREEMENT_ID;
+
+		DescribeAgreementResponse describeAgreementResponse = getDescribeAgreementResponse(agreementId);
+
+		System.out.println("Agreement status is " + describeAgreementResponse.status());
+
+	}
+
+	public static DescribeAgreementResponse getDescribeAgreementResponse(String agreementId) {
 		MarketplaceAgreementClient marketplaceAgreementClient = 
 				MarketplaceAgreementClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -20,13 +31,11 @@ public class GetAgreementStatus {
 
 		DescribeAgreementRequest describeAgreementRequest = 
 				DescribeAgreementRequest.builder()
-				.agreementId(AGREEMENT_ID)
+				.agreementId(agreementId)
 				.build();
 
 		DescribeAgreementResponse describeAgreementResponse = marketplaceAgreementClient.describeAgreement(describeAgreementRequest);
-
-		System.out.println("Agreement status is " + describeAgreementResponse.status());
-
+		return describeAgreementResponse;
 	}
 
 }

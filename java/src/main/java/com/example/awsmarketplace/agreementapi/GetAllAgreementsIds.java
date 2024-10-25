@@ -1,3 +1,5 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.agreementapi;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
@@ -23,6 +25,13 @@ public class GetAllAgreementsIds {
 	 */
 	public static void main(String[] args) {
 
+		List<String> agreementIds = getAllAgreementIds();
+		
+		ReferenceCodesUtils.formatOutput(agreementIds);
+
+	}
+
+	public static List<String> getAllAgreementIds() {
 		MarketplaceAgreementClient marketplaceAgreementClient = 
 				MarketplaceAgreementClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -68,9 +77,7 @@ public class GetAllAgreementsIds {
 		for (AgreementViewSummary summary : agreementSummaryList) {
 			agreementIds.add(summary.agreementId());
 		}
-		
-		ReferenceCodesUtils.formatOutput(agreementIds);
-
+		return agreementIds;
 	}
 
 }

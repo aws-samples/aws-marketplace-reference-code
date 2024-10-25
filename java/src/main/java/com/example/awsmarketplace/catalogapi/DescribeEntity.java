@@ -1,3 +1,5 @@
+﻿﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.catalogapi;
 
 import static com.example.awsmarketplace.utils.ReferenceCodesConstants.*;
@@ -16,6 +18,14 @@ public class DescribeEntity {
 	 */
 	public static void main(String[] args) {
 
+		String offerId = args.length > 0 ? args[0] : OFFER_ID;
+
+		DescribeEntityResponse describeEntityResponse = getDescribeEntityResponse(offerId);
+
+		ReferenceCodesUtils.formatOutput(describeEntityResponse);
+	}
+
+	public static DescribeEntityResponse getDescribeEntityResponse(String offerId) {
 		MarketplaceCatalogClient marketplaceCatalogClient = 
 				MarketplaceCatalogClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -25,11 +35,10 @@ public class DescribeEntity {
 		DescribeEntityRequest describeEntityRequest = 
 				DescribeEntityRequest.builder()
 				.catalog(AWS_MP_CATALOG)
-				.entityId(OFFER_ID)
+				.entityId(offerId)
 				.build();
 
 		DescribeEntityResponse describeEntityResponse = marketplaceCatalogClient.describeEntity(describeEntityRequest);
-
-		ReferenceCodesUtils.formatOutput(describeEntityResponse);
+		return describeEntityResponse;
 	}
 }

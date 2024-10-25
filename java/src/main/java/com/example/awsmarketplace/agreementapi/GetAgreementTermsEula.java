@@ -1,9 +1,10 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.agreementapi;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.services.marketplaceagreement.MarketplaceAgreementClient;
-import software.amazon.awssdk.services.marketplaceagreement.model.AcceptedTerm;
 import software.amazon.awssdk.services.marketplaceagreement.model.DocumentItem;
 import software.amazon.awssdk.services.marketplaceagreement.model.GetAgreementTermsRequest;
 import software.amazon.awssdk.services.marketplaceagreement.model.GetAgreementTermsResponse;
@@ -21,6 +22,14 @@ public class GetAgreementTermsEula {
 	 */
 	public static void main(String[] args) {
 
+		String agreementId = args.length > 0 ? args[0] : AGREEMENT_ID;
+
+		List<DocumentItem> legalEulaArray = getLegalEula(agreementId);
+		
+		ReferenceCodesUtils.formatOutput(legalEulaArray);
+	}
+
+	public static List<DocumentItem> getLegalEula(String agreementId) {
 		MarketplaceAgreementClient marketplaceAgreementClient = 
 				MarketplaceAgreementClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -28,7 +37,7 @@ public class GetAgreementTermsEula {
 				.build();
 
 		GetAgreementTermsRequest getAgreementTermsRequest = 
-				GetAgreementTermsRequest.builder().agreementId(AGREEMENT_ID)
+				GetAgreementTermsRequest.builder().agreementId(agreementId)
 				.build();
 
 		GetAgreementTermsResponse getAgreementTermsResponse = marketplaceAgreementClient.getAgreementTerms(getAgreementTermsRequest);
@@ -40,8 +49,7 @@ public class GetAgreementTermsEula {
 	    	.flatMap(acceptedTerm -> acceptedTerm.legalTerm().documents().stream())
 	    	.filter(docItem -> docItem.type() != null)
 	    	.forEach(legalEulaArray::add);
-		
-		ReferenceCodesUtils.formatOutput(legalEulaArray);
+		return legalEulaArray;
 	}
 
 }

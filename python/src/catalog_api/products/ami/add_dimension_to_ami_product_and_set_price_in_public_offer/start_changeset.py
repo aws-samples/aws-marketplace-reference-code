@@ -1,3 +1,5 @@
+﻿# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Purpose
 Shows how to use the AWS SDK for Python (Boto3) to add a dimension to an existing AMI product and update the offer pricing terms.

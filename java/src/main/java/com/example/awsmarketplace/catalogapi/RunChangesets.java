@@ -1,3 +1,5 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.catalogapi;
 
 import java.io.ByteArrayInputStream;
@@ -58,8 +60,8 @@ public class RunChangesets {
 			e.printStackTrace();
 		}
 	}
-
-	private static StartChangeSetResponse getChangeSetRequestResult(String changeSetsInput) throws IOException {
+	
+	public static StartChangeSetResponse getChangeSetRequestResult(String changeSetsInput) throws IOException {
 		
 		//set up AWS credentials
 		MarketplaceCatalogClient marketplaceCatalogClient = 
@@ -126,7 +128,7 @@ public class RunChangesets {
 	}
 	
 	
-	private static String readChangeSetToString (String inputChangeSetFile) {
+	public static String readChangeSetToString (String inputChangeSetFile) {
 		
 		InputStream changesetInputStream = RunChangesets.class.getClassLoader().getResourceAsStream(inputChangeSetFile);
 

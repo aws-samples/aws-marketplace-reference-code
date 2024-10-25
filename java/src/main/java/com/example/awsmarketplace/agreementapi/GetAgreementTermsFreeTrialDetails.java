@@ -1,3 +1,5 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.agreementapi;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
@@ -22,6 +24,14 @@ public class GetAgreementTermsFreeTrialDetails {
 	 */
 	public static void main(String[] args) {
 
+		String agreementId = args.length > 0 ? args[0] : AGREEMENT_ID;
+		
+		List<FreeTrialPricingTerm> freeTrialPricingTerms = getFreeTrialPricingTerms(agreementId);
+
+		ReferenceCodesUtils.formatOutput(freeTrialPricingTerms);
+	}
+
+	public static List<FreeTrialPricingTerm> getFreeTrialPricingTerms(String agreementId) {
 		MarketplaceAgreementClient marketplaceAgreementClient = 
 				MarketplaceAgreementClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -29,7 +39,7 @@ public class GetAgreementTermsFreeTrialDetails {
 				.build();
 
 		GetAgreementTermsRequest getAgreementTermsRequest = 
-				GetAgreementTermsRequest.builder().agreementId(AGREEMENT_ID)
+				GetAgreementTermsRequest.builder().agreementId(agreementId)
 					.build();
 
 		GetAgreementTermsResponse getAgreementTermsResponse = marketplaceAgreementClient.getAgreementTerms(getAgreementTermsRequest);
@@ -41,7 +51,6 @@ public class GetAgreementTermsFreeTrialDetails {
 				freeTrialPricingTerms.add(acceptedTerm.freeTrialPricingTerm());
 			}
 		}
-
-		ReferenceCodesUtils.formatOutput(freeTrialPricingTerms);
+		return freeTrialPricingTerms;
 	}
 }

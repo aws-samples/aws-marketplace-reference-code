@@ -1,3 +1,5 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.catalogapi;
 
 import static com.example.awsmarketplace.utils.ReferenceCodesConstants.*;
@@ -15,6 +17,16 @@ public class DescribeChangeSet {
 	 * Describe a changeset
 	 */
 	public static void main(String[] args) {
+		
+		String changesetId = args.length > 0 ? args[0] : CHANGESET_ID;
+
+		DescribeChangeSetResponse describeChangeSetResponse = getDescribeChangeSetResponse(changesetId);
+
+		ReferenceCodesUtils.formatOutput(describeChangeSetResponse);
+		
+	}
+
+	public static DescribeChangeSetResponse getDescribeChangeSetResponse(String changesetId) {
 
 		MarketplaceCatalogClient marketplaceCatalogClient = 
 				MarketplaceCatalogClient.builder()
@@ -25,13 +37,11 @@ public class DescribeChangeSet {
 		DescribeChangeSetRequest describeChangeSetRequest = 
 				DescribeChangeSetRequest.builder()
 				.catalog(AWS_MP_CATALOG)
-				.changeSetId(CHANGESET_ID)
+				.changeSetId(changesetId)
 				.build();
 
 		DescribeChangeSetResponse describeChangeSetResponse = marketplaceCatalogClient.describeChangeSet(describeChangeSetRequest);
-
-		ReferenceCodesUtils.formatOutput(describeChangeSetResponse);
-		
+		return describeChangeSetResponse;
 	}
 		
 }

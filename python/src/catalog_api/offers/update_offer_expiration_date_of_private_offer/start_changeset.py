@@ -1,3 +1,5 @@
+﻿# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Purpose
 Shows how to use the AWS SDK for Python (Boto3) to set expiry date of a private offer to a date in the future so that my buyers get more time to evaluate and accept the offer.

@@ -1,3 +1,5 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.agreementapi;
 
 import static com.example.awsmarketplace.utils.ReferenceCodesConstants.*;
@@ -13,6 +15,15 @@ public class GetAgreementTerms {
 
 	public static void main(String[] args) {
 
+		String agreementId = args.length > 0 ? args[0] : AGREEMENT_ID;
+
+		GetAgreementTermsResponse getAgreementTermsResponse = getAgreementTermsResponse(agreementId);
+
+		ReferenceCodesUtils.formatOutput(getAgreementTermsResponse);
+
+	}
+
+	public static GetAgreementTermsResponse getAgreementTermsResponse(String agreementId) {
 		MarketplaceAgreementClient marketplaceAgreementClient = 
 				MarketplaceAgreementClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -21,13 +32,11 @@ public class GetAgreementTerms {
 
 		GetAgreementTermsRequest getAgreementTermsRequest = 
 				GetAgreementTermsRequest.builder()
-				.agreementId(AGREEMENT_ID)
+				.agreementId(agreementId)
 				.build();
 
 		GetAgreementTermsResponse getAgreementTermsResponse = marketplaceAgreementClient.getAgreementTerms(getAgreementTermsRequest);
-
-		ReferenceCodesUtils.formatOutput(getAgreementTermsResponse);
-
+		return getAgreementTermsResponse;
 	}
 
 }

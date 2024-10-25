@@ -1,3 +1,5 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.agreementapi;
 
 import static com.example.awsmarketplace.utils.ReferenceCodesConstants.*;
@@ -15,6 +17,15 @@ public class GetAgreementFinancialDetails {
 	 */
 	public static void main(String[] args) {
 
+		String agreementId = args.length > 0 ? args[0] : AGREEMENT_ID;
+
+		String totalContractValue = getTotalContractValue(agreementId);
+
+		System.out.println("Total Contract Value is " + totalContractValue);
+
+	}
+
+	public static String getTotalContractValue(String agreementId) {
 		MarketplaceAgreementClient marketplaceAgreementClient = 
 				MarketplaceAgreementClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -23,7 +34,7 @@ public class GetAgreementFinancialDetails {
 
 		DescribeAgreementRequest describeAgreementRequest = 
 				DescribeAgreementRequest.builder()
-				.agreementId(AGREEMENT_ID)
+				.agreementId(agreementId)
 				.build();
 
 		DescribeAgreementResponse describeAgreementResponse = marketplaceAgreementClient.describeAgreement(describeAgreementRequest);
@@ -35,8 +46,6 @@ public class GetAgreementFinancialDetails {
 					+ " " 
 					+ describeAgreementResponse.estimatedCharges().currencyCode();
 		}
-
-		System.out.println("Total Contract Value is " + totalContractValue);
-
+		return totalContractValue;
 	}
 }

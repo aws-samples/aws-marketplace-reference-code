@@ -1,3 +1,5 @@
+﻿// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 package com.example.awsmarketplace.agreementapi;
 
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
@@ -23,6 +25,18 @@ public class GetProductAndOfferDetailFromAgreement {
 
 		// call Agreement API to get offer and product information for the agreement
 		
+		String agreementId = args.length > 0 ? args[0] : AGREEMENT_ID;
+		
+		List<DescribeEntityResponse> entityResponseList = getEntities(agreementId);
+
+		for (DescribeEntityResponse response : entityResponseList) {
+			ReferenceCodesUtils.formatOutput(response);
+		}
+	}
+
+	public static List<DescribeEntityResponse> getEntities(String agreementId) {
+		List<DescribeEntityResponse> entityResponseList = new ArrayList<DescribeEntityResponse> ();
+		
 		MarketplaceAgreementClient marketplaceAgreementClient = 
 				MarketplaceAgreementClient.builder()
 				.httpClient(ApacheHttpClient.builder().build())
@@ -31,7 +45,7 @@ public class GetProductAndOfferDetailFromAgreement {
 
 		DescribeAgreementRequest describeAgreementRequest = 
 				DescribeAgreementRequest.builder()
-				.agreementId(AGREEMENT_ID)
+				.agreementId(agreementId)
 				.build();
 
 		DescribeAgreementResponse describeAgreementResponse = marketplaceAgreementClient.describeAgreement(describeAgreementRequest);
@@ -61,10 +75,8 @@ public class GetProductAndOfferDetailFromAgreement {
 				.entityId(offerId).build();
 
 		DescribeEntityResponse describeEntityResponse = marketplaceCatalogClient.describeEntity(describeEntityRequest);
-
-		System.out.println("Print details for offer " + offerId);
-
-		ReferenceCodesUtils.formatOutput(describeEntityResponse);
+		
+		entityResponseList.add(describeEntityResponse);
 
 		for (String productId : productIds) {
 			describeEntityRequest = 
@@ -73,8 +85,8 @@ public class GetProductAndOfferDetailFromAgreement {
 					.entityId(productId).build();
 			describeEntityResponse = marketplaceCatalogClient.describeEntity(describeEntityRequest);
 			System.out.println("Print details for product " + productId);
-			ReferenceCodesUtils.formatOutput(describeEntityResponse);
+			entityResponseList.add(describeEntityResponse);
 		}
-
+		return entityResponseList;
 	}
 }
