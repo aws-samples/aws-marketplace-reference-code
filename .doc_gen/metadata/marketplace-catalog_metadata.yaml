@@ -1,0 +1,2360 @@
+marketplace-catalog_CreateDraftAmiProductWithDraftPublicOffer:
+  category: AMI products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - java/resources/changeSets/products/ami/CreateDraftAmiProductWithDraftPublicOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/ami/create_draft_ami_product_with_draft_public_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/ami/create_draft_ami_product_with_draft_public_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create an draft AMI product with a draft public offer.
+  title: Create an draft AMI product with a draft public offer using an &AWS; SDK
+  title_abbrev: Create an draft AMI product with a draft public offer
+marketplace-catalog_CreateDraftContainerProductWithDraftPublicOffer:
+  category: Container products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/container/CreateDraftContainerProductWithDraftPublicOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/container/create_draft_container_product_with_draft_public_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/container/create_draft_container_product_with_draft_public_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a draft container product with a draft public offer.
+  title: Create a draft container product with a draft public offer using an &AWS; SDK
+  title_abbrev: Create a draft container product with a draft public offer
+marketplace-catalog_CreateDraftSaasProductWithDraftPublicOffer:
+  category: SaaS products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/saas/CreateSaasProductWithPublicOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/saas/create_draft_saas_product_with_draft_public_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/saas/create_draft_saas_product_with_draft_public_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a draft SaaS product with a draft public offer.
+  title: Create a draft SaaS product with a draft public offer using an &AWS; SDK
+  title_abbrev: Create a draft SaaS product with a draft public offer
+marketplace-catalog_PublishSaasProductPublicOffer:
+  category: SaaS products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/saas/PublishSaasProductPublicOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/saas/publish_saas_product_public_offer/changeset1.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/saas/publish_saas_product_public_offer/start_changeset1.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish a SaaS product and associated public offer. The product will
+    be in a limited state by default.
+  title: Publish a SaaS product and associated public offer using an &AWS; SDK
+  title_abbrev: Publish a SaaS product and associated public offer
+marketplace-catalog_CreateLimitedAmiProductAndPublicOfferWithHourlyAnnualPricing:
+  category: AMI products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/ami/CreateLimitedAmiProductAndPublicOfferWithHourlyAnnualPricing.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/ami/create_limited_ami_product_and_public_offer_with_hourly_annual_pricing/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/ami/create_limited_ami_product_and_public_offer_with_hourly_annual_pricing/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a public or limited AMI product and a public offer with hourly annual
+    pricing. This example creates either a standard or custom EULA.
+  title: Create a public or limited AMI product and a public offer with hourly annual pricing using an &AWS; SDK
+  title_abbrev: Create a public or limited AMI product and a public offer with hourly annual pricing
+marketplace-catalog_CreateLimitedAmiProductAndPublicOfferWithHourlyPricing:
+  category: AMI products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/ami/CreateLimitedAmiProductAndPublicOfferWithHourlyPricing.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/ami/create_limited_ami_product_and_public_offer_with_hourly_pricing/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/ami/create_limited_ami_product_and_public_offer_with_hourly_pricing/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a public or limited AMI product and public offer with hourly pricing. This example creates either
+    and standard or custom EULA.
+  title: Create a public or limited AMI product and public offer with hourly pricing using an &AWS; SDK
+  title_abbrev: Create a public or limited AMI product and public offer with hourly pricing
+marketplace-catalog_CreateLimitedAmiProductAndPublicOfferWithHourlyMonthlyPricing:
+  category: AMI products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/ami/CreateLimitedAmiProductAndPublicOfferWithHourlyMonthlyPricing.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/ami/create_limited_ami_product_and_public_offer_with_hourly_monthly_pricing/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/ami/create_limited_ami_product_and_public_offer_with_hourly_monthly_pricing/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a public or limited AMI product and public offer with hourly monthly
+    pricing. This example creates either a standard or custom EULA.
+  title: Create a public or limited AMI product and public offer with hourly monthly
+    pricing using an &AWS; SDK
+  title_abbrev: Create a public or limited AMI product and public offer with hourly monthly pricing
+marketplace-catalog_CreateLimitedSaasProductAndPublicOfferWithSubscriptionPricing:
+  category: SaaS products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/saas/CreateLimitedSaasAndPublicOfferWithSubscriptionPricing.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/saas/create_limited_saas_product_and_public_offer_with_subscription_pricing/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/saas/create_limited_saas_product_and_public_offer_with_subscription_pricing/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a public or limited SaaS product and public offer with subscription
+    pricing. This examples creates either a standard or custom EULA.
+  title: Create a public or limited SaaS product and public offer with subscription
+    pricing using an &AWS; SDK
+  title_abbrev: Create a public or limited SaaS product and public offer with subscription pricing
+marketplace-catalog_CreateLimitedSaasProductAndPublicOfferWithContractWithPayAsYouGoPricing:
+  category: SaaS products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/saas/CreateLimitedSaasAndPublicOfferWithContractWithPayAsYouGoPricing.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/saas/create_limited_saas_product_and_public_offer_with_contract_with_pay_as_you_go_pricing/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/saas/create_limited_saas_product_and_public_offer_with_contract_with_pay_as_you_go_pricing/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a public or limited SaaS product and public offer with a contract
+    with Pay-As-You-Go pricing. This example creates either a standard or custom EULA.
+  title: Create a public or limited SaaS product and public offer with contract with Pay-As-You-Go 
+    pricing using an &AWS; SDK
+  title_abbrev: Create a public or limited SaaS product and public offer with contract with Pay-As-You-Go pricing
+marketplace-catalog_CreateLimitedSaasProductAndPublicOfferWithContractPricing:
+  category: SaaS products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/saas/CreateLimitedSaasAndPublicOfferWithContractPricing.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/saas/create_limited_saas_product_and_public_offer_with_contract_pricing/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/saas/create_limited_saas_product_and_public_offer_with_contract_pricing/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a public or limited SaaS product and public offer with contract
+    pricing. This example creates either a standard or custom EULA.
+  title: Create a public or limited SaaS product and public offer with contract pricing using an &AWS; SDK
+  title_abbrev: Create a public or limited SaaS product and public offer with contract pricing
+marketplace-catalog_CreatePublicFreeTrialOfferWithSubscriptionPricingForSaasProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePublicFreeTrialOfferWithSubscriptionPricingForSaas.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_public_free_trial_offer_with_subscription_pricing_for_saas_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_public_free_trial_offer_with_subscription_pricing_for_saas_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a public free trial offer with subscription pricing for a SaaS product.
+  title: Create a public free trial offer with subscription pricing for a SaaS product
+    using an &AWS; SDK
+  title_abbrev: Create a public free trial offer with subscription pricing for a SaaS product
+marketplace-catalog_UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaasProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/UpdateFreeTrialDurationOfPublicFreeTrialOfferForSass.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/update_free_trial_duration_of_public_free_trial_offer_for_saas_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/update_free_trial_duration_of_public_free_trial_offer_for_saas_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update the free trial duration of a public free trial offer for a SaaS product.
+  title: Update the free trial duration of a public free trial offer for a SaaS product using
+    an &AWS; SDK
+  title_abbrev: Update the free trial duration of a public free trial offer for a SaaS product
+marketplace-catalog_CreateLimitedContainerProductPublicOffer:
+  category: Container products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/container/CreateLimitedContainerProductPublicOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/container/create_limited_container_product_public_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/container/create_limited_container_product_public_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a limited container product with a public offer, contract pricing, and
+    standard EULA.
+  title: Create a limited container product with public offer, contract pricing using an &AWS; SDK
+  title_abbrev: Create a limited container product with a public offer and contract pricing
+marketplace-catalog_RestrictExistingAmi:
+  category: AMI products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/ami/RestrictExistingAmi.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/ami/restrict_existing_ami/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/ami/restrict_existing_ami/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: restrict product visibility.
+  title: Restrict product visibility using an &AWS; SDK
+  title_abbrev: Restrict product visibility
+marketplace-catalog_UpdateOfferExpirationDateOfPrivateOffer:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/UpdateOfferExpirationDateOfPrivateOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_expiration_date_of_private_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_expiration_date_of_private_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update the expiration date of a private offer to a date in the future to give buyers more time to evaluate and accept the offer.
+  title: Update the expiration date of a private offer to a future date using an &AWS; SDK
+  title_abbrev: Update the expiration date of a private offer to a future date
+marketplace-catalog_UpdateOfferNameAndDescription:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/UpdateEula.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_name_and_description/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_name_and_description/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update name and description of a public offer.
+  title: Update name and description of a public offer using an &AWS; SDK
+  title_abbrev: Update name and description of a public offer
+marketplace-catalog_UpdateEula:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/UpdateOfferNameAndDescription.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/update_eula/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/update_eula/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update the EULA of an offer.
+  title: Update the EULA of an offer using an &AWS; SDK
+  title_abbrev: Update the EULA of an offer
+marketplace-catalog_UpdateRefundPolicy:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/UpdateRefundPolicy.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/update_refund_policy/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/update_refund_policy/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update the refund policy of an offer.
+  title: Update the refund policy of an offer using an &AWS; SDK
+  title_abbrev: Update the refund policy of an offer
+marketplace-catalog_UpdateOfferTargeting:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/UpdateOfferTargeting.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_targeting/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_targeting/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update an offer to apply targeting to specific geographic regions.
+  title: Update an offer to apply targeting to specific geographic regions using an &AWS; SDK
+  title_abbrev: Update an offer to apply targeting to specific geographic regions
+marketplace-catalog_UpdateOfferWithHourlyAnnualPricing:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/UpdateOfferWithHourlyAnnualPricing.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_with_hourly_annual_pricing/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_with_hourly_annual_pricing/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update an offer to apply hourly annual pricing.
+  title: Update an offer to apply hourly annual pricing using an &AWS; SDK
+  title_abbrev: Update an offer to apply hourly annual pricing
+marketplace-catalog_UpdateOfferWithContractAndPayAsYouGoPricing:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/UpdateOfferWithContractAndPayAsYouGoPricing.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_with_contract_and_pay_as_you_go_pricing/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/update_offer_with_contract_and_pay_as_you_go_pricing/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update an offer to apply a contract with Pay-As-You-Go pricing.
+  title: Update an offer to apply a contract with Pay-As-You-Go pricing using an &AWS; SDK
+  title_abbrev: Update an offer to apply a contract with Pay-As-You-Go pricing
+marketplace-catalog_AddDimensionToAmiProductAndSetPriceInPublicOffer:
+  category: AMI products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/ami/AddDimensionToAmiProductAndSetPriceInPublicOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/ami/add_dimension_to_ami_product_and_set_price_in_public_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/ami/add_dimension_to_ami_product_and_set_price_in_public_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: add a dimension to an existing AMI product and update the offer pricing terms.
+  title: Add a dimension to an existing AMI product and update the offer pricing terms using an &AWS; SDK
+  title_abbrev: Add a dimension to an existing AMI product and update the offer pricing terms
+marketplace-catalog_UpdateNameDimensionSaasProduct:
+  category: SaaS products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/saas/UpdateNameDimensionSaasProduct.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/saas/update_name_dimension_saas_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/saas/update_name_dimension_saas_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update dimensions on an AMI or SaaS product.
+  title: Update dimensions on an AMI or SaaS product using an &AWS; SDK
+  title_abbrev: Update dimensions on an AMI or SaaS product
+marketplace-catalog_AddRegionExistingAmiProduct:
+  category: AMI products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/ami/AddRegionExistingAmiProduct.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/ami/add_region_existing_ami_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/ami/add_region_existing_ami_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: add a region where an AMI product is deployed.
+  title: Add a region where an AMI product is deployed using an &AWS; SDK
+  title_abbrev: Add a region where an AMI product is deployed
+marketplace-catalog_RestrictRegionExistingAmiProduct:
+  category: AMI products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/ami/RestrictRegionExistingAmiProduct.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/ami/restrict_region_existing_ami_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/ami/restrict_region_existing_ami_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: restrict a region where an AMI product is deployed.
+  title: Restrict a region where an AMI product is deployed using an &AWS; SDK
+  title_abbrev: Restrict a region where an AMI product is deployed
+marketplace-catalog_UpdateFutureRegionSupport:
+  category: AMI products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/products/ami/UpdateFutureRegionSupport.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/ami/update_future_region_support/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/products/ami/update_future_region_support/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: specify whether AMI assets are deployed in new regions built by
+    &AWS; to support future regions.
+  title: Specify whether AMI assets are deployed in new regions using an &AWS; SDK
+  title_abbrev: Specify whether AMI assets are deployed in new regions
+marketplace-catalog_ListProducts:
+  category: Products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/ListEntities.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/list_products/list_products.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: {DescribeEntity, ListEntities}
+  synopsis: list all AMI, SaaS, or Container products and associated public offers.
+  title: List all AMI, SaaS, or Container products and associated public offers
+    using an &AWS; SDK
+  title_abbrev: List all AMI, SaaS, or Container products and associated public offers
+marketplace-catalog_DescribeProduct:
+  category: Products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/DescribeEntity.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/products/describe_product/describe_product.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      DescribeEntity: null
+  synopsis: describe an AMI, SaaS, or Container product and check if it contains
+    all the information you want to know about the product.
+  title: Describe an AMI, SaaS, or Container product using an &AWS; SDK
+  title_abbrev: Describe an AMI, SaaS, or Container product
+marketplace-catalog_DescribeOffer:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/DescribeEntity.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/describe_offer/describe_offer.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      DescribeEntity: null
+  synopsis: describe a public offer.
+  title: Describe a public offer using an &AWS; SDK
+  title_abbrev: Describe a public offer
+marketplace-catalog_CreateDraftPrivateOffer:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreateDraftPrivateOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_draft_private_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_draft_private_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a draft private offer for an AMI or SaaS product so you can review
+    it internally before publishing to buyers.
+  title: Create a draft private offer for an AMI or SaaS product using an &AWS; SDK
+  title_abbrev: Create a draft private offer for an AMI or SaaS product
+marketplace-catalog_ExpirePrivateOffer:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/ExpirePrivateOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_draft_private_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_draft_private_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: set the expiration date of a private offer to a date in the past so that buyers no longer see the offer.
+  title: Expire a private offer using an &AWS; SDK
+  title_abbrev: Expire a draft private offer
+marketplace-catalog_CreatePrivateOfferWithHourlyAnnualPricingAndFlexiblePaymentScheduleForAmiProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePrivateOfferWithHourlyAnnualPricingAndFlexiblePaymentScheduleForAmi.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_hourly_annual_pricing_and_flexible_payment_schedule_for_ami_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_hourly_annual_pricing_and_flexible_payment_schedule_for_ami_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a private offer with hourly annual pricing and a flexible payment schedule for an AMI product.
+  title: Create a private offer with hourly annual pricing and a flexible payment schedule for an AMI product using an &AWS; SDK
+  title_abbrev: Create a private offer with hourly annual pricing and a flexible payment schedule for an AMI product
+marketplace-catalog_CreatePrivateOfferWithHourlyAnnualPricingForAmiProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePrivateOfferWithHourlyAnnualPricingForAmiProduct.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_hourly_annual_pricing_for_ami_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_hourly_annual_pricing_for_ami_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a private offer with hourly annual pricing for an AMI product.
+  title: Create a private offer with hourly annual pricing for an AMI product using an &AWS; SDK
+  title_abbrev: Create a private offer with hourly annual pricing for an AMI product
+marketplace-catalog_CreatePrivateOfferWithHourlyPricingForAmiProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePrivateOfferWithHourlyPricingForAmi.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_hourly_pricing_for_ami_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_hourly_pricing_for_ami_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a private offer with hourly pricing for an AMI product.
+  title: Create a private offer with hourly pricing for an AMI product using an &AWS;
+    SDK
+  title_abbrev: Create a private offer with hourly pricing for an AMI product
+marketplace-catalog_CreatePrivateOfferWithContractPricingForAmiProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePrivateOfferWithContractPricingForAmiProduct.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_contract_pricing_for_ami_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_contract_pricing_for_ami_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a private offer with contract pricing for an AMI product.
+  title: Create a private offer with contract pricing for an AMI product using an
+    &AWS; SDK
+  title_abbrev: Create a private offer with contract pricing for an AMI product
+marketplace-catalog_CreatePrivateOfferWithContractPricingForContainerProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePrivateOfferWithContractPricingForContainerProduct.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_contract_pricing_for_container_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_contract_pricing_for_container_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a private offer with contract pricing for a Container product.
+  title: Create a private offer with contract pricing for a Container product using an &AWS; SDK
+  title_abbrev: Create a private offer with contract pricing for a Container product
+marketplace-catalog_CreatePrivateOfferWithContractPricingWithFlexiblePaymentScheduleForSaasProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePrivateOfferWithContractPricingWithFlexiblePaymentScheduleForSaas.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_contract_pricing_with_flexible_payment_schedule_for_saas_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_contract_pricing_with_flexible_payment_schedule_for_saas_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a private offer with contract pricing and a flexible payment schedule for a SaaS product.
+  title: Create a private offer with contract pricing and a flexible payment schedule for a SaaS product using an &AWS; SDK
+  title_abbrev: Create a private offer with contract pricing and a flexible payment schedule for a SaaS product
+marketplace-catalog_CreatePrivateOfferWithContractWithPayAsYouGoPricingForSaasProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePrivateOfferWithContractWithPayAsYouGoPricingForSaas.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_contract_with_pay_as_you_go_pricing_for_saas_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_contract_with_pay_as_you_go_pricing_for_saas_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a private offer with contract and Pay-As-You-Go pricing for a SaaS product.
+  title: Create a private offer with contract and Pay-As-You-Go pricing for a SaaS product using an &AWS; SDK
+  title_abbrev: Create a private offer with contract and Pay-As-You-Go pricing for a SaaS product
+marketplace-catalog_CreatePrivateOfferWithSubscriptionPricingForSaasProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePrivateOfferWithSubscriptionPricingForSaas.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_subscription_pricing_for_saas_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_subscription_pricing_for_saas_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a private offer with subscription pricing for a SaaS product.
+  title: Create a private offer with subscription pricing for a SaaS product using an &AWS; SDK
+  title_abbrev: Create a private offer with subscription pricing for a SaaS product
+marketplace-catalog_CreatePrivateOfferWithTieredContractPricingForSaasProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreatePrivateOfferWithTieredContractPricingForSaas.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_tiered_contract_pricing_for_saas_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_private_offer_with_tiered_contract_pricing_for_saas_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a private offer with tiered contract pricing for a SaaS product.
+  title: Create a private offer with tiered contract pricing for a SaaS product using an &AWS; SDK
+  title_abbrev: Create a private offer with tiered contract pricing for a SaaS product
+marketplace-catalog_DraftResaleauthAllproducttype:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/DraftResaleauthAllProductType.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/draft_resaleauth_allproducttype/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/draft_resaleauth_allproducttype/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create draft resale authorization for any product type 
+    so you can review them internally before publishing to a Channel Partner.
+  title: Create draft resale authorization for any product type using an &AWS; SDK
+  title_abbrev: Create draft resale authorization
+marketplace-catalog_OnetimeResaleauthPrivateoffer:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/OnetimeResaleauthPrivateoffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/onetime_resaleauth_privateoffer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/onetime_resaleauth_privateoffer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish a one-time resale authorization with a private offer so a Channel Partner can
+    use it to create a Channel Partner Private Offer (CPPO).
+  title: Publish a one-time resale authorization with a private offer using an &AWS; SDK
+  title_abbrev: Publish a one-time resale authorization with a private offer
+marketplace-catalog_OnetimeResaleauthCustomEula:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/OnetimeResaleauthCustomEula.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/onetime_resaleauth_custom_eula/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/onetime_resaleauth_custom_eula/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish one-time resale authorization for any product type
+    and add a custom EULA to be sent to the buyer.
+  title: Publish one-time resale authorization for any product type
+    and add a EULA using an &AWS; SDK
+  title_abbrev: Publish one-time resale authorization and add a EULA
+marketplace-catalog_OnetimeResaleauthCustomresellerContractdoc:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/OnetimeResaleauthCustomresellerContractdoc.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/onetime_resaleauth_customreseller_contractdoc/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/onetime_resaleauth_customreseller_contractdoc/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish one-time resale authorization for any product type 
+    and add reseller contract documentation between the ISV and Channel Partner.
+  title: Publish one-time resale authorization for any product type
+    and add reseller contract documentation using an &AWS; SDK
+  title_abbrev: Publish one-time resale authorization and add reseller contract documentation
+marketplace-catalog_MultiuseResaleauthExpirydateCppo:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/MultiuseResaleauthExpirydateCPPO.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_expirydate_cppo/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_expirydate_cppo/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish multi-use resale authorization with an expiration date for an AMI product
+    with hourly annual pricing so a Channel Partner can use it to create a CPPO.
+  title: Publish multi-use resale authorization with an expiration date using an &AWS; SDK
+  title_abbrev: Publish multi-use resale authorization with an expiration date
+marketplace-catalog_MultiuseResaleauthNoExpirydateCppo:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/MultiuseResaleautoNoExpirydateCPPO.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_no_expirydate_cppo/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_no_expirydate_cppo/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish multi-use resale authorization without an expiration date for an AMI
+    product with hourly annual pricing so a CP can use that to create a CPPO.
+  title: Publish multi-use resale authorization without an expiration date using an &AWS;
+    SDK
+  title_abbrev: Publish multi-use resale authorization without an expiration date
+marketplace-catalog_MultiuseResaleauthExpirydateCustomEula:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/MultiuseResaleauthExpirydateCustomEula.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_expirydate_custom_eula/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_expirydate_custom_eula/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish multi-use resale authorization with an expiration date for any product
+    type and add a custom EULA to be sent to the buyer.
+  title: Publish multi-use resale authorization with an expiration date and a EULA to be sent to the buyer using an &AWS;
+    SDK
+  title_abbrev: Publish multi-use resale authorization with an expiration date and a EULA
+marketplace-catalog_MultiuseResaleauthExpirydateCustomresellerContractdoc:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/MultiuseResaleauthExpirydateCustomresellerContractdoc.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_expirydate_customreseller_contractdoc/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_expirydate_customreseller_contractdoc/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish multi-use resale authorization with an expiration date for any product
+    type and add reseller contract documentation between the ISV and Channel Partner.
+  title: Publish multi-use resale authorization with an expiration date and add reseller contract documentation using an &AWS; SDK
+  title_abbrev: Publish multi-use resale authorization with an expiration date and reseller contract documentation
+marketplace-catalog_MultiuseResaleauthNoExpirydateCustomEula:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/MultiuseResaleauthNoExpirdateCustomEula.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_no_expirydate_custom_eula/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_no_expirydate_custom_eula/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish multi-use resale authorization without an expiration date for any product
+    type and add a custom EULA to be sent to the buyer.
+  title: Publish multi-use resale authorization without an expiration date and add a custom EULA using
+    an &AWS; SDK
+  title_abbrev: Publish multi-use resale authorization without an expiration date and a EULA
+marketplace-catalog_MultiuseResaleauthNoExpirydateCustomresellerContractdoc:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/MultiuseResaleauthNoExpirydateCustomResellerContractdoc.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_no_expirydate_customreseller_contractdoc/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/multiuse_resaleauth_no_expirydate_customreseller_contractdoc/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish multi-use resale authorization without an expiration date for any product
+    type and add reseller contract documentation between the ISV and Channel Partner.
+  title: Publish multi-use resale authorization without an expiration date and add reseller contract documentation using an &AWS; SDK
+  title_abbrev: Publish multi-use resale authorization without an expiration date and reseller contract documentation
+marketplace-catalog_CreateDraftCppoOffer:
+  category: Channel partner offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/channel_partner_offers/CreateDraftCppoOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/create_draft_cppo_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/create_draft_cppo_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a draft CPPO for any product type so you can review
+    them internally before publishing to buyers.
+  title: Create a draft CPPO for any product type using an &AWS; SDK
+  title_abbrev: Create a draft CPPO for any product type
+marketplace-catalog_PublishOneTimeCppoWithPriceMarkup:
+  category: Channel partner offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/channel_partner_offers/PublishCppoPiceMarkupObject.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/publish_one_time_cppo_with_price_markup/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/publish_one_time_cppo_with_price_markup/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish a CPPO using one-time resale authorization on AMI, SaaS, or Container
+    products and update price markup.
+  title: Publish a CPPO using one-time resale authorization and update price markup using an &AWS; SDK
+  title_abbrev: Publish a CPPO using one-time resale authorization and update price markup
+marketplace-catalog_PublishCppoEula:
+  category: Channel partner offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/channel_partner_offers/PublishCppoEula.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/publish_cppo_eula/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/publish_cppo_eula/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish a CPPO and append a buyer EULA.
+  title: Publish a CPPO and append a buyer EULA using an &AWS; SDK
+  title_abbrev: Publish a CPPO and append a buyer EULA
+marketplace-catalog_UpdateCppoExpiryDate:
+  category: Channel partner offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/channel_partner_offers/UpdateCppoExpiryDate.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/update_cppo_expiry_date/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/update_cppo_expiry_date/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update the expiration date of a CPPO to give buyers more time to evaluate and accept the offer.
+  title: Update the expiration date of a CPPO using an &AWS; SDK
+  title_abbrev: Update the expiration date of a CPPO
+marketplace-catalog_PublishCppoPriceMarkup:
+  category: Channel partner offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/channel_partner_offers/PublishCppoPiceMarkupObject.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/publish_cppo_price_markup/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/publish_cppo_price_markup/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish a draft CPPO and update price markup.
+  title: Publish a draft CPPO and update price markup using an &AWS; SDK
+  title_abbrev: Publish a draft CPPO and update price markup
+marketplace-catalog_UpdateUnpublishedResaleAuthorization:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/UpdateUnpublishedResaleAuthorization.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/update_unpublished_resale_authorization/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/update_unpublished_resale_authorization/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: update name and description of one-time or multi-use resale authorization
+    before publishing for any product type.
+  title: Update name and description of one-time or multi-use resale authorization using an &AWS; SDK
+  title_abbrev: Update name and description of one-time or multi-use resale authorization
+marketplace-catalog_PublishOnetimeResaleAuthorizationFlexiblePayment:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/PublishOnetimeResaleAuthFlexiblePayment.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/publish_onetime_resale_authorization_flexible_payment/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/publish_onetime_resale_authorization_flexible_payment/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish one-time resale authorization for any product type and add Flexible payment schedule.
+  title: Publish one-time resale authorization and add Flexible payment schedule using an &AWS; SDK
+  title_abbrev: Publish one-time resale authorization and add Flexible payment schedule
+marketplace-catalog_PublishOnetimeResaleAuthorizationSpecificBuyer:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/PublishOnetimeResaleAuthSpecificBuyer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/publish_onetime_resale_authorization_specific_buyer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/publish_onetime_resale_authorization_specific_buyer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish one-time resale authorization for any product type and add a specific buyer account for the resale.
+  title: Publish one-time resale authorization and add a specific buyer account for the resale using an &AWS; SDK
+  title_abbrev: Publish one-time resale authorization and add a specific buyer account
+marketplace-catalog_PublishMultiuseResaleAuthorizationExpirydateSpecificBuyer:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/PublishMultiuseResaleAuthExpirydateSpecificBuyer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/publish_multiuse_resale_authorization_expirydate_specific_buyer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/publish_multiuse_resale_authorization_expirydate_specific_buyer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish multi-use resale authorization with an expiration date for any product
+    type and add a specific buyer account for the resale.
+  title: Publish multi-use resale authorization with expiration and add a specific buyer account for the resale using an &AWS; SDK
+  title_abbrev: Publish multi-use resale authorization with expiration and add a specific buyer account
+marketplace-catalog_PublishMultiuseResaleAuthorizationNoExpirydateSpecificBuyer:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/PublishMultiuseResaleAuthNoExpirydateSpecificBuyer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/publish_multiuse_resale_authorization_no_expirydate_specific_buyer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/publish_multiuse_resale_authorization_no_expirydate_specific_buyer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish multi-use resale authorization without an expiration date for any product
+    type and add a specific buyer account for the resale.
+  title: Publish multi-use resale authorization without expiration date and add a specific buyer account for the resale using
+    an &AWS; SDK
+  title_abbrev: Publish multi-use resale authorization without expiration and add a specific buyer account
+marketplace-catalog_RestrictResaleAuthorization:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/RestrictResaleAuthorization.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/restrict_resale_authorization/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/restrict_resale_authorization/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: restrict resale authorization.
+  title: Restrict resale authorization using an &AWS; SDK
+  title_abbrev: Restrict resale authorization
+marketplace-catalog_OnetimeResaleauthRenewal:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/resaleAuthorization/OnetimeResaleauthRenewal.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/onetime_resaleauth_renewal/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/onetime_resaleauth_renewal/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish one-time resale authorization for any product type and add whether it is a renewal.
+  title: Publish one-time resale authorization for and add whether it is a renewal using an &AWS; SDK
+  title_abbrev: Publish one-time resale authorization and add whether it is a renewal
+marketplace-catalog_CreateSaasProductCustomDimensionAndPrivateOffer:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreateSaasProductCustomDimensionAndPrivateOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_saas_product_custom_dimension_and_private_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_saas_product_custom_dimension_and_private_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a custom dimension for a SaaS product and create a private offer.
+  title: Create a custom dimension for a SaaS product and create a private
+    offer using an &AWS; SDK
+  title_abbrev: Create a custom dimension for a SaaS product and create a private offer
+marketplace-catalog_DescribeResaleAuthorization:
+  category: Resale authorization
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/DescribeEntity.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/resale_authorization/describe_resale_authorization/describe_resale_authorization.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      DescribeEntity: null
+  synopsis: describe a resale authorization.
+  title: Describe a resale authorization using an &AWS; SDK
+  title_abbrev: Describe a resale authorization
+marketplace-catalog_ListAllCppoOffers:
+  category: Channel partner offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/ListAllCppoOffers.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/list_all_cppo_offers/list_all_cppo_offers.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      ListEntities: null
+  synopsis: list all CPPOs created by a channel partner.
+  title: List all CPPOs created by a channel partner using an &AWS; SDK
+  title_abbrev: List all CPPOs created by a channel partner
+marketplace-catalog_ListAllSharedResaleAuthorizations:
+  category: Channel partner offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/ListAllSharedResaleAuthorizations.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/list_all_shared_resale_authorizations/list_all_shared_resale_authorizations.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      ListEntities: null
+  synopsis: list all shared resale authorizations available to a channel partner.
+  title: List all shared resale authorizations available to a channel partner using
+    an &AWS; SDK
+  title_abbrev: List all shared resale authorizations available to a channel partner
+marketplace-catalog_CreateReplacementPrivateOfferWithContractPricing:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/CreateReplacementPrivateOfferWithContractPricing.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/create_replacement_private_offer_with_contract_pricing/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/create_replacement_private_offer_with_contract_pricing/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a replacement private offer from an existing agreement with contract
+    pricing.
+  title: Create a replacement private offer from an existing agreement with contract
+    pricing using an &AWS; SDK
+  title_abbrev: Create a replacement private offer with contract pricing
+marketplace-catalog_CreateResaleAuthorizationReplacementOffer:
+  category: Channel partner offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/channel_partner_offers/CreateResaleAuthorizationReplacementOffer.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/create_resale_authorization_replacement_offer/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/channel_partner_offers/create_resale_authorization_replacement_offer/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: create a resale authorization replacement private offer from an existing
+    agreement with contract pricing.
+  title: Create a resale authorization replacement private offer from an existing
+    agreement with contract pricing using an &AWS; SDK
+  title_abbrev: Create a resale authorization replacement private offer with contract pricing
+marketplace-catalog_ListProductOffers:
+  category: Entities
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/ListProductPrivateOffers.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/entities/list_product_offers.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: {DescribeEntity, ListEntities}
+  synopsis: list and describe all offers associated with a product.
+  title: List and describe all offers associated with a product using an &AWS; SDK
+  title_abbrev: List and describe all offers associated with a product
+marketplace-catalog_BatchDescribeEntities:
+  category: Entities
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/BatchDescribeEntities.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/entities/batch_describe_entities.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      BatchDescribeEntities: null
+  synopsis: describe all entities in a single call.
+  title: Describe all entities in a single call using an &AWS; SDK
+  title_abbrev: Describe all entities in a single call
+marketplace-catalog_PublishExistingSaas:
+  category: SaaS products
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/resources/changeSets/products/saas/PublishExistingSaas.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: publish a SaaS product and associated public offer from an existing draft. The product will be in a limited state by default.
+  title: Publish a SaaS product and associated public offer from an existing draft using an &AWS; SDK
+  title_abbrev: Publish a SaaS product and associated public offer from an existing draft
+marketplace-catalog_ListAllPrivateOffers:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/ListAllPrivateOffers.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/list_private_offer/list_private_offers.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: list all private offers.
+  title: List all private offers using an &AWS; SDK
+  title_abbrev: List all private offers
+marketplace-catalog_ListProductPublicOrPrivateReleasedOffers:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/ListProductPublicOrPrivateReleasedOffers.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: list released public and private offers for a specific product ID.
+  title: List released public and private offers for a specific product ID using an &AWS;
+    SDK
+  title_abbrev: List released public and private offers for a specific product ID
+marketplace-catalog_ChangeSetUtilities:
+  title: Utilities to start a changeset using an &AWS; SDK
+  title_abbrev: Utilities to start a changeset
+  synopsis: define utilities to start a changeset.
+  category: Utilities
+  languages:
+    Java:
+      versions:
+      - sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+        excerpts:
+        - description: Utility to load a changeset from a JSON file and start processing it.
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/catalogapi/RunChangesets.java
+    Python:
+      versions:
+      - sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+        excerpts:
+        - description: Utility to start a changeset.
+          snippet_files:
+          - python/src/utils/start_changeset.py
+        - description: Utility to load a changeset from a JSON file.
+          snippet_files:
+          - python/src/utils/stringify_details.py
+  services:
+    marketplace-catalog: {StartChangeSet}
+
