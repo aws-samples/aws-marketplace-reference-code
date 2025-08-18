@@ -6810,7 +6810,8 @@
 							]
 						}
 					],
-					"id": "fd9ebe78-2f9e-41f8-8930-0f8b7dfce3c1"
+					"id": "fd9ebe78-2f9e-41f8-8930-0f8b7dfce3c1",
+					"description": "AWS Marketplace Offer related API actions."
 				},
 				{
 					"name": "Channel Partner Offers",
