@@ -2005,7 +2005,7 @@
 							},
 							"response": [
 								{
-									"id": "09fd329c-2c7d-44b9-aecb-9e2508a1612b",
+									"id": "6c4b4e97-ac18-4819-94b6-e224b39df905",
 									"name": "DescribeProduct",
 									"originalRequest": {
 										"method": "GET",
@@ -2036,37 +2036,32 @@
 									"header": [
 										{
 											"key": "Date",
-											"value": "Tue, 01 Oct 2024 18:24:29 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json"
+											"value": "Fri, 31 Jan 2025 22:52:07 GMT"
 										},
 										{
 											"key": "Content-Length",
-											"value": "68"
+											"value": "0"
 										},
 										{
 											"key": "Connection",
 											"value": "keep-alive"
 										},
 										{
-											"key": "x-amzn-RequestId",
-											"value": "fc7a97de-1c30-4483-bbda-a06f30fd1a93"
-										},
-										{
-											"key": "x-amzn-ErrorType",
-											"value": "UnrecognizedClientException:com.amazonaws.services.marketplacecatalog.model"
+											"key": "Content-Type",
+											"value": "application/json",
+											"description": "",
+											"type": "text"
 										}
 									],
 									"cookie": [],
 									"responseTime": null,
-									"body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+									"body": "{\n    \"Details\":\"{\\\"Description\\\":{\\\"ProductTitle\\\":\\\"Ming SaaS Product 1 - Contract with Consumption pricing model\\\",\\\"ProductCode\\\":\\\"12345678amcdefgh\\\",\\\"ShortDescription\\\":\\\"Short description goes here.\\\",\\\"Manufacturer\\\":null,\\\"LongDescription\\\":\\\"Long Description goes here.\\\",\\\"Sku\\\":null,\\\"Highlights\\\":[\\\"Highlight 1 goes here.\\\"],\\\"AssociatedProducts\\\":null,\\\"SearchKeywords\\\":[\\\"my first keyword\\\",\\\"my second keyword\\\"],\\\"Visibility\\\":\\\"Limited\\\",\\\"ProductState\\\":\\\"Active\\\",\\\"Categories\\\":[\\\"Backup \\& Recovery\\\"]},\\\"PromotionalResources\\\":{\\\"LogoUrl\\\":\\\"https://awsmp-logos.s3.amazonaws.com/ca60b754fe05a24257176cdbf31c4e0d\\\",\\\"Videos\\\":[],\\\"AdditionalResources\\\":[],\\\"PromotionalMedia\\\":null},\\\"SupportInformation\\\":{\\\"Description\\\":\\\"Support details goes here.\\\",\\\"Resources\\\":[]},\\\"Dimensions\\\":[{\\\"Name\\\":\\\"Dimension 1\\\",\\\"Description\\\":\\\"Dimension 1 description goes here\\\",\\\"Key\\\":\\\"dimension_1_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"Entitled\\\"]},{\\\"Name\\\":\\\"Dimension 2\\\",\\\"Description\\\":\\\"Dimension 2 description goes here\\\",\\\"Key\\\":\\\"dimension_2_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"Entitled\\\"]},{\\\"Name\\\":\\\"Dimension 3\\\",\\\"Description\\\":\\\"Dimension 3 description goes here\\\",\\\"Key\\\":\\\"dimension_3_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"Entitled\\\"]},{\\\"Name\\\":\\\"metered 1\\\",\\\"Description\\\":\\\"Metered dimension 1 desc goes here\\\",\\\"Key\\\":\\\"metered_1_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"ExternallyMetered\\\"]},{\\\"Name\\\":\\\"metered 2\\\",\\\"Description\\\":\\\"Metered dimension 2 desc goes here\\\",\\\"Key\\\":\\\"metered_2_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"ExternallyMetered\\\"]},{\\\"Name\\\":\\\"metered 3\\\",\\\"Description\\\":\\\"Metered dimension 3 desc goes here\\\",\\\"Key\\\":\\\"metered_3_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"ExternallyMetered\\\"]}],\\\"Versions\\\":[{\\\"Id\\\":\\\"version-hnerk6luiqvqy\\\",\\\"DeliveryOptions\\\":[{\\\"Id\\\":\\\"do-qwiatgs7lfifw\\\",\\\"Type\\\":\\\"SoftwareRegistration\\\",\\\"FulfillmentUrl\\\":\\\"https://d1xui7l3aj8fxc.cloudfront.net/\\\"}]}],\\\"Targeting\\\":{\\\"PositiveTargeting\\\":{\\\"BuyerAccounts\\\":[\\\"111111111111\\\",\\\"222222222222\\\",\\\"333333333333\\\"]}}}\",\n    \"DetailsDocument\": {\n        \"Description\": {\n            \"ProductTitle\": \"Ming SaaS Product 1 - Contract with Consumption pricing model\",\n            \"ProductCode\": \"12345678amcdefgh\",\n            \"ShortDescription\": \"Short description goes here.\",\n            \"Manufacturer\": null,\n            \"LongDescription\": \"Long Description goes here.\",\n            \"Sku\": null,\n            \"Highlights\": [\n                \"Highlight 1 goes here.\"\n            ],\n            \"AssociatedProducts\": null,\n            \"SearchKeywords\": [\n                \"my first keyword\",\n                \"my second keyword\"\n            ],\n            \"Visibility\": \"Limited\",\n            \"ProductState\": \"Active\",\n            \"Categories\": [\n                \"Backup & Recovery\"\n            ]\n        },\n        \"PromotionalResources\": {\n            \"LogoUrl\": \"https://awsmp-logos.s3.amazonaws.com/ca60b754fe05a24257176cdbf31c4e0d\",\n            \"Videos\": [],\n            \"AdditionalResources\": [],\n            \"PromotionalMedia\": null\n        },\n        \"SupportInformation\": {\n            \"Description\": \"Support details goes here.\",\n            \"Resources\": []\n        },\n        \"Dimensions\": [\n            {\n                \"Name\": \"Dimension 1\",\n                \"Description\": \"Dimension 1 description goes here\",\n                \"Key\": \"dimension_1_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"Entitled\"\n                ]\n            },\n            {\n                \"Name\": \"Dimension 2\",\n                \"Description\": \"Dimension 2 description goes here\",\n                \"Key\": \"dimension_2_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"Entitled\"\n                ]\n            },\n            {\n                \"Name\": \"Dimension 3\",\n                \"Description\": \"Dimension 3 description goes here\",\n                \"Key\": \"dimension_3_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"Entitled\"\n                ]\n            },\n            {\n                \"Name\": \"metered 1\",\n                \"Description\": \"Metered dimension 1 desc goes here\",\n                \"Key\": \"metered_1_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"ExternallyMetered\"\n                ]\n            },\n            {\n                \"Name\": \"metered 2\",\n                \"Description\": \"Metered dimension 2 desc goes here\",\n                \"Key\": \"metered_2_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"ExternallyMetered\"\n                ]\n            },\n            {\n                \"Name\": \"metered 3\",\n                \"Description\": \"Metered dimension 3 desc goes here\",\n                \"Key\": \"metered_3_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"ExternallyMetered\"\n                ]\n            }\n        ],\n        \"Versions\": [\n            {\n                \"Id\": \"version-hnerk6luiqvqy\",\n                \"DeliveryOptions\": [\n                    {\n                        \"Id\": \"do-qwiatgs7lfifw\",\n                        \"Type\": \"SoftwareRegistration\",\n                        \"FulfillmentUrl\": \"https://d1xui7l3aj8fxc.cloudfront.net/\"\n                    }\n                ]\n            }\n        ],\n        \"Targeting\": {\n            \"PositiveTargeting\": {\n                \"BuyerAccounts\": [\n                    \"111111111111\",\n                    \"222222222222\",\n                    \"333333333333\"\n                ]\n            }\n        }\n    },\n    \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:11111111111:AWSMarketplace/SaaSProduct/prod-abcdefgh\",\n    \"EntityIdentifier\": \"prod-abcdefgh\",\n    \"EntityType\": \"SaaSProduct@1.0\",\n    \"LastModifiedDate\": \"2024-11-04T20:13:21Z\"\n}"
 								}
 							]
 						}
 					],
-					"id": "c7457f39-251b-4761-9f6b-c0ef016f8d4f"
+					"id": "c7457f39-251b-4761-9f6b-c0ef016f8d4f",
+					"description": "AWS Marketplace Products related API Actions"
 				},
 				{
 					"name": "ChangeSet",
