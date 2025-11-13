@@ -1,0 +1,127 @@
+{
+  "Catalog": "AWSMarketplace",
+  "ChangeSet": [
+    {
+      "ChangeName": "MyCreateOfferChange",
+      "ChangeType": "CreateOffer",
+      "Entity": {
+        "Type": "Offer@1.0"
+      },
+      "DetailsDocument": {
+        "ProductId": "prod-wa4ddxl7e7ktw"
+      }
+    },
+    {
+      "ChangeType": "UpdateInformation",
+      "Entity": {
+        "Type": "Offer@1.0",
+        "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+      },
+      "DetailsDocument": {
+        "Name": "Demo Private Offer with Dynamic Pricing",
+        "Description": "Demo Private Offer with Rate Card Based Pricing"
+      }
+    },
+    {
+      "ChangeType": "UpdateTargeting",
+      "Entity": {
+        "Type": "Offer@1.0",
+        "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+      },
+      "DetailsDocument": {
+        "PositiveTargeting": {
+          "BuyerAccounts": [
+            "111111111111"
+          ]
+        }
+      }
+    },
+    {
+      "ChangeType": "UpdateAvailability",
+      "Entity": {
+        "Type": "Offer@1.0",
+        "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+      },
+      "DetailsDocument": {
+        "AvailabilityEndDate": "2025-11-02"
+      }
+    },
+    {
+      "ChangeType": "UpdateLegalTerms",
+      "Entity": {
+        "Identifier": "$MyCreateOfferChange.Entity.Identifier",
+        "Type": "Offer@1.0"
+      },
+      "DetailsDocument": {
+        "Terms": [
+          {
+            "Type": "LegalTerm",
+            "Documents": [
+              {
+                "Type": "CustomEula",
+                "Url": "https://s3.amazonaws.com/aws-mp-standard-contracts/Standard-Contact-for-AWS-Marketplace-2022-07-14.pdf"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "ChangeType": "UpdatePricingTerms",
+      "Entity": {
+        "Type": "Offer@1.0",
+        "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+      },
+      "DetailsDocument": {
+        "PricingModel": "Usage",
+        "Terms": [
+          {
+            "Type": "UsageBasedPricingTerm",
+            "CurrencyCode": "USD",
+            "RateCards": [
+              {
+                "RateCard": [
+                  {
+                    "DimensionKey": "metered_1_id",
+                    "Price": "0.9"
+                  },
+                  {
+                    "DimensionKey": "metered_2_id",
+                    "Price": "1.7"
+                  },
+                  {
+                    "DimensionKey": "metered_3_id",
+                    "Price": "2.4"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "ChangeType": "UpdateValidityTerms",
+      "Entity": {
+        "Type": "Offer@1.0",
+        "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+      },
+      "DetailsDocument": {
+        "Terms": [
+          {
+            "Type": "ValidityTerm",
+            "AgreementDuration": "P365D"
+          }
+        ]
+      }
+    },
+    {
+      "ChangeType": "ReleaseOffer",
+      "DetailsDocument": {},
+      "Entity": {
+        "Type": "Offer@1.0",
+        "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+      }
+    }
+  ]
+}

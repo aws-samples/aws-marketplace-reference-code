@@ -1,0 +1,94 @@
+{
+   "EntityType":"SaaSProduct@1.0",
+   "EntityIdentifier":"prod-wa4ddxl7e7ktw@2",
+   "EntityArn":"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/SaaSProduct/prod-wa4ddxl7e7ktw",
+   "LastModifiedDate":"2025-10-26T23:43:00Z",
+   "DetailsDocument":{
+      "Description":{
+         "ProductTitle":"Sample Product usage based pricing 3264",
+         "ProductCode":"8h6sexykx0r2ei8dxc94vajj8",
+         "ShortDescription":"Brief description",
+         "Manufacturer":null,
+         "LongDescription":"Detailed description",
+         "Sku":null,
+         "Highlights":[
+            "Sample highlight"
+         ],
+         "AssociatedProducts":null,
+         "SearchKeywords":[
+            "Sample keyword"
+         ],
+         "Visibility":"Limited",
+         "ProductState":"Active",
+         "Categories":[
+            "Data Catalogs"
+         ]
+      },
+      "PromotionalResources":{
+         "LogoUrl":"https://awsmp-logos.s3.amazonaws.com/ca60b754fe05a24257176cdbf31c4e0d",
+         "Videos":[
+            
+         ],
+         "AdditionalResources":[
+            
+         ],
+         "PromotionalMedia":null
+      },
+      "SupportInformation":{
+         "Description":"Support details goes here.",
+         "Resources":[
+            
+         ]
+      },
+      "Dimensions":[
+         {
+            "Name":"metered 1",
+            "Description":"Metered dimension 1 desc goes here",
+            "Key":"metered_1_id",
+            "Unit":"Units",
+            "Types":[
+               "ExternallyMetered"
+            ]
+         },
+         {
+            "Name":"metered 2",
+            "Description":"Metered dimension 2 desc goes here",
+            "Key":"metered_2_id",
+            "Unit":"Units",
+            "Types":[
+               "ExternallyMetered"
+            ]
+         },
+         {
+            "Name":"metered 3",
+            "Description":"Metered dimension 3 desc goes here",
+            "Key":"metered_3_id",
+            "Unit":"Units",
+            "Types":[
+               "ExternallyMetered"
+            ]
+         }
+      ],
+      "Versions":[
+         {
+            "Id":"version-tbt5qqxc4o2ic",
+            "DeliveryOptions":[
+               {
+                  "Id":"do-xowiqy5pvguac",
+                  "Type":"SoftwareRegistration",
+                  "FulfillmentUrl":"https://sample.amazonaws.com/sample-saas-fulfillment-url"
+               }
+            ]
+         }
+      ],
+      "Targeting":{
+         "PositiveTargeting":{
+            "BuyerAccounts":[
+               "111111111111",
+               "297512042063",
+               "782858285006"
+            ]
+         }
+      }
+   }
+}

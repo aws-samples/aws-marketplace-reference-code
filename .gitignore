@@ -19,3 +19,7 @@ __pycache__/
 .pytest_cache/
 utils.egg-info/
 *.whl
+
+# IDE
+.vscode
+java/.settings

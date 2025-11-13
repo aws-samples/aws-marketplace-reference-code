@@ -1,0 +1,4 @@
+DimensionKey,OriginalPrice,DiscountPercent
+metered_1_id,1.0,10
+metered_2_id,2.0,15
+metered_3_id,3.0,20

@@ -1,0 +1,112 @@
+{
+   "Catalog": "AWSMarketplace",
+   "ChangeSet": [
+      {
+         "ChangeName": "MyCreateOfferChange",
+         "ChangeType": "CreateOffer",
+         "Entity": {
+            "Type": "Offer@1.0"
+         },
+         "DetailsDocument": {
+            "ProductId": "{{PRODUCT_ID}}"
+         }
+      },
+      {
+         "ChangeType": "UpdateInformation",
+         "Entity": {
+            "Type": "Offer@1.0",
+            "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+         },
+         "DetailsDocument": {
+            "Name": "{{OFFER_NAME}}",
+            "Description": "{{OFFER_DESCRIPTION}}"
+         }
+      },
+      {
+         "ChangeType": "UpdateTargeting",
+         "Entity": {
+            "Type": "Offer@1.0",
+            "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+         },
+         "DetailsDocument": {
+            "PositiveTargeting": {
+               "BuyerAccounts": "{{BUYER_IDS}}"
+            }
+         }
+      },
+      {
+         "ChangeType": "UpdateAvailability",
+         "Entity": {
+            "Type": "Offer@1.0",
+            "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+         },
+         "DetailsDocument": {
+            "AvailabilityEndDate": "{{EXPIRY_DATE}}"
+         }
+      },
+      {
+         "ChangeType": "UpdateLegalTerms",
+         "Entity": {
+            "Identifier": "$MyCreateOfferChange.Entity.Identifier",
+            "Type": "Offer@1.0"
+         },
+         "DetailsDocument": {
+            "Terms": [
+               {
+                  "Type": "LegalTerm",
+                  "Documents": [
+                     {
+                        "Type": "CustomEula",
+                        "Url": "{{CUSTOM_EULA_URL}}"
+                     }
+                  ]
+               }
+            ]
+         }
+      },
+      {
+         "ChangeType": "UpdatePricingTerms",
+         "Entity": {
+            "Type": "Offer@1.0",
+            "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+         },
+         "DetailsDocument": {
+            "PricingModel": "Usage",
+            "Terms": [
+               {
+                  "Type": "UsageBasedPricingTerm",
+                  "CurrencyCode": "USD",
+                  "RateCards": [
+                     {
+                        "RateCard": "{{RATE_CARDS}}"
+                     }
+                  ]
+               }
+            ]
+         }
+      },
+      {
+         "ChangeType": "UpdateValidityTerms",
+         "Entity": {
+            "Type": "Offer@1.0",
+            "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+         },
+         "DetailsDocument": {
+            "Terms": [
+               {
+                  "Type": "ValidityTerm",
+                  "AgreementDuration": "{{CONTRACT_DURATION_DAYS}}"
+               }
+            ]
+         }
+      },
+      {
+         "ChangeType": "ReleaseOffer",
+         "DetailsDocument": {},
+         "Entity": {
+            "Type": "Offer@1.0",
+            "Identifier": "$MyCreateOfferChange.Entity.Identifier"
+         }
+      }
+   ]
+}
