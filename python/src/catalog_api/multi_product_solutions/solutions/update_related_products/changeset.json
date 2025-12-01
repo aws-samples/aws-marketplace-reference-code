@@ -1,0 +1,31 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "UpdateRelatedProducts",
+            "Entity": {
+                "Type": "Solution@1.0",
+                "Identifier": "soln-123456"
+            },
+            "DetailsDocument": {
+                "IntegrationDescription": "How to use the products in this solution (usage guide)",
+                "AwsMarketplaceProducts": [
+                        {
+                          "ProductId": "prod-123"
+                        },
+                        {
+                          "ProductId": "prod-456"
+                        }
+                    ],
+                "NonAwsMarketplaceProducts": [
+                    {
+                        "Type": "Hardware",
+                        "Title": "Diamond engine",
+                        "Description": "Hardware details",
+                        "Url": "https://example.com/hardware-product-specs.html"
+                    }
+                ]
+            }
+        }
+    ]
+}

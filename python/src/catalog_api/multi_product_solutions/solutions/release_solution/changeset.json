@@ -1,0 +1,13 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "ReleaseSolution",
+            "Entity": {
+                "Type": "Solution@1.0",
+                "Identifier": "soln-1234abcd"
+            },
+            "DetailsDocument": {}
+        }
+    ]
+}

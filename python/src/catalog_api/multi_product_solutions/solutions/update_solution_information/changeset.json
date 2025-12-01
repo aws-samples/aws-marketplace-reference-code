@@ -1,0 +1,48 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Identifier": "soln-abc987",
+                "Type": "Solution@1.0"
+            },
+            "DetailsDocument": {
+                "Name": "project_cold_harbor",
+                "Title": "My Awesome Solution",
+                "ShortDescription": "Solution value proposition",
+                "LongDescription": "Detailed solution description explaining how this addresses customer needs",
+                "LogoUrl": "https://s3.amazonaws.com/awsmp-logos/logo.jpg",
+                "PromotionalMedia": [
+                    {
+                        "Type": "Image",
+                        "Url": "https://s3.amazonaws.com/logos/sample.png",
+                        "Title": "Sample image",
+                        "Description": "Sample image description"
+                    },
+                    {
+                        "Type": "Video",
+                        "Url": "https://s3.amazonaws.com/awsmp-media/video.mp4",
+                        "Title": "Sample video",
+                        "PreviewUrl": "https://s3.amazonaws.com/awsmp-media/preview.png",
+                        "Description": "Sample video description"
+                    }
+                ],
+                "AdditionalResources": [
+                    {
+                        "Text": "Troubleshooting guide",
+                        "Url": "https://example.com/troubleshooting"
+                    }
+                ],
+                "UseCases": [
+                    {
+                        "Group": "advertising_and_marketing",
+                        "SubGroup": "ad_intelligence_and_measurement",
+                        "Item": "amazon_ads_insights",
+                        "Description": "Highlight description of this use case"
+                    }
+                ]
+            }
+        }
+    ]
+}

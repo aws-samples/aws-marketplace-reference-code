@@ -1,0 +1,15 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "DisassociateSolution",
+            "Entity": {
+                "Type": "OfferSet@1.0",
+                "Identifier": "offerset-abc123"
+            },
+            "DetailsDocument": {
+                "SolutionId": "soln-abc987"
+            }
+        }
+    ]
+}

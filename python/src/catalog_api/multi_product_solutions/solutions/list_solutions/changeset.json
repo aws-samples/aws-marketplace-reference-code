@@ -1,0 +1,13 @@
+
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+            {
+
+            "ChangeType": "ListEntities",
+            "Entity": {
+                "Type": "Solution@1.0"
+            }
+        }
+    ]
+}

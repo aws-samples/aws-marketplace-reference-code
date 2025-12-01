@@ -1,0 +1,13 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "ReleaseOfferSet",
+            "Entity": {
+                "Type": "OfferSet@1.0",
+                "Identifier": "offerset-abc123"
+            },
+            "DetailsDocument": {}
+        }
+    ]
+}

@@ -113,7 +113,23 @@ It is important to note, in each changeset.json file there are one or more **Det
 | capi-95  | [Create a replacement private offer from an existing agreement with contract pricing](./src/catalog_api/offers/create_replacement_private_offer_with_contract_pricing)                                                                                                     |
 | capi-96  | [Create a resale authorization replacement private offer from an existing agreement with contract pricing](./src/catalog_api/channel_partner_offers/create_resale_authorization_replacement_offer)                                                                         |
 | capi-97  | [List and describe all Offers associated with a product](./src/catalog_api/entities/list_product_offers.py)                                                                                                                                                                |
-| capi-99  | [BatchDescribe all entities in a single call](./src/catalog_api/entities/batch_describe_entities.py)                                                                                                                                                                       |
+| capi-99  | [BatchDescribe all entities in a single call](./src/catalog_api/entities/batch_describe_entities.py)                                              |
+| capi-100  | [Create a Multi Product solution](./src/catalog_api/multi_product_solutions/solutions/create_solution_listing/)                        |
+| capi-101  | [list all Multi Product solutions](./src/catalog_api/multi_product_solutions/solutions/list_solutions)                        |
+| capi-102  | [Update Multi Product solution information](./src/catalog_api/multi_product_solutions/solutions/update_solution_information/)                        |
+| capi-103  | [Update related products for the Multi Product solution](./src/catalog_api/multi_product_solutions/solutions/update_related_products/)                           |
+| capi-104  | [Release the multi product solution](./src/catalog_api/multi_product_solutions/solutions/release_solution/)|
+| capi-105  | [Create an Offer set for Multi product solution](./src/catalog_api/multi_product_solutions/offers/create_offer_set/)|
+| capi-106  | [Update an Offer set information for Multi product solution](./src/catalog_api/multi_product_solutions/offers/update_offerset_information/)|
+| capi-107  | [Associate offer to an offer set](./src/catalog_api/multi_product_solutions/offers/associate_offer/)|
+| capi-108  | [Disassociate offer to an offer set](./src/catalog_api/multi_product_solutions/offers/disassociate_offer/)|
+| capi-109  | [Associate multi product solution to a offer set](./src/catalog_api/multi_product_solutions/offers/associate_solution/)|
+| capi-110  | [Disassociate multi product solution to a offer set](./src/catalog_api/multi_product_solutions/offers/disassociate_solution%20/)|
+| capi-111  | [Release Offer Set for multi product solution](./src/catalog_api/multi_product_solutions/offers/release_offer_set/)|
+| capi-112  | [Offer workflow for multi product solution](./src/catalog_api/multi_product_solutions/offers/offer_workflow/)|
+
+
+
 ## Agreement API reference code
 |Id|Use case|
 |-------|--------|
