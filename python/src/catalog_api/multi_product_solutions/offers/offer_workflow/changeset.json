@@ -1,0 +1,50 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "CreateOfferSet",
+            "Entity": {
+                "Type": "OfferSet@1.0"
+            },
+            "ChangeName": "OfferSetCreation",
+            "DetailsDocument": {
+                "Name": "My OfferSet Name"
+            }
+        },
+        {
+            "ChangeType": "AssociateOffers",
+            "Entity": {
+                "Type": "OfferSet@1.0",
+                "Identifier": "$OfferSetCreation.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Offers": [
+                    {
+                        "OfferId": "offer-abc123"
+                    },
+                    {
+                        "OfferId": "offer-xyz123"
+                    }
+                ]
+            }
+        },
+        {
+            "ChangeType": "AssociateSolution",
+            "Entity": {
+                "Type": "OfferSet@1.0",
+                "Identifier": "$OfferSetCreation.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "SolutionId": "soln-abc123"
+            }
+        },
+        {
+            "ChangeType": "ReleaseOfferSet",
+            "Entity": {
+                "Type": "OfferSet@1.0",
+                "Identifier": "$OfferSetCreation.Entity.Identifier"
+            },
+            "DetailsDocument": {}
+        }
+    ]
+}

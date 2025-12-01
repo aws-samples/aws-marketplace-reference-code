@@ -1,0 +1,14 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "CreateOfferSet",
+            "Entity": {
+                "Type": "OfferSet@1.0"
+            },
+            "DetailsDocument": {
+                "Name": "My OfferSet Name"
+            }
+        }
+    ]
+}

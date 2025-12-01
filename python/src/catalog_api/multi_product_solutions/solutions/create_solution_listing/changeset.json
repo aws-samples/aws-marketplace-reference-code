@@ -1,0 +1,59 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "CreateSolution",
+            "Entity": {
+                "Type": "Solution@1.0"
+            },
+            "ChangeName": "CreateSolutionChange",
+            "DetailsDocument": {
+                "Name": "multi_product_solution_one",
+                "Title": "New Partner Solution with multi products"
+            }
+        },
+        {
+            "ChangeType": "UpdateInformation",
+            "Entity": {
+                "Type": "Solution@1.0",
+                "Identifier": "$CreateSolutionChange.Entity.Identifier"
+            },
+            "DetailsDocument": {
+                "Name": "Sample multi product solution",
+                "Title":"New Partner Solution with multi products",
+                "ShortDescription": "Brief description",
+                "LongDescription": "Detailed solution description explaining how this addresses customer needs",
+                "LogoUrl": "https://s3.amazonaws.com/logos/sample.png",
+                "PromotionalMedia": [
+                    {
+                        "Type": "Image",
+                        "Url": "https://s3.amazonaws.com/awsmp-media/image.jpg",
+                        "Title": "Sample image",
+                        "Description": "Sample image description"
+                    },
+                    {
+                        "Type": "Video",
+                        "Url": "https://s3.amazonaws.com/awsmp-media/video.mp4",
+                        "Title": "Sample video",
+                        "PreviewUrl": "https://s3.amazonaws.com/awsmp-media/preview.png",
+                        "Description": "Sample video description"
+                    }
+                ],
+                "AdditionalResources": [
+                    {
+                        "Text": "Troubleshooting guide",
+                        "Url": "https://example.com/troubleshooting"
+                    }
+                ],
+                "UseCases": [
+                    {
+                        "Group": "advertising_and_marketing",
+                        "SubGroup": "ad_intelligence_and_measurement",
+                        "Item": "amazon_ads_insights",
+                        "Description": "Highlight description of this use case"
+                    }
+                ]
+            }
+        }
+    ]
+}

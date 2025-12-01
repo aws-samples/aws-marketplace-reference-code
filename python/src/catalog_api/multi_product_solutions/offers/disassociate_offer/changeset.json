@@ -1,0 +1,22 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "DisassociateOffers",
+            "Entity": {
+                "Type": "OfferSet@1.0",
+                "Identifier": "offerset-abc123"
+            },
+            "DetailsDocument": {
+                "Offers": [
+                    {
+                        "OfferId": "offer-xyz789"
+                    },
+                    {
+                        "OfferId": "offer-123abc"
+                    }
+                ]
+            }
+        }
+    ]
+}
