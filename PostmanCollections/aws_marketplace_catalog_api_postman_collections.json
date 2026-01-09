@@ -4645,7 +4645,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"CreateOffer\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"ProductId\": \"{{PRODUCT_ID_SaaS}}\",\n                \"Name\": \"Test Private Offer\"\n            }\n        }\n    ]\n}",
+									"raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"CreateOffer\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\"\n            },\n            \"DetailsDocument\": {\n                \"ProductId\": \"{{PRODUCT_ID_SaaS}}\",\n                \"Name\": \"Test Private Offer\",\n                \"OfferSetId\": \"{{OFFERSET_ID}}\"\n            }\n        }\n    ]\n}",
 									"options": {
 										"raw": {
 											"language": "json"
