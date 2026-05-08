@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-marketplace-agreement": "^3.1043.0"
+  }
+}
