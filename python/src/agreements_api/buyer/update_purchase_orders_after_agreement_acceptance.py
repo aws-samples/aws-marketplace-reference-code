@@ -1,3 +1,5 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Demonstrates how to associate a purchase order reference with a SaaS agreement with CONTRACT
 pricing model using the AWS Marketplace Agreement Service APIs.

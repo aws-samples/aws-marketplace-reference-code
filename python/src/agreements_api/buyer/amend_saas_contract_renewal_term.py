@@ -1,3 +1,5 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Demonstrates how to create a SaaS agreement with CONTRACT pricing model and then turn on
 the auto-renewal setting using the AWS Marketplace Agreement Service APIs.

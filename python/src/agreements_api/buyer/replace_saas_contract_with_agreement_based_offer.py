@@ -1,3 +1,5 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Demonstrates how to replace an existing SaaS agreement with CONTRACT pricing model with a new
 Agreement-Based Offer (ABO) using the AWS Marketplace Agreement Service APIs.

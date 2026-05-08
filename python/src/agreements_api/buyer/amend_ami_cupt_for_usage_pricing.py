@@ -1,3 +1,5 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Demonstrates how to create an AMI agreement with ConfigurableUpfrontPricingTerm and then amend
 the dimension quantity using the AWS Marketplace Agreement Service APIs.

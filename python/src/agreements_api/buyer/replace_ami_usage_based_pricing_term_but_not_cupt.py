@@ -1,3 +1,5 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 """
 Demonstrates how to replace an AMI agreement with usageBasedPricingTerm with a new offer while
 the agreement with ConfigurableUpfrontPricingTerm (CUPT) is still active, using the
