@@ -4,7 +4,7 @@
 
 # AWS Marketplace API Reference Code Library
 
-The AWS Marketplace Catalog APIs and Agreements APIs provide API interfaces to manage AWS Marketplace for a seller's
+The AWS Marketplace Catalog APIs and Agreements APIs provide API interfaces to manage AWS Marketplace for a proposer's or acceptor's
 AWS organization or AWS account. More information about Catalog API is available [here](https://docs.aws.amazon.com/marketplace-catalog/latest/api-reference/welcome.html).  Information about Agreement API is available [here](https://docs.aws.amazon.com/marketplace-agreements/latest/api-reference/welcome.html)
 
 This repository hosts a variety of useful reference code examples to help partners automate their workflows with the
@@ -14,6 +14,7 @@ are written in [Python 3.x](./python) and [Java](./java).
 ## Getting started
 
 You will need to have credentials to an [AWS seller account](https://docs.aws.amazon.com/marketplace/latest/userguide/user-guide-for-sellers.html)
+or [AWS buyer account](https://docs.aws.amazon.com/marketplace/latest/buyerguide/what-is-marketplace.html)
  and a [Git client](https://git-scm.com/downloads) installed
 
 ### Clone the Git repository to your local workstation:

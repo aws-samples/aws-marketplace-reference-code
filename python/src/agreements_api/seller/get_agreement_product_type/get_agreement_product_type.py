@@ -48,12 +48,8 @@ def usage_demo():
     agreement = get_agreement_information(mp_client, AGREEMENT_ID)
 
     if agreement is not None:
-        productHash = {}
-        for resource in agreement["resourceSummaries"]:
-            productHash[resource["resourceId"]] = resource["resourceType"]
-
-        for key, value in productHash.items():
-            print(f"Product ID: {key}  |  Product Type: {value}")
+        for resource in agreement["proposalSummary"]["resources"]:
+            print(f"Product ID: {resource['id']}  |  Product Type: {resource['type']}")
     else:
         print("Agreement with ID " + AGREEMENT_ID + " is not found")
 

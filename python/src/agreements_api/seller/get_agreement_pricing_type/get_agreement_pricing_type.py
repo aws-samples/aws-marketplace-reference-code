@@ -37,7 +37,7 @@ AiqProduct = "AiqProduct"
 CCP = "CCP"
 Annual = "Annual"
 Contract = "Contract"
-SFT = "SaaS Freee Trial"
+SFT = "SaaS Free Trial"
 HMA = "Hourly and Monthly Agreements"
 Hourly = "Hourly"
 Monthly = "Monthly"
@@ -170,6 +170,8 @@ logger = logging.getLogger(__name__)
 
 def get_agreements(mp_client):
     AgreementSummaryList = []
+    # Set PartyType to "Proposer" to return agreements where you are the proposer.
+    # Change to "Acceptor" to return agreements where you are the acceptor.
     partyTypes = ["Proposer"]
     for value in partyTypes:
         try:
@@ -229,7 +231,7 @@ def usage_demo():
         offer_term_types = get_offer_term_types(item)
 
         # even though multiple product types are allowed for one agreement, only need the first one
-        productType = item["resourceSummaries"][0]["resourceType"]
+        productType = item["proposalSummary"]["resources"][0]["type"]
 
         # get agreement terms types
         agreementTerm = mp_client.get_agreement_terms(agreementId=agreement_id)
@@ -276,7 +278,7 @@ def getMatchedTermTypesCombination(agreementTermTypes):
 
 
 def get_offer_term_types(item):
-    offer_id = item["agreementTokenSummary"]["offerId"]
+    offer_id = item["proposalSummary"]["offerId"]
     mp_catalogAPI_client = boto3.client("marketplace-catalog")
     offer_document = get_entity_information(mp_catalogAPI_client, offer_id)
     offerDetail = offer_document["Details"]

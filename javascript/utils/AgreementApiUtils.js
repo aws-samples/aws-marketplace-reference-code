@@ -1,3 +1,5 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 const { GetAgreementEntitlementsCommand } = require("@aws-sdk/client-marketplace-agreement");
 const { randomUUID } = require("crypto");
 
