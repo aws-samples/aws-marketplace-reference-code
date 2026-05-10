@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 MAX_PAGE_RESULTS = 10
 
-party_type_list = ["Proposer"]
+party_type_list = ["Acceptor"]
 agreement_type_list = ["PurchaseAgreement"]
 
 filter_list = [

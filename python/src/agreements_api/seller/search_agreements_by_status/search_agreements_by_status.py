@@ -25,6 +25,8 @@ logger = logging.getLogger(__name__)
 
 MAX_PAGE_RESULTS = 10
 
+# Set PartyType to "Proposer" to return agreements where you are the proposer.
+# Change to "Acceptor" to return agreements where you are the acceptor.
 party_type_list = ["Proposer"]
 agreement_type_list = ["PurchaseAgreement"]
 

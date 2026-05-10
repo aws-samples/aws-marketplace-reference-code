@@ -31,6 +31,8 @@ logger = logging.getLogger(__name__)
 
 def get_agreements(mp_client):
     AgreementSummaryList = []
+    # Set PartyType to "Proposer" to return agreements where you are the proposer.
+    # Change to "Acceptor" to return agreements where you are the acceptor.
     partyTypes = ["Proposer"]
     for value in partyTypes:
         try:

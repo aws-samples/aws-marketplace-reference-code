@@ -37,6 +37,8 @@ def get_agreements():
         agreement = mp_client.search_agreements(
             catalog="AWSMarketplace",
             maxResults=MAX_PAGE_RESULTS,
+            # Set PartyType filter to "Proposer" to return agreements where you are the proposer.
+            # Change to "Acceptor" to return agreements where you are the acceptor.
             filters=[
                 {"name": "PartyType", "values": ["Proposer"]},
                 {"name": beforeOrAfterEndtimeFilterName, "values": [cutoffDate]},
