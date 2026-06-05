@@ -6,7 +6,7 @@ marketplace-agreement_DescribeAgreement:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/DescribeAgreement.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/DescribeAgreement.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -15,7 +15,7 @@ marketplace-agreement_DescribeAgreement:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/describe_agreement/describe_agreement.py
+          - python/src/agreements_api/seller/describe_agreement/describe_agreement.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -33,7 +33,7 @@ marketplace-agreement_GetAgreementCustomer:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementCustomerInfo.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementCustomerInfo.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -42,7 +42,7 @@ marketplace-agreement_GetAgreementCustomer:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_customer/get_agreement_customer.py
+          - python/src/agreements_api/seller/get_agreement_customer/get_agreement_customer.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -60,7 +60,7 @@ marketplace-agreement_GetAgreementFinancialDetails:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementFinancialDetails.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementFinancialDetails.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -69,7 +69,7 @@ marketplace-agreement_GetAgreementFinancialDetails:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_financial_details/get_agreement_financial_details.py
+          - python/src/agreements_api/seller/get_agreement_financial_details/get_agreement_financial_details.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -87,7 +87,7 @@ marketplace-agreement_GetAgreementTermsFreeTrialDetails:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementTermsFreeTrialDetails.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsFreeTrialDetails.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -96,7 +96,7 @@ marketplace-agreement_GetAgreementTermsFreeTrialDetails:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_free_trial_details/get_agreement_free_trial_details.py
+          - python/src/agreements_api/seller/get_agreement_free_trial_details/get_agreement_free_trial_details.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -114,7 +114,7 @@ marketplace-agreement_GetAgreementPricingType:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementPricingType.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementPricingType.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -123,7 +123,7 @@ marketplace-agreement_GetAgreementPricingType:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_pricing_type/get_agreement_pricing_type.py
+          - python/src/agreements_api/seller/get_agreement_pricing_type/get_agreement_pricing_type.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -141,7 +141,7 @@ marketplace-agreement_GetProductAndOfferDetailFromAgreement:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetProductAndOfferDetailFromAgreement.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetProductAndOfferDetailFromAgreement.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -150,7 +150,7 @@ marketplace-agreement_GetProductAndOfferDetailFromAgreement:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_product_offer_detail/get_agreement_product_offer_detail.py
+          - python/src/agreements_api/seller/get_agreement_product_offer_detail/get_agreement_product_offer_detail.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -168,7 +168,7 @@ marketplace-agreement_GetAgreementProductType:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementProductType.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementProductType.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -177,7 +177,7 @@ marketplace-agreement_GetAgreementProductType:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_product_type/get_agreement_product_type.py
+          - python/src/agreements_api/seller/get_agreement_product_type/get_agreement_product_type.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -195,7 +195,7 @@ marketplace-agreement_GetAgreementStatus:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementStatus.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementStatus.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -204,7 +204,7 @@ marketplace-agreement_GetAgreementStatus:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_status/get_agreement_status.py
+          - python/src/agreements_api/seller/get_agreement_status/get_agreement_status.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -222,7 +222,7 @@ marketplace-agreement_GetAgreementTermsSupportTerm:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementTermsSupportTerm.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsSupportTerm.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -231,7 +231,7 @@ marketplace-agreement_GetAgreementTermsSupportTerm:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_support_terms/get_agreement_support_terms.py
+          - python/src/agreements_api/seller/get_agreement_support_terms/get_agreement_support_terms.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -249,7 +249,7 @@ marketplace-agreement_GetAgreementTerms:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementTerms.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTerms.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -267,7 +267,7 @@ marketplace-agreement_GetAgreementAutoRenewal:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementAutoRenewal.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementAutoRenewal.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -276,7 +276,7 @@ marketplace-agreement_GetAgreementAutoRenewal:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_terms_auto_renewal/get_agreement_terms_auto_renewal.py
+          - python/src/agreements_api/seller/get_agreement_terms_auto_renewal/get_agreement_terms_auto_renewal.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -294,7 +294,7 @@ marketplace-agreement_GetAgreementTermsDimensionInstances:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementTermsDimensionInstances.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsDimensionInstances.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -303,7 +303,7 @@ marketplace-agreement_GetAgreementTermsDimensionInstances:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_terms_dimension_instances/get_agreement_terms_dimension_instances.py
+          - python/src/agreements_api/seller/get_agreement_terms_dimension_instances/get_agreement_terms_dimension_instances.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -322,7 +322,7 @@ marketplace-agreement_GetAgreementTermsDimensionPurchased:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementTermsDimensionPurchased.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsDimensionPurchased.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -331,7 +331,7 @@ marketplace-agreement_GetAgreementTermsDimensionPurchased:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_terms_dimension_purchased/get_agreement_terms_dimension_purchased.py
+          - python/src/agreements_api/seller/get_agreement_terms_dimension_purchased/get_agreement_terms_dimension_purchased.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -349,7 +349,7 @@ marketplace-agreement_GetAgreementTermsEula:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementTermsEula.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsEula.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -358,7 +358,7 @@ marketplace-agreement_GetAgreementTermsEula:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_terms_eula/get_agreement_terms_eulal.py
+          - python/src/agreements_api/seller/get_agreement_terms_eula/get_agreement_terms_eula.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -376,7 +376,7 @@ marketplace-agreement_GetAgreementTermsPaymentSchedule:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementTermsPaymentSchedule.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsPaymentSchedule.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -385,7 +385,7 @@ marketplace-agreement_GetAgreementTermsPaymentSchedule:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_terms_payment_schedule/get_agreement_terms_payment_schedule.py
+          - python/src/agreements_api/seller/get_agreement_terms_payment_schedule/get_agreement_terms_payment_schedule.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -403,7 +403,7 @@ marketplace-agreement_GetAgreementTermsPricingEachDimension:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAgreementTermsPricingEachDimension.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsPricingEachDimension.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -412,7 +412,7 @@ marketplace-agreement_GetAgreementTermsPricingEachDimension:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_agreement_terms_pricing_each_dimension/get_agreement_terms_pricing_each_dimension.py
+          - python/src/agreements_api/seller/get_agreement_terms_pricing_each_dimension/get_agreement_terms_pricing_each_dimension.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -430,7 +430,7 @@ marketplace-agreement_GetAllAgreementsIds:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAllAgreementsIds.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAllAgreementsIds.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -439,7 +439,7 @@ marketplace-agreement_GetAllAgreementsIds:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_all_agreement_ids/get_all_agreement_ids.py
+          - python/src/agreements_api/seller/get_all_agreement_ids/get_all_agreement_ids.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -457,7 +457,7 @@ marketplace-agreement_GetAllAgreements:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/GetAllAgreements.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAllAgreements.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -466,7 +466,7 @@ marketplace-agreement_GetAllAgreements:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/get_all_agreements/get_all_agreements.py
+          - python/src/agreements_api/seller/get_all_agreements/get_all_agreements.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -484,7 +484,7 @@ marketplace-agreement_SearchAgreementsByAccountId:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/search_agreements_by_account_id/search_agreements_by_account_id.py
+          - python/src/agreements_api/seller/search_agreements_by_account_id/search_agreements_by_account_id.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -502,7 +502,7 @@ marketplace-agreement_SearchAgreementsByEndDate:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/SearchAgreementsByEndDate.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsByEndDate.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -511,7 +511,7 @@ marketplace-agreement_SearchAgreementsByEndDate:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/search_agreements_by_endDate/search_agreements_by_endDate.py
+          - python/src/agreements_api/seller/search_agreements_by_endDate/search_agreements_by_endDate.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -529,7 +529,7 @@ marketplace-agreement_SearchAgreementsById:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/search_agreements_by_id/search_agreements_by_id.py
+          - python/src/agreements_api/seller/search_agreements_by_id/search_agreements_by_id.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -547,7 +547,7 @@ marketplace-agreement_SearchAgreementsByOfferId:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/search_agreements_by_offer_id/search_agreements_by_offer_id.py
+          - python/src/agreements_api/seller/search_agreements_by_offer_id/search_agreements_by_offer_id.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -565,7 +565,7 @@ marketplace-agreement_SearchAgreementsByProductId:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/search_agreements_by_product_id/search_agreements_by_product_id.py
+          - python/src/agreements_api/seller/search_agreements_by_product_id/search_agreements_by_product_id.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -583,7 +583,7 @@ marketplace-agreement_SearchAgreementsByByStatus:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/search_agreements_by_status/search_agreements_by_status.py
+          - python/src/agreements_api/seller/search_agreements_by_status/search_agreements_by_status.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -601,7 +601,7 @@ marketplace-agreement_SearchAgreementsByOneFilter:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/SearchAgreementsByOneFilter.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsByOneFilter.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -619,7 +619,7 @@ marketplace-agreement_SearchAgreementsByTwoFilters:
       - excerpts:
         - description: ''
           snippet_files:
-          - java/src/main/java/com/example/awsmarketplace/agreementapi/SearchAgreementsByTwoFilters.java
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsByTwoFilters.java
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
@@ -629,3 +629,615 @@ marketplace-agreement_SearchAgreementsByTwoFilters:
   synopsis: search for agreements with two custom filters.
   title: Search for agreements with two custom filters using an &AWS; SDK
   title_abbrev: Search for agreements with two custom filters
+marketplace-agreement_AmendAmiConfigurableUpfrontPricingTermForUsagePricingModel:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/AmendAmiConfigurableUpfrontPricingTermForUsagePricingModel.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/amend_ami_cupt_for_usage_pricing.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/AmendAmiConfigurableUpfrontPricingTermForUsagePricingModel.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      CreateAgreementRequest: null
+  synopsis: amend an AMI agreement with ConfigurableUpfrontPricingTerm by updating dimension quantity for usage pricing model.
+  title: Amend an AMI ConfigurableUpfrontPricingTerm for usage pricing model using an &AWS; SDK
+  title_abbrev: Amend an AMI ConfigurableUpfrontPricingTerm for usage pricing model
+marketplace-agreement_AmendSaaSContractRenewalTerm:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/AmendSaaSContractRenewalTerm.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/amend_saas_contract_renewal_term.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/AmendSaaSContractRenewalTerm.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      CreateAgreementRequest: null
+  synopsis: amend a SaaS contract agreement to add or update its renewal term.
+  title: Amend a SaaS contract agreement renewal term using an &AWS; SDK
+  title_abbrev: Amend a SaaS contract agreement renewal term
+marketplace-agreement_NewAmiFreeTrial:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/NewAmiFreeTrial.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/new_ami_free_trial.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/NewAmiFreeTrial.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      CreateAgreementRequest: null
+  synopsis: create a new AMI free trial agreement.
+  title: Create a new AMI free trial agreement using an &AWS; SDK
+  title_abbrev: Create a new AMI free trial agreement
+marketplace-agreement_NewSaaSContractWithUpfrontPayment:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/NewSaaSContractWithUpfrontPayment.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/new_saas_contract_with_upfront_payment.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/NewSaaSContractWithUpfrontPayment.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      CreateAgreementRequest: null
+  synopsis: create a new SaaS contract agreement with upfront payment.
+  title: Create a new SaaS contract agreement with upfront payment using an &AWS; SDK
+  title_abbrev: Create a new SaaS contract agreement with upfront payment
+marketplace-agreement_ReplaceAmiUsageBasedPricingTermButNotCupt:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/ReplaceAmiUsageBasedPricingTermButNotCupt.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/replace_ami_usage_based_pricing_term_but_not_cupt.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/ReplaceAmiUsageBasedPricingTermButNotCupt.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      CreateAgreementRequest: null
+  synopsis: replace an AMI usage-based pricing term while keeping the existing ConfigurableUpfrontPricingTerm.
+  title: Replace an AMI usage-based pricing term but keep the existing ConfigurableUpfrontPricingTerm using an &AWS; SDK
+  title_abbrev: Replace an AMI usage-based pricing term but keep the ConfigurableUpfrontPricingTerm
+marketplace-agreement_ReplaceSaaSContractWithAgreementBasedOffer:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/ReplaceSaaSContractWithAgreementBasedOffer.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/replace_saas_contract_with_agreement_based_offer.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/ReplaceSaaSContractWithAgreementBasedOffer.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      CreateAgreementRequest: null
+  synopsis: replace a SaaS contract agreement with a new agreement-based offer.
+  title: Replace a SaaS contract agreement with an agreement-based offer using an &AWS; SDK
+  title_abbrev: Replace a SaaS contract agreement with an agreement-based offer
+marketplace-agreement_ReplaceSaaSFreeTrialWithCCP:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/ReplaceSaaSFreeTrialWithCCP.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/replace_saas_free_trial_with_ccp.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/ReplaceSaaSFreeTrialWithCCP.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      CreateAgreementRequest: null
+  synopsis: replace a SaaS free trial with a Contract with Consumption Pricing (CCP).
+  title: Replace a SaaS free trial with Contract with Consumption Pricing using an &AWS; SDK
+  title_abbrev: Replace a SaaS free trial with Contract with Consumption Pricing
+marketplace-agreement_ReplaceSaaSUsageBasedPricingTermAndCancel:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/ReplaceSaaSUsageBasedPricingTermAndCancel.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/replace_saas_usage_based_pricing_term_and_cancel.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/ReplaceSaaSUsageBasedPricingTermAndCancel.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      CreateAgreementRequest: null
+  synopsis: replace a SaaS usage-based pricing term and cancel the previous agreement.
+  title: Replace a SaaS usage-based pricing term and cancel the previous agreement using an &AWS; SDK
+  title_abbrev: Replace a SaaS usage-based pricing term and cancel the previous agreement
+marketplace-agreement_UpdatePurchaseOrdersAfterAgreementAcceptance:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/UpdatePurchaseOrdersAfterAgreementAcceptance.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/update_purchase_orders_after_agreement_acceptance.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/UpdatePurchaseOrdersAfterAgreementAcceptance.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      UpdatePurchaseOrders: null
+  synopsis: update purchase orders after the agreement has been accepted.
+  title: Update purchase orders after agreement acceptance using an &AWS; SDK
+  title_abbrev: Update purchase orders after agreement acceptance
+marketplace-agreement_AcceptAgreementCancellationRequest:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementCancellation/AcceptAgreementCancellationRequest.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementCancellation/accept_agreement_cancellation_request.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementCancellation/AcceptAgreementCancellationRequest.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      AcceptAgreementCancellationRequest: null
+  synopsis: accept an agreement cancellation request initiated by the seller.
+  title: Accept an agreement cancellation request using an &AWS; SDK
+  title_abbrev: Accept an agreement cancellation request
+marketplace-agreement_GetAgreementCancellationRequest:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementCancellation/GetAgreementCancellationRequest.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementCancellation/get_agreement_cancellation_request.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementCancellation/GetAgreementCancellationRequest.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      GetAgreementCancellationRequest: null
+  synopsis: get details of a specific agreement cancellation request.
+  title: Get details of an agreement cancellation request using an &AWS; SDK
+  title_abbrev: Get details of an agreement cancellation request
+marketplace-agreement_ListAgreementCancellationRequests:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementCancellation/ListAgreementCancellationRequests.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementCancellation/list_agreement_cancellation_requests.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementCancellation/ListAgreementCancellationRequests.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      ListAgreementCancellationRequests: null
+  synopsis: list agreement cancellation requests for agreements I participate in as acceptor.
+  title: List agreement cancellation requests using an &AWS; SDK
+  title_abbrev: List agreement cancellation requests
+marketplace-agreement_RejectAgreementCancellationRequest:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementCancellation/RejectAgreementCancellationRequest.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementCancellation/reject_agreement_cancellation_request.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementCancellation/RejectAgreementCancellationRequest.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      RejectAgreementCancellationRequest: null
+  synopsis: reject an agreement cancellation request initiated by the seller.
+  title: Reject an agreement cancellation request using an &AWS; SDK
+  title_abbrev: Reject an agreement cancellation request
+marketplace-agreement_AcceptAgreementPaymentRequest:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/paymentRequest/AcceptAgreementPaymentRequest.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/paymentRequest/accept_agreement_payment_request.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/paymentRequest/AcceptAgreementPaymentRequest.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      AcceptAgreementPaymentRequest: null
+  synopsis: accept an agreement payment request initiated by the seller.
+  title: Accept an agreement payment request using an &AWS; SDK
+  title_abbrev: Accept an agreement payment request
+marketplace-agreement_GetAgreementPaymentRequest:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/paymentRequest/GetAgreementPaymentRequest.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/paymentRequest/get_agreement_payment_request.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/paymentRequest/GetAgreementPaymentRequest.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      GetAgreementPaymentRequest: null
+  synopsis: get details of a specific agreement payment request.
+  title: Get details of an agreement payment request using an &AWS; SDK
+  title_abbrev: Get details of an agreement payment request
+marketplace-agreement_ListAgreementPaymentRequests:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/paymentRequest/ListAgreementPaymentRequests.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/paymentRequest/list_agreement_payment_requests.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/paymentRequest/ListAgreementPaymentRequests.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      ListAgreementPaymentRequests: null
+  synopsis: list agreement payment requests for agreements I participate in as acceptor.
+  title: List agreement payment requests using an &AWS; SDK
+  title_abbrev: List agreement payment requests
+marketplace-agreement_RejectAgreementPaymentRequest:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/paymentRequest/RejectAgreementPaymentRequest.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/paymentRequest/reject_agreement_payment_request.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/paymentRequest/RejectAgreementPaymentRequest.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      RejectAgreementPaymentRequest: null
+  synopsis: reject an agreement payment request initiated by the seller.
+  title: Reject an agreement payment request using an &AWS; SDK
+  title_abbrev: Reject an agreement payment request

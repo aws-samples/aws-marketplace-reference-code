@@ -22,4 +22,7 @@ utils.egg-info/
 
 # IDE
 .vscode
-java/.settingsnode_modules/
+java/.settings
+
+# Node
+node_modules/
