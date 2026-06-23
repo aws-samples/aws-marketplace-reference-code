@@ -1,3 +1,5 @@
 allow_list:
   - "ListProductPublicOrPrivateReleasedOffers"
+  - "ListAgreementCancellationRequestsRequest"
+  - "ListAgreementCancellationRequestsCommand"
 
