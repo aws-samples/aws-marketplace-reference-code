@@ -1,0 +1,157 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Billing Adjustments web app, deployed into the partner's own AWS account using
+  AWS App Runner. The app runs with a least-privilege IAM role (no AWS credentials
+  are entered by users) and is protected by a shared access password.
+
+Parameters:
+  ImageUri:
+    Type: String
+    Description: >
+      Container image URI for the app. For a public ECR image use the public.ecr.aws
+      URI and set ImageRepositoryType to ECR_PUBLIC. For a private ECR image in this
+      account, use the account ECR URI and set ImageRepositoryType to ECR.
+  ImageRepositoryType:
+    Type: String
+    Default: ECR_PUBLIC
+    AllowedValues: [ECR_PUBLIC, ECR]
+    Description: ECR_PUBLIC for a public gallery image, ECR for a private image in this account.
+  AccessPassword:
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    Description: >
+      Shared password users must enter to open the app. Choose a strong value
+      (at least 8 characters). Required because the app acts via the IAM role.
+  AssumeRoleArn:
+    Type: String
+    Default: ''
+    Description: >
+      Optional. ARN of a role in ANOTHER account (the account that owns the
+      agreements) for the app to assume. Leave blank to act on THIS account's
+      agreements directly. When set, the app's role only gets sts:AssumeRole on
+      this ARN; the billing-adjustment permissions live on the target role.
+  AssumeRoleExternalId:
+    Type: String
+    Default: ''
+    Description: >
+      Optional external ID required by the target role's trust policy (recommended
+      when AssumeRoleArn is set, to prevent confused-deputy).
+  ServiceName:
+    Type: String
+    Default: billing-adjustments
+    Description: Name for the App Runner service.
+  Cpu:
+    Type: String
+    Default: '1024'
+    AllowedValues: ['1024', '2048']
+  Memory:
+    Type: String
+    Default: '2048'
+    AllowedValues: ['2048', '3072', '4096']
+
+Conditions:
+  IsPrivateEcr: !Equals [!Ref ImageRepositoryType, ECR]
+  UseAssumeRole: !Not [!Equals [!Ref AssumeRoleArn, '']]
+
+Resources:
+
+  # Role the running app uses. Two modes:
+  #  - Same account (AssumeRoleArn blank): grant the billing-adjustment actions directly.
+  #  - Cross account (AssumeRoleArn set): grant only sts:AssumeRole on the target role;
+  #    the billing-adjustment permissions live on the target role in the other account.
+  InstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${ServiceName}-app-role'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: tasks.apprunner.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: app-permissions
+          PolicyDocument: !If
+            - UseAssumeRole
+            - Version: '2012-10-17'
+              Statement:
+                - Sid: AssumeCrossAccountRole
+                  Effect: Allow
+                  Action: 'sts:AssumeRole'
+                  Resource: !Ref AssumeRoleArn
+            - Version: '2012-10-17'
+              Statement:
+                - Sid: BillingAdjustmentActions
+                  Effect: Allow
+                  Action:
+                    - 'aws-marketplace:ListAgreementInvoiceLineItems'
+                    - 'aws-marketplace:BatchCreateBillingAdjustmentRequest'
+                    - 'aws-marketplace:GetBillingAdjustmentRequest'
+                    - 'aws-marketplace:ListBillingAdjustmentRequests'
+                  Resource: '*'
+
+  # Role allowing App Runner to pull a PRIVATE ECR image (only when ImageRepositoryType=ECR).
+  AccessRole:
+    Type: AWS::IAM::Role
+    Condition: IsPrivateEcr
+    Properties:
+      RoleName: !Sub '${ServiceName}-ecr-access-role'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: build.apprunner.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess
+
+  AppRunnerService:
+    Type: AWS::AppRunner::Service
+    Properties:
+      ServiceName: !Ref ServiceName
+      SourceConfiguration:
+        AutoDeploymentsEnabled: false
+        AuthenticationConfiguration:
+          !If
+            - IsPrivateEcr
+            - AccessRoleArn: !GetAtt AccessRole.Arn
+            - !Ref AWS::NoValue
+        ImageRepository:
+          ImageIdentifier: !Ref ImageUri
+          ImageRepositoryType: !Ref ImageRepositoryType
+          ImageConfiguration:
+            Port: '8080'
+            RuntimeEnvironmentVariables:
+              - Name: MANAGED_CREDENTIALS
+                Value: 'true'
+              - Name: APP_ACCESS_PASSWORD
+                Value: !Ref AccessPassword
+              - Name: AWS_ASSUME_ROLE_ARN
+                Value: !Ref AssumeRoleArn
+              - Name: AWS_ASSUME_ROLE_EXTERNAL_ID
+                Value: !Ref AssumeRoleExternalId
+      InstanceConfiguration:
+        Cpu: !Ref Cpu
+        Memory: !Ref Memory
+        InstanceRoleArn: !GetAtt InstanceRole.Arn
+      HealthCheckConfiguration:
+        Protocol: HTTP
+        Path: /healthz
+        Interval: 10
+        Timeout: 5
+        HealthyThreshold: 1
+        UnhealthyThreshold: 5
+
+Outputs:
+  AppUrl:
+    Description: Open this HTTPS URL in a browser to use the app.
+    Value: !Sub 'https://${AppRunnerService.ServiceUrl}'
+  ServiceArn:
+    Description: ARN of the App Runner service.
+    Value: !GetAtt AppRunnerService.ServiceArn
+  AppRoleArn:
+    Description: IAM role the app uses to call the billing adjustment APIs.
+    Value: !GetAtt InstanceRole.Arn

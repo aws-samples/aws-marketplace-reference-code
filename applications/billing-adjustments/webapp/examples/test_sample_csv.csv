@@ -1,0 +1,7 @@
+timestamp,phase,agreement_id,invoice_id,amount,status,billing_adjustment_request_id,message
+2026-06-12T10:15:43.101000,1,agmt-exampleagreement1abcdefg,2500000001,150.00,COMPLETED,ba-1111aaaa2222bbbb3333cccc,
+2026-06-12T10:15:44.205000,1,agmt-exampleagreement1abcdefg,2500000002,1200.00,COMPLETED,ba-2222bbbb3333cccc4444dddd,
+2026-06-12T10:15:45.309000,1,agmt-exampleagreement3opqrstu,2500000003,320.25,COMPLETED,ba-3333cccc4444dddd5555eeee,
+2026-06-12T10:15:46.412000,1,agmt-exampleagreement3opqrstu,2500000004,890.00,COMPLETED,ba-4444dddd5555eeee6666ffff,
+2026-06-12T10:16:48.517000,2,agmt-exampleagreement2hijklmn,2500000001,75.50,COMPLETED,ba-5555eeee6666ffff7777aaaa,
+2026-06-12T10:16:49.620000,2,agmt-exampleagreement4vwxyz01,2500000003,45.00,VALIDATION_FAILED,,Invoice 2500000003 not found for agreement agmt-exampleagreement4vwxyz01

@@ -1,0 +1,6 @@
+# boto3/botocore 1.42.80 added the Marketplace Agreement billing-adjustment APIs
+# (BatchCreateBillingAdjustmentRequest, GetBillingAdjustmentRequest,
+# ListAgreementInvoiceLineItems). Earlier versions do not include them.
+boto3>=1.42.80
+Flask>=3.0.0
+Werkzeug>=3.0.0

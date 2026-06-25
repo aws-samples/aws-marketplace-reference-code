@@ -24,6 +24,16 @@ git clone git@github.com:aws-samples/aws-marketplace-reference-code.git
 
 Instructions on setting up your environment to run the Python examples can found in the [Python sub-folder](./python) of this repository.
 
+## Applications
+
+In addition to the language-specific reference snippets, the [`applications/`](./applications) folder
+contains complete, runnable tools built on these APIs. Each application is self-contained,
+with its own README and dependencies.
+
+| Application | Description |
+|-------------|-------------|
+| [Bulk billing adjustments](./applications/billing-adjustments/README.md) | Process bulk billing adjustments (refunds) for AWS Marketplace sellers — validate invoices, submit adjustments in batches, reconcile a refund file against the service, and track status. Includes a shared engine, a CLI, a web UI, and AWS deployment templates. |
+
 ### Submit defects & questions
 If you find any defects with the APIs, need help troubleshooting, or have general questions or feedback, [use this form to contact us](https://aws.amazon.com/marketplace/management/contact-us/)
 

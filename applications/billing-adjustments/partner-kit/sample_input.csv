@@ -1,0 +1,5 @@
+seller_id,aws_account_id,invoice_id,product_code,month_id,refund_amount,agreement_id
+123456789012,111222333444,2500000001,prod-abc123def456g,25-Jun,$150.00 ,agmt-exampleagreement1abcdefg
+123456789012,111222333444,2500000002,prod-abc123def456g,25-Jul,"$1,200.00 ",agmt-exampleagreement1abcdefg
+123456789012,555666777888,2500000003,prod-abc123def456g,25-Jul,$320.25 ,agmt-exampleagreement3opqrstu
+123456789012,555666777888,2500000004,prod-abc123def456g,25-Aug,$890.00 ,agmt-exampleagreement3opqrstu

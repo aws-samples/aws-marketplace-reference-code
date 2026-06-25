@@ -1,0 +1,989 @@
+#!/usr/bin/env python3
+"""
+Core billing adjustment processing logic - refactored for UI/background use.
+
+Key differences from the CLI scripts:
+- Credentials passed in directly (access key / secret key / optional session token)
+- Supports dry-run (validation only, no submission)
+- Writes each record incrementally (JSONL + CSV) as it is processed/completed,
+  rather than writing everything at the end
+- Reports progress via a callback so a UI can show live status
+"""
+
+import csv
+import json
+import uuid
+import time
+import re
+import os
+from datetime import datetime
+from collections import defaultdict
+
+import boto3
+from botocore.config import Config
+from botocore.credentials import RefreshableCredentials
+from botocore.session import get_session as _get_botocore_session
+
+# Defaults (can be overridden via AdjustmentConfig)
+BATCH_SIZE = 5
+CALLS_PER_SECOND = 2
+DELAY_BETWEEN_BATCHES = 1.0 / CALLS_PER_SECOND
+POLL_INTERVAL = 60
+MAX_POLL_TIME = 600
+CURRENCY_CODE = "USD"
+ADJUSTMENT_REASON = "OTHER"
+ENDPOINT_URL = "https://agreement-marketplace.us-east-1.amazonaws.com"
+REGION = "us-east-1"
+
+# Required CSV columns (header must contain these)
+REQUIRED_COLUMNS = [
+    "seller_id",
+    "aws_account_id",
+    "invoice_id",
+    "product_code",
+    "month_id",
+    "agreement_id",
+]
+# Amount column may use either of these names
+AMOUNT_COLUMN_OPTIONS = ["refund_amount", "SUM of Calculated Refund (T-Y)"]
+
+COL_AGREEMENT_ID = "agreement_id"
+COL_INVOICE_ID = "invoice_id"
+REVIEW_REASON_COL = "review_reason"
+
+# Values that look like data but are really blanks/errors from exports. Treated as
+# missing for agreement_id / invoice_id.
+NA_PLACEHOLDERS = {"", "#N/A", "N/A", "NA", "NULL", "NONE", "#REF!", "#VALUE!", "-"}
+
+CLIENT_TOKEN_NAMESPACE = uuid.UUID('12345678-1234-5678-1234-567812345678')
+
+# Error codes / messages that indicate expired or invalid credentials
+CREDENTIAL_ERROR_CODES = [
+    'ExpiredTokenException',
+    'ExpiredToken',
+    'InvalidIdentityToken',
+    'InvalidClientTokenId',
+    'UnrecognizedClientException',
+    'AccessDeniedException',
+]
+CREDENTIAL_ERROR_MESSAGES = [
+    'security token included in the request is invalid',
+    'security token included in the request is expired',
+    'token has expired',
+    'credentials have expired',
+    'the security token included in the request is expired',
+]
+
+
+class CredentialsCancelled(Exception):
+    """Raised when a job is cancelled while waiting for fresh credentials."""
+    pass
+
+
+def is_credential_error(error):
+    """True if an exception looks like an expired/invalid-credentials error."""
+    error_code = getattr(error, 'response', {}).get('Error', {}).get('Code', '')
+    if error_code in CREDENTIAL_ERROR_CODES:
+        return True
+    msg = str(error).lower()
+    return any(m in msg for m in CREDENTIAL_ERROR_MESSAGES)
+
+
+def generate_client_token(agreement_id, invoice_id):
+    """Deterministic client token for idempotency, built from agreement_id +
+    invoice_id only. The same invoice on the same agreement always produces the
+    same token, so a refund that has already been submitted will not be created
+    again (the API treats the repeated token as the same request). The tool issues
+    at most one refund per invoice+agreement."""
+    key = f"{agreement_id}:{invoice_id}"
+    return str(uuid.uuid5(CLIENT_TOKEN_NAMESPACE, key))
+
+
+def format_amount(amount_str):
+    """Convert '$1,341.70 ' to '1341.70'."""
+    return re.sub(r'[$,\s]', '', str(amount_str))
+
+
+def validate_file_format(filepath):
+    """
+    Validate that the uploaded CSV has the required columns and at least one data row.
+    Returns (is_valid, message, details_dict).
+    """
+    details = {
+        "required_columns": REQUIRED_COLUMNS,
+        "amount_column_options": AMOUNT_COLUMN_OPTIONS,
+        "found_columns": [],
+        "missing_columns": [],
+        "amount_column_found": None,
+        "row_count": 0,
+        "row_issues": [],
+    }
+
+    try:
+        with open(filepath, 'r', encoding='utf-8-sig') as f:
+            reader = csv.DictReader(f)
+            headers = reader.fieldnames or []
+            details["found_columns"] = headers
+
+            if not headers:
+                return False, "File is empty or has no header row.", details
+
+            # Check required columns
+            missing = [c for c in REQUIRED_COLUMNS if c not in headers]
+            details["missing_columns"] = missing
+
+            # Check amount column
+            amount_col = next((c for c in AMOUNT_COLUMN_OPTIONS if c in headers), None)
+            details["amount_column_found"] = amount_col
+
+            if missing:
+                return False, f"Missing required column(s): {', '.join(missing)}", details
+            if not amount_col:
+                return False, (
+                    f"Missing amount column. Expected one of: "
+                    f"{', '.join(AMOUNT_COLUMN_OPTIONS)}"
+                ), details
+
+            # Validate rows
+            row_count = 0
+            for i, row in enumerate(reader, start=2):  # line 2 = first data row
+                if not any((v or '').strip() for v in row.values()):
+                    continue  # skip blank lines
+                row_count += 1
+                issues = []
+                if not (row.get(COL_AGREEMENT_ID) or '').strip():
+                    issues.append("missing agreement_id")
+                if not (row.get(COL_INVOICE_ID) or '').strip():
+                    issues.append("missing invoice_id")
+                amt = format_amount(row.get(amount_col, '0'))
+                try:
+                    if float(amt) <= 0:
+                        issues.append(f"amount must be > 0 (got '{row.get(amount_col)}')")
+                except ValueError:
+                    issues.append(f"invalid amount '{row.get(amount_col)}'")
+                if issues:
+                    details["row_issues"].append({"line": i, "issues": issues})
+
+            details["row_count"] = row_count
+
+            if row_count == 0:
+                return False, "File has headers but no data rows.", details
+
+            if details["row_issues"]:
+                n = len(details["row_issues"])
+                return False, f"Found {n} row(s) with issues. See details.", details
+
+        return True, f"File is valid. {row_count} data row(s) ready to process.", details
+
+    except Exception as e:
+        return False, f"Could not read file: {e}", details
+
+
+def load_csv(filepath):
+    """Load and parse CSV file into normalized row dicts."""
+    rows = []
+    with open(filepath, 'r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        headers = reader.fieldnames or []
+        amount_col = next((c for c in AMOUNT_COLUMN_OPTIONS if c in headers), None)
+        if not amount_col:
+            raise ValueError(
+                f"Could not find amount column. Expected one of: {AMOUNT_COLUMN_OPTIONS}"
+            )
+        for row in reader:
+            if not (row.get(COL_INVOICE_ID) or '').strip():
+                continue
+            rows.append({
+                'agreement_id': (row.get(COL_AGREEMENT_ID) or '').strip(),
+                'invoice_id': (row.get(COL_INVOICE_ID) or '').strip(),
+                'amount': format_amount(row.get(amount_col, '0')),
+                'aws_account_id': (row.get('aws_account_id') or '').strip(),
+                'seller_id': (row.get('seller_id') or '').strip(),
+                'month': (row.get('month_id') or '').strip(),
+                'product_code': (row.get('product_code') or '').strip(),
+            })
+    return rows
+
+
+def _is_missing_value(value):
+    """True if a value is blank or a known placeholder (e.g. #N/A)."""
+    return (value or "").strip().upper() in NA_PLACEHOLDERS
+
+
+def classify_input_rows(filepath):
+    """Split an input refund CSV (same format as the submit file) into rows that are
+    safe to process and rows that need human review, preserving the original columns.
+
+    Returns (valid_records, review_rows, original_columns, amount_col):
+      - valid_records: normalized dicts ready to process. Each has agreement_id,
+        invoice_id, amount, aws_account_id, seller_id, month, product_code, and
+        'original' (the untouched input row). Only the FIRST occurrence of a given
+        <agreement_id, invoice_id> combination is included here.
+      - review_rows: the original input row dicts for anything that should NOT be
+        submitted, each with an added 'review_reason' column explaining why:
+          * missing or invalid agreement_id (blank or a placeholder like #N/A)
+          * missing or invalid invoice_id
+          * invalid or non-positive amount
+          * duplicate <agreement, invoice> (a later repeat of a combo already kept)
+      - original_columns: the header from the input file (order preserved).
+      - amount_col: which amount column was detected.
+
+    Raises ValueError if no recognized amount column is present.
+    """
+    valid_records, review_rows = [], []
+    seen_combos = set()
+    with open(filepath, 'r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        columns = list(reader.fieldnames or [])
+        amount_col = next((c for c in AMOUNT_COLUMN_OPTIONS if c in columns), None)
+        if not amount_col:
+            raise ValueError(
+                f"Could not find amount column. Expected one of: {AMOUNT_COLUMN_OPTIONS}"
+            )
+        for row in reader:
+            if not any((v or '').strip() for v in row.values()):
+                continue  # skip fully blank lines
+
+            agreement_id = (row.get(COL_AGREEMENT_ID) or '').strip()
+            invoice_id = (row.get(COL_INVOICE_ID) or '').strip()
+            raw_amount = row.get(amount_col, '')
+            amount = format_amount(raw_amount)
+
+            reasons = []
+            if _is_missing_value(agreement_id):
+                reasons.append("missing or invalid agreement_id")
+            if _is_missing_value(invoice_id):
+                reasons.append("missing or invalid invoice_id")
+            try:
+                if float(amount) <= 0:
+                    reasons.append(f"amount must be > 0 (got '{raw_amount}')")
+            except (ValueError, TypeError):
+                reasons.append(f"invalid amount '{raw_amount}'")
+
+            if not reasons:
+                combo = (agreement_id, invoice_id)
+                if combo in seen_combos:
+                    reasons.append("duplicate <agreement, invoice> (kept the first occurrence)")
+                else:
+                    seen_combos.add(combo)
+
+            if reasons:
+                rr = dict(row)
+                rr[REVIEW_REASON_COL] = "; ".join(reasons)
+                review_rows.append(rr)
+            else:
+                valid_records.append({
+                    'agreement_id': agreement_id,
+                    'invoice_id': invoice_id,
+                    'amount': amount,
+                    'aws_account_id': (row.get('aws_account_id') or '').strip(),
+                    'seller_id': (row.get('seller_id') or '').strip(),
+                    'month': (row.get('month_id') or '').strip(),
+                    'product_code': (row.get('product_code') or '').strip(),
+                    'original': dict(row),
+                })
+    return valid_records, review_rows, columns, amount_col
+
+
+def find_duplicate_invoices(rows):
+    """Find invoice IDs that appear in multiple agreements."""
+    invoice_agreements = defaultdict(list)
+    for row in rows:
+        invoice_agreements[row['invoice_id']].append(row['agreement_id'])
+    return {inv: agmts for inv, agmts in invoice_agreements.items() if len(agmts) > 1}
+
+
+def group_rows_by_invoice_occurrence(rows):
+    """Group rows into phases based on invoice occurrence order."""
+    invoice_count = defaultdict(int)
+    phases = defaultdict(list)
+    for row in rows:
+        invoice_id = row['invoice_id']
+        invoice_count[invoice_id] += 1
+        phases[invoice_count[invoice_id]].append(row)
+    max_phase = max(phases.keys()) if phases else 0
+    return [phases[i] for i in range(1, max_phase + 1)]
+
+
+def group_by_agreement(rows):
+    grouped = defaultdict(list)
+    for row in rows:
+        if row['agreement_id']:
+            grouped[row['agreement_id']].append(row)
+    return grouped
+
+
+def create_batches(grouped_rows, batch_size):
+    batches = []
+    for agreement_id, entries in grouped_rows.items():
+        for i in range(0, len(entries), batch_size):
+            batches.append({'agreement_id': agreement_id, 'entries': entries[i:i + batch_size]})
+    return batches
+
+
+class _AmountTally:
+    """Wraps a record writer to also accumulate dollar totals by outcome, so the
+    run summary can report $ submitted / completed / failed alongside the counts.
+    Delegates .write() to the wrapped writer unchanged."""
+
+    def __init__(self, inner):
+        self._inner = inner
+        self._submitted = 0.0
+        self._completed = 0.0
+        self._failed = 0.0
+
+    def write(self, record):
+        status = record.get("status")
+        try:
+            amt = float(record.get("amount") or 0)
+        except (TypeError, ValueError):
+            amt = 0.0
+        if status in ("COMPLETED", "ERROR", "TIMEOUT"):
+            self._submitted += amt
+        if status == "COMPLETED":
+            self._completed += amt
+        if status in ("VALIDATION_FAILED", "SUBMIT_FAILED"):
+            self._failed += amt
+        self._inner.write(record)
+
+    def summary(self):
+        return {
+            "currency": CURRENCY_CODE,
+            "submitted": round(self._submitted, 2),
+            "completed": round(self._completed, 2),
+            "failed": round(self._failed, 2),
+        }
+
+
+class RecordWriter:
+    """Writes each processed record incrementally to JSONL and CSV."""
+
+    CSV_FIELDS = [
+        "timestamp", "phase", "agreement_id", "invoice_id", "amount",
+        "status", "billing_adjustment_request_id", "message"
+    ]
+
+    def __init__(self, jsonl_path, csv_path):
+        self.jsonl_path = jsonl_path
+        self.csv_path = csv_path
+        # Initialize CSV with header
+        with open(self.csv_path, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.DictWriter(f, fieldnames=self.CSV_FIELDS)
+            writer.writeheader()
+        # Touch JSONL
+        open(self.jsonl_path, 'w', encoding='utf-8').close()
+
+    def write(self, record):
+        """Append a single record to both JSONL and CSV, flushing immediately."""
+        record = {**record}
+        record.setdefault("timestamp", datetime.now().isoformat())
+
+        with open(self.jsonl_path, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(record, default=str) + "\n")
+            f.flush()
+            os.fsync(f.fileno())
+
+        with open(self.csv_path, 'a', newline='', encoding='utf-8') as f:
+            writer = csv.DictWriter(f, fieldnames=self.CSV_FIELDS)
+            writer.writerow({k: record.get(k, "") for k in self.CSV_FIELDS})
+            f.flush()
+            os.fsync(f.fileno())
+
+
+class AdjustmentProcessor:
+    """
+    Processes billing adjustments with credentials supplied directly.
+    Supports dry-run and incremental record writing with progress callbacks.
+    """
+
+    def __init__(self, access_key=None, secret_key=None, session_token=None,
+                 endpoint_url=ENDPOINT_URL, region=REGION,
+                 progress_cb=None, log_cb=None, cancel_check=None,
+                 request_credentials=None, managed_credentials=False,
+                 assume_role_arn=None, assume_role_external_id=None):
+        self.access_key = access_key
+        self.secret_key = secret_key
+        self.session_token = session_token
+        self.endpoint_url = endpoint_url
+        self.region = region
+        self.progress_cb = progress_cb or (lambda **kw: None)
+        self.log_cb = log_cb or (lambda msg: None)
+        self.cancel_check = cancel_check or (lambda: False)
+        # Callback that BLOCKS until the user supplies fresh credentials.
+        # Should return a dict {access_key, secret_key, session_token} or None
+        # if the job was cancelled while waiting.
+        self.request_credentials = request_credentials
+        # When True, credentials come from the default AWS provider chain
+        # (e.g. an IAM instance/task role). No keys are supplied or requested;
+        # the role's credentials are refreshed automatically by AWS.
+        self.managed_credentials = managed_credentials
+        # When set, assume this IAM role (in another account) and use its
+        # temporary credentials. Auto-refreshed before expiry. The base
+        # credentials (to call STS) come from the default provider chain.
+        self.assume_role_arn = assume_role_arn
+        self.assume_role_external_id = assume_role_external_id
+        self.client = self._create_client()
+
+    def _assumed_role_session(self):
+        """Build a boto3 Session backed by auto-refreshing assume-role creds."""
+        base = boto3.Session()  # base creds from default chain (e.g. task role)
+        sts = base.client('sts', region_name=self.region)
+
+        assume_kwargs = {
+            'RoleArn': self.assume_role_arn,
+            'RoleSessionName': 'billing-adjustments',
+        }
+        if self.assume_role_external_id:
+            assume_kwargs['ExternalId'] = self.assume_role_external_id
+
+        def _refresh():
+            resp = sts.assume_role(**assume_kwargs)
+            c = resp['Credentials']
+            return {
+                'access_key': c['AccessKeyId'],
+                'secret_key': c['SecretAccessKey'],
+                'token': c['SessionToken'],
+                'expiry_time': c['Expiration'].isoformat(),
+            }
+
+        creds = RefreshableCredentials.create_from_metadata(
+            metadata=_refresh(),
+            refresh_using=_refresh,
+            method='sts-assume-role',
+        )
+        botocore_session = _get_botocore_session()
+        botocore_session._credentials = creds
+        botocore_session.set_config_variable('region', self.region)
+        return boto3.Session(botocore_session=botocore_session)
+
+    def _create_client(self):
+        config = Config(retries={'max_attempts': 3, 'mode': 'adaptive'})
+        if self.assume_role_arn:
+            # Cross-account: assume a role (in the account that owns the
+            # agreements) and use its auto-refreshing temporary credentials.
+            session = self._assumed_role_session()
+            return session.client(
+                'marketplace-agreement',
+                config=config,
+                endpoint_url=self.endpoint_url,
+                region_name=self.region,
+            )
+        if self.managed_credentials:
+            # Default credential chain (IAM role attached to the compute).
+            return boto3.client(
+                'marketplace-agreement',
+                config=config,
+                endpoint_url=self.endpoint_url,
+                region_name=self.region,
+            )
+        kwargs = {
+            'aws_access_key_id': self.access_key,
+            'aws_secret_access_key': self.secret_key,
+            'config': config,
+            'endpoint_url': self.endpoint_url,
+            'region_name': self.region,
+        }
+        if self.session_token:
+            kwargs['aws_session_token'] = self.session_token
+        return boto3.client('marketplace-agreement', **kwargs)
+
+    def _apply_credentials(self, creds):
+        """Swap in fresh credentials and rebuild the client."""
+        self.access_key = creds.get('access_key', self.access_key)
+        self.secret_key = creds.get('secret_key', self.secret_key)
+        self.session_token = creds.get('session_token')
+        self.client = self._create_client()
+
+    def _call(self, operation_name, **kwargs):
+        """
+        Invoke a client operation. Handles credential errors two ways:
+        - managed_credentials (IAM role): rebuild the client (the role's
+          credentials refresh automatically) and retry a bounded number of times.
+        - user-supplied credentials: pause via request_credentials, rebuild with
+          the fresh keys, and retry.
+        Other errors propagate to the caller.
+        """
+        managed_retries = 0
+        while True:
+            try:
+                return getattr(self.client, operation_name)(**kwargs)
+            except Exception as e:
+                if is_credential_error(e):
+                    if self.managed_credentials:
+                        if managed_retries < 3:
+                            managed_retries += 1
+                            time.sleep(2)
+                            self.client = self._create_client()
+                            continue
+                        raise
+                    if self.request_credentials is not None:
+                        self.log_cb("AWS credentials appear to be expired or invalid. "
+                                    "Waiting for fresh credentials...")
+                        new_creds = self.request_credentials()
+                        if not new_creds:
+                            raise CredentialsCancelled()
+                        self._apply_credentials(new_creds)
+                        self.log_cb("Fresh credentials received. Resuming...")
+                        continue
+                raise
+
+    def _log(self, msg):
+        self.log_cb(msg)
+
+    def validate_invoice(self, agreement_id, invoice_id, requested_amount):
+        """Validate invoice via ListAgreementInvoiceLineItems with pagination."""
+        try:
+            summaries = []
+            next_token = None
+            while True:
+                params = {
+                    'agreementId': agreement_id,
+                    'groupBy': 'INVOICE_ID',
+                    'invoiceId': invoice_id,
+                }
+                if next_token:
+                    params['nextToken'] = next_token
+                response = self._call('list_agreement_invoice_line_items', **params)
+                summaries.extend(response.get('agreementInvoiceLineItemGroupSummaries', []))
+                if summaries:
+                    break
+                next_token = response.get('nextToken')
+                if not next_token:
+                    break
+
+            if not summaries:
+                return False, None, f"Invoice {invoice_id} not found for agreement {agreement_id}"
+
+            summary = summaries[0]
+            max_amount = summary.get('pricingCurrencyAmount', {}).get('maxAdjustmentAmount')
+            if max_amount is None:
+                invoice_type = summary.get('invoiceType', 'UNKNOWN')
+                return False, None, f"Invoice {invoice_id} is type {invoice_type} (no maxAdjustmentAmount)"
+            if float(requested_amount) > float(max_amount):
+                return False, max_amount, f"Requested {requested_amount} exceeds max {max_amount}"
+            return True, max_amount, None
+        except CredentialsCancelled:
+            raise
+        except Exception as e:
+            return False, None, str(e)
+
+    def _create_batch_entries(self, entries):
+        return [
+            {
+                'agreementId': e['agreement_id'],
+                'originalInvoiceId': e['invoice_id'],
+                'adjustmentAmount': e['amount'],
+                'currencyCode': CURRENCY_CODE,
+                'adjustmentReasonCode': ADJUSTMENT_REASON,
+                'clientToken': generate_client_token(e['agreement_id'], e['invoice_id']),
+            }
+            for e in entries
+        ]
+
+    def get_adjustment_status(self, agreement_id, request_id):
+        try:
+            response = self._call(
+                'get_billing_adjustment_request',
+                billingAdjustmentRequestId=request_id,
+                agreementId=agreement_id,
+            )
+            return response.get('status'), response.get('statusMessage')
+        except CredentialsCancelled:
+            raise
+        except Exception as e:
+            return 'ERROR', str(e)
+
+    def get_adjustment_detail(self, agreement_id, request_id):
+        """GetBillingAdjustmentRequest — full detail for one request."""
+        response = self._call(
+            'get_billing_adjustment_request',
+            billingAdjustmentRequestId=request_id,
+            agreementId=agreement_id,
+        )
+        return {k: v for k, v in response.items() if k != 'ResponseMetadata'}
+
+    def list_adjustment_requests(self, agreement_ids, statuses=None,
+                                 catalog='AWSMarketplace',
+                                 created_after=None, created_before=None,
+                                 max_results=None):
+        """Query ListBillingAdjustmentRequests across one or more agreement IDs and
+        one or more statuses. The API takes a single agreementId and a single status
+        per call, so we loop over the combinations and aggregate (de-duplicated).
+
+        Note: this operation lists requests for a specific agreement, and the service
+        does NOT support an `agreementType` filter here (it returns a
+        "combination of filters is not supported" error), so it is not sent.
+
+        created_after / created_before are datetime objects (boto3 serializes them to
+        the epoch number the API expects). Returns (items, errors)."""
+        statuses = statuses or [None]      # None => no status filter
+        seen, items, errors = set(), [], []
+        for aid in agreement_ids:
+            for st in statuses:
+                token = None
+                while True:
+                    params = {'agreementId': aid}
+                    if catalog:
+                        params['catalog'] = catalog
+                    if st:
+                        params['status'] = st
+                    if created_after:
+                        params['createdAfter'] = created_after
+                    if created_before:
+                        params['createdBefore'] = created_before
+                    if max_results:
+                        params['maxResults'] = max_results
+                    if token:
+                        params['nextToken'] = token
+                    try:
+                        resp = self._call('list_billing_adjustment_requests', **params)
+                    except CredentialsCancelled:
+                        raise
+                    except Exception as e:
+                        errors.append({'agreementId': aid, 'status': st, 'error': str(e)})
+                        break
+                    for it in resp.get('items', []):
+                        key = (it.get('agreementId'), it.get('billingAdjustmentRequestId'))
+                        if key in seen:
+                            continue
+                        seen.add(key)
+                        items.append(it)
+                    token = resp.get('nextToken')
+                    if not token or max_results:
+                        break
+                    time.sleep(DELAY_BETWEEN_BATCHES)
+        return items, errors
+
+    def reconcile_refunds(self, records):
+        """Reconcile a refund input file against what the service actually has.
+
+        `records` is a list of dicts, each with:
+            - 'agreement_id'  : the agreement id from the input row
+            - 'invoice_id'    : the original invoice id from the input row
+            - 'original'      : the original input row (dict) preserved verbatim
+
+        For each distinct agreement id we call ListBillingAdjustmentRequests (all
+        statuses, no created/status filter) and build a map of
+        originalInvoiceId -> [request items]. For each input row:
+          - if its invoice id is present in that agreement's list, we call
+            GetBillingAdjustmentRequest for each matching request id and add the
+            full detail(s) to `processed`.
+          - otherwise the original row is added to `not_processed` unchanged.
+
+        If ListBillingAdjustmentRequests fails for an agreement, every input row
+        for that agreement is treated as not processed and the error is recorded.
+
+        Returns (processed_details, not_processed_rows, errors) where:
+          - processed_details : list of dicts (GetBillingAdjustmentRequest output,
+            with an extra 'matchedInvoiceId' echoing the input invoice id)
+          - not_processed_rows: list of the original input row dicts
+          - errors            : list of {'agreementId', 'error'} (and per-row
+            'invoiceId' when a Get call fails)
+        """
+        processed, not_processed, errors = [], [], []
+
+        # Group input rows by agreement id (preserve order of first appearance).
+        by_agreement = defaultdict(list)
+        order = []
+        for rec in records:
+            aid = (rec.get('agreement_id') or '').strip()
+            if aid not in by_agreement:
+                order.append(aid)
+            by_agreement[aid].append(rec)
+
+        for aid in order:
+            rows = by_agreement[aid]
+            if not aid:
+                # No agreement id on these rows -> cannot reconcile.
+                for rec in rows:
+                    not_processed.append(rec.get('original', {}))
+                errors.append({'agreementId': '', 'error': 'Missing agreement_id on input row(s)'})
+                continue
+
+            self._log(f"Listing adjustment requests for agreement {aid}...")
+            items, list_errors = self.list_adjustment_requests([aid], statuses=None)
+            if list_errors:
+                # List failed for this agreement -> all its rows are not processed.
+                for le in list_errors:
+                    errors.append({'agreementId': aid, 'error': le.get('error')})
+                for rec in rows:
+                    not_processed.append(rec.get('original', {}))
+                continue
+
+            # Map originalInvoiceId -> [request items] for this agreement.
+            invoice_map = defaultdict(list)
+            for it in items:
+                inv = str(it.get('originalInvoiceId') or '').strip()
+                if inv:
+                    invoice_map[inv].append(it)
+
+            for rec in rows:
+                invoice_id = str(rec.get('invoice_id') or '').strip()
+                matches = invoice_map.get(invoice_id, [])
+                if not matches:
+                    not_processed.append(rec.get('original', {}))
+                    continue
+                # Invoice found in the list -> confirm with GetBillingAdjustmentRequest.
+                matched_any = False
+                for it in matches:
+                    req_id = it.get('billingAdjustmentRequestId')
+                    if not req_id:
+                        continue
+                    try:
+                        detail = self.get_adjustment_detail(aid, req_id)
+                    except CredentialsCancelled:
+                        raise
+                    except Exception as e:
+                        errors.append({'agreementId': aid, 'invoiceId': invoice_id, 'error': str(e)})
+                        continue
+                    detail['matchedInvoiceId'] = invoice_id
+                    processed.append(detail)
+                    matched_any = True
+                if not matched_any:
+                    # Listed but could not be confirmed via Get -> not processed.
+                    not_processed.append(rec.get('original', {}))
+
+        return processed, not_processed, errors
+
+    def run(self, rows, writer, dry_run=False, counters=None):
+        """
+        Main processing. Writes each record as it is resolved.
+        counters: mutable dict to update {total, processed, succeeded, failed}
+        Returns a summary dict.
+        """
+        counters = counters if counters is not None else {}
+        valid_rows = [r for r in rows if r['agreement_id']]
+        counters['total'] = len(valid_rows)
+        counters.setdefault('processed', 0)
+        counters.setdefault('succeeded', 0)
+        counters.setdefault('failed', 0)
+
+        # Wrap the writer so we also accumulate $ totals (submitted/completed/failed)
+        # for the summary, in addition to the counts. Delegates writes unchanged.
+        writer = _AmountTally(writer)
+
+        duplicate_invoices = find_duplicate_invoices(valid_rows)
+        if duplicate_invoices:
+            self._log(f"Found {len(duplicate_invoices)} invoice(s) across multiple agreements (handled in phases).")
+
+        phases = group_rows_by_invoice_occurrence(valid_rows)
+        self._log(f"Processing in {len(phases)} phase(s). Dry run: {dry_run}")
+
+        summary = {
+            "started_at": datetime.now().isoformat(),
+            "dry_run": dry_run,
+            "total_rows": len(valid_rows),
+            "total_phases": len(phases),
+            "duplicate_invoices": duplicate_invoices,
+            "submitted": 0,
+            "succeeded": 0,
+            "failed": 0,
+        }
+
+        # Dry-run only: accumulate per-invoice requested totals to flag when the sum
+        # of all rows for one invoice exceeds its maxAdjustmentAmount.
+        dry_run_invoice_totals = defaultdict(lambda: {"total": 0.0, "max": None, "rows": 0})
+
+        for phase_num, phase_rows in enumerate(phases, 1):
+            if self.cancel_check():
+                self._log("Job cancelled.")
+                summary["cancelled"] = True
+                break
+
+            self._log(f"=== Phase {phase_num}/{len(phases)}: {len(phase_rows)} row(s) ===")
+
+            # Validate
+            validated = []
+            for row in phase_rows:
+                if self.cancel_check():
+                    break
+                is_valid, max_amount, error = self.validate_invoice(
+                    row['agreement_id'], row['invoice_id'], row['amount']
+                )
+                if is_valid:
+                    row['max_adjustment_amount'] = max_amount
+                    validated.append(row)
+                    if dry_run:
+                        # In dry-run, a valid invoice is the final result for this record
+                        counters['processed'] += 1
+                        counters['succeeded'] += 1
+                        summary["succeeded"] += 1
+                        agg = dry_run_invoice_totals[row['invoice_id']]
+                        try:
+                            agg["total"] += float(row['amount'])
+                        except (TypeError, ValueError):
+                            pass
+                        agg["max"] = max_amount
+                        agg["rows"] += 1
+                        writer.write({
+                            "phase": phase_num,
+                            "agreement_id": row['agreement_id'],
+                            "invoice_id": row['invoice_id'],
+                            "amount": row['amount'],
+                            "status": "DRY_RUN_OK",
+                            "billing_adjustment_request_id": "",
+                            "message": f"Would submit. Max allowed: {max_amount}",
+                        })
+                        self.progress_cb(**counters)
+                else:
+                    counters['processed'] += 1
+                    counters['failed'] += 1
+                    summary["failed"] += 1
+                    writer.write({
+                        "phase": phase_num,
+                        "agreement_id": row['agreement_id'],
+                        "invoice_id": row['invoice_id'],
+                        "amount": row['amount'],
+                        "status": "VALIDATION_FAILED",
+                        "billing_adjustment_request_id": "",
+                        "message": error,
+                    })
+                    self.progress_cb(**counters)
+                time.sleep(DELAY_BETWEEN_BATCHES)
+
+            if dry_run:
+                continue  # No submission in dry-run
+
+            if not validated:
+                continue
+
+            # Submit batches
+            grouped = group_by_agreement(validated)
+            batches = create_batches(grouped, BATCH_SIZE)
+            self._log(f"Submitting {len(batches)} batch(es)...")
+
+            pending_requests = []
+            for batch in batches:
+                if self.cancel_check():
+                    break
+                agreement_id = batch['agreement_id']
+                entries = batch['entries']
+                entry_by_token = {
+                    generate_client_token(e['agreement_id'], e['invoice_id']): e
+                    for e in entries
+                }
+                try:
+                    response = self._call(
+                        'batch_create_billing_adjustment_request',
+                        billingAdjustmentRequestEntries=self._create_batch_entries(entries)
+                    )
+                    items = response.get('items', [])
+                    errors = response.get('errors', [])
+                    summary["submitted"] += len(items)
+
+                    for item in items:
+                        req_id = item.get('billingAdjustmentRequestId')
+                        token = item.get('clientToken')
+                        entry = entry_by_token.get(token) or entries[0]
+                        pending_requests.append({
+                            'request_id': req_id,
+                            'agreement_id': agreement_id,
+                            'invoice_id': entry['invoice_id'],
+                            'amount': entry['amount'],
+                            'phase': phase_num,
+                        })
+
+                    for err in errors:
+                        token = err.get('clientToken')
+                        entry = entry_by_token.get(token, {})
+                        counters['processed'] += 1
+                        counters['failed'] += 1
+                        summary["failed"] += 1
+                        writer.write({
+                            "phase": phase_num,
+                            "agreement_id": agreement_id,
+                            "invoice_id": entry.get('invoice_id', ''),
+                            "amount": entry.get('amount', ''),
+                            "status": "SUBMIT_FAILED",
+                            "billing_adjustment_request_id": "",
+                            "message": json.dumps(err, default=str),
+                        })
+                        self.progress_cb(**counters)
+                except CredentialsCancelled:
+                    raise
+                except Exception as e:
+                    for entry in entries:
+                        counters['processed'] += 1
+                        counters['failed'] += 1
+                        summary["failed"] += 1
+                        writer.write({
+                            "phase": phase_num,
+                            "agreement_id": agreement_id,
+                            "invoice_id": entry['invoice_id'],
+                            "amount": entry['amount'],
+                            "status": "SUBMIT_FAILED",
+                            "billing_adjustment_request_id": "",
+                            "message": str(e),
+                        })
+                        self.progress_cb(**counters)
+                time.sleep(DELAY_BETWEEN_BATCHES)
+
+            # Poll for completion of this phase's submitted requests
+            self._wait_and_record(pending_requests, writer, counters, summary, phase_num)
+
+        summary["finished_at"] = datetime.now().isoformat()
+        summary["succeeded"] = counters['succeeded']
+        summary["failed"] = counters['failed']
+        summary["amount_totals"] = writer.summary()
+        if dry_run:
+            warnings = []
+            for inv, info in dry_run_invoice_totals.items():
+                if info["max"] is not None and info["total"] > float(info["max"]):
+                    warnings.append({
+                        "invoice_id": inv,
+                        "total_requested": round(info["total"], 2),
+                        "max_adjustment_amount": info["max"],
+                        "row_count": info["rows"],
+                    })
+            summary["aggregate_warnings"] = warnings
+        return summary
+
+    def _wait_and_record(self, pending_requests, writer, counters, summary, phase_num):
+        """Poll each submitted request until terminal status, recording incrementally."""
+        if not pending_requests:
+            return
+        self._log(f"Waiting for {len(pending_requests)} submitted request(s) to complete...")
+        start = time.time()
+        while pending_requests and (time.time() - start) < MAX_POLL_TIME:
+            if self.cancel_check():
+                break
+            still_pending = []
+            for req in pending_requests:
+                status, message = self.get_adjustment_status(req['agreement_id'], req['request_id'])
+                if status in ('COMPLETED', 'VALIDATION_FAILED', 'ERROR'):
+                    counters['processed'] += 1
+                    if status == 'COMPLETED':
+                        counters['succeeded'] += 1
+                    else:
+                        counters['failed'] += 1
+                    writer.write({
+                        "phase": phase_num,
+                        "agreement_id": req['agreement_id'],
+                        "invoice_id": req['invoice_id'],
+                        "amount": req['amount'],
+                        "status": status,
+                        "billing_adjustment_request_id": req['request_id'],
+                        "message": message or "",
+                    })
+                    self.progress_cb(**counters)
+                else:
+                    still_pending.append(req)
+                time.sleep(DELAY_BETWEEN_BATCHES)
+            pending_requests = still_pending
+            if pending_requests:
+                time.sleep(POLL_INTERVAL)
+
+        # Timeouts
+        for req in pending_requests:
+            counters['processed'] += 1
+            counters['failed'] += 1
+            writer.write({
+                "phase": phase_num,
+                "agreement_id": req['agreement_id'],
+                "invoice_id": req['invoice_id'],
+                "amount": req['amount'],
+                "status": "TIMEOUT",
+                "billing_adjustment_request_id": req['request_id'],
+                "message": f"Timed out after {MAX_POLL_TIME}s",
+            })
+            self.progress_cb(**counters)

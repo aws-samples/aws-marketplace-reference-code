@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-06-12T10:15:42.123456",
+  "mode": "live",
+  "csv_file": "adjustmentFiles/sample_company.csv",
+  "total_rows": 6,
+  "total_phases": 2,
+  "duplicate_invoices": {
+    "2500000001": ["agmt-exampleagreement1abcdefg", "agmt-exampleagreement2hijklmn"],
+    "2500000003": ["agmt-exampleagreement3opqrstu", "agmt-exampleagreement4vwxyz01"]
+  },
+  "summary": {
+    "validation_failed": 1,
+    "submit_failed": 0,
+    "submitted": 5,
+    "completed": 5,
+    "completion_failed": 0,
+    "pending": 0,
+    "amount_totals": {
+      "currency": "USD",
+      "submitted": 2635.75,
+      "completed": 2635.75,
+      "failed": 45.00
+    }
+  },
+  "row_results": [
+    {
+      "invoice_id": "2500000001",
+      "agreement_id": "agmt-exampleagreement1abcdefg",
+      "amount": "150.00",
+      "request_id": "ba-1111aaaa2222bbbb3333cccc",
+      "client_token": "5f8d2c1a-1111-5abc-9def-000000000001",
+      "status": "COMPLETED",
+      "error": null
+    },
+    {
+      "invoice_id": "2500000002",
+      "agreement_id": "agmt-exampleagreement1abcdefg",
+      "amount": "1200.00",
+      "request_id": "ba-2222bbbb3333cccc4444dddd",
+      "client_token": "5f8d2c1a-2222-5abc-9def-000000000002",
+      "status": "COMPLETED",
+      "error": null
+    },
+    {
+      "invoice_id": "2500000003",
+      "agreement_id": "agmt-exampleagreement3opqrstu",
+      "amount": "320.25",
+      "request_id": "ba-3333cccc4444dddd5555eeee",
+      "client_token": "5f8d2c1a-3333-5abc-9def-000000000003",
+      "status": "COMPLETED",
+      "error": null
+    },
+    {
+      "invoice_id": "2500000004",
+      "agreement_id": "agmt-exampleagreement3opqrstu",
+      "amount": "890.00",
+      "request_id": "ba-4444dddd5555eeee6666ffff",
+      "client_token": "5f8d2c1a-4444-5abc-9def-000000000004",
+      "status": "COMPLETED",
+      "error": null
+    },
+    {
+      "invoice_id": "2500000001",
+      "agreement_id": "agmt-exampleagreement2hijklmn",
+      "amount": "75.50",
+      "request_id": "ba-5555eeee6666ffff7777aaaa",
+      "client_token": "5f8d2c1a-5555-5abc-9def-000000000005",
+      "status": "COMPLETED",
+      "error": null
+    },
+    {
+      "invoice_id": "2500000003",
+      "agreement_id": "agmt-exampleagreement4vwxyz01",
+      "amount": "45.00",
+      "request_id": null,
+      "client_token": "5f8d2c1a-6666-5abc-9def-000000000006",
+      "status": "VALIDATION_FAILED",
+      "error": "Invoice 2500000003 not found for agreement agmt-exampleagreement4vwxyz01"
+    }
+  ]
+}

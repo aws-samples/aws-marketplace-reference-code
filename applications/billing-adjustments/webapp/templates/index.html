@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing Adjustments</title>
+<style>
+  :root {
+    --bg: #f4f6f8; --card: #ffffff; --border: #d9dee3; --text: #232f3e;
+    --muted: #5f6b7a; --accent: #ec7211; --accent-dark: #d35400;
+    --green: #1a7f37; --red: #c0392b; --blue: #0972d3;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5;
+  }
+  header { background: var(--text); color: #fff; padding: 16px 24px; }
+  header h1 { margin: 0; font-size: 20px; font-weight: 600; }
+  header p { margin: 4px 0 0; color: #b8c2cc; font-size: 13px; }
+  .layout { display: flex; max-width: 1120px; margin: 0 auto; }
+  .sidebar { width: 220px; flex-shrink: 0; padding: 24px 12px; }
+  .nav-item { display: block; width: 100%; text-align: left; background: transparent;
+    color: var(--text); border: none; border-radius: 6px; padding: 10px 12px;
+    font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 4px; }
+  .nav-item:hover { background: #e9edf1; }
+  .nav-item.active { background: var(--text); color: #fff; }
+  .content { flex: 1; padding: 24px 16px; min-width: 0; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 20px; margin-bottom: 20px; }
+  .card h2 { margin: 0 0 12px; font-size: 16px; }
+  label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+  .hint { color: var(--muted); font-size: 12px; font-weight: 400; }
+  input[type=text], input[type=password], input[type=email], input[type=file],
+  input[type=date], input[type=number], textarea {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--border);
+    border-radius: 6px; font-size: 14px; margin-bottom: 14px; background: #fff; font-family: inherit; }
+  textarea { min-height: 90px; resize: vertical; }
+  .row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 160px; }
+  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .checkbox-row input { width: auto; margin: 0; }
+  .checkbox-row label { margin: 0; }
+  .status-opts { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+  .status-opts label { font-weight: 400; display: flex; align-items: center; gap: 6px; }
+  button { background: var(--accent); color: #fff; border: none; padding: 10px 18px;
+    border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  button:hover { background: var(--accent-dark); }
+  button.secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
+  button.secondary:hover { background: #f0f2f4; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  details.format-guide { margin-bottom: 14px; border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; background: #fbfcfd; }
+  details.format-guide summary { cursor: pointer; font-weight: 600; font-size: 13px; }
+  table.fmt { border-collapse: collapse; font-size: 12px; margin-top: 10px; width: 100%; }
+  table.fmt th, table.fmt td { border: 1px solid var(--border); padding: 5px 8px; text-align: left; }
+  table.fmt th { background: #eef1f4; }
+  code { background: #eef1f4; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+  .msg { padding: 10px 12px; border-radius: 6px; font-size: 13px; margin-bottom: 14px; display: none; }
+  .msg.ok { background: #e6f4ea; color: var(--green); border: 1px solid #abd7b9; display: block; }
+  .msg.err { background: #fdecea; color: var(--red); border: 1px solid #f1b0a8; display: block; }
+  .msg.info { background: #e7f0fb; color: var(--blue); border: 1px solid #aacbf0; display: block; }
+  .msg ul { margin: 6px 0 0; padding-left: 18px; }
+  .progress-wrap { background: #eef1f4; border-radius: 6px; height: 22px; overflow: hidden; margin: 8px 0; }
+  .progress-bar { height: 100%; background: var(--green); width: 0%; transition: width 0.4s; }
+  .stat-grid { display: flex; gap: 16px; margin: 10px 0; flex-wrap: wrap; }
+  .stat { background: #f7f9fa; border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; min-width: 90px; }
+  .stat .n { font-size: 22px; font-weight: 700; }
+  .stat .l { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+  .logs { background: #1e2630; color: #cfd8e3; font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+    padding: 10px; border-radius: 6px; max-height: 240px; overflow-y: auto; white-space: pre-wrap; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+  .badge.running { background: #fff3e0; color: var(--accent-dark); }
+  .badge.completed, .badge.COMPLETED { background: #e6f4ea; color: var(--green); }
+  .badge.failed, .badge.VALIDATION_FAILED { background: #fdecea; color: var(--red); }
+  .badge.cancelled, .badge.queued, .badge.PENDING { background: #eef1f4; color: var(--muted); }
+  .badge.awaiting_credentials { background: #fff3e0; color: var(--accent-dark); }
+  .job-item { border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+  .job-item .meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .dl-row { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+  a.dl { display: inline-block; background: #fff; border: 1px solid var(--border); padding: 6px 12px;
+    border-radius: 6px; text-decoration: none; color: var(--text); font-weight: 600; font-size: 13px; }
+  a.dl:hover { background: #f0f2f4; }
+  table.results { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; }
+  table.results th, table.results td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; white-space: nowrap; }
+  table.results th { background: #eef1f4; position: sticky; top: 0; }
+  .results-wrap { overflow-x: auto; max-height: 460px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px; }
+  table.kv { border-collapse: collapse; font-size: 13px; width: 100%; }
+  table.kv td { border: 1px solid var(--border); padding: 6px 10px; }
+  table.kv td:first-child { background: #f7f9fa; font-weight: 600; width: 220px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<header>
+  <h1>AWS Marketplace Billing Adjustments</h1>
+  <p>Submit bulk refunds and look up adjustment requests. No command line needed.</p>
+</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <button type="button" class="nav-item active" data-view="submit">Submit refunds</button>
+    <button type="button" class="nav-item" data-view="reconcile">Check processed refunds</button>
+    <button type="button" class="nav-item" data-view="get">Check one request</button>
+  </nav>
+
+  <main class="content">
+
+    <!-- Shared AWS credentials (local mode only) -->
+    {% if not managed_credentials %}
+    <div class="card" id="credsCard">
+      <h2>AWS credentials</h2>
+      <p class="hint" style="margin-top:-6px;margin-bottom:12px;">Used only for your requests. Not saved to disk.</p>
+      <label for="accessKey">Access key ID</label>
+      <input type="text" id="accessKey" autocomplete="off" spellcheck="false">
+      <label for="secretKey">Secret access key</label>
+      <input type="password" id="secretKey" autocomplete="off">
+      <label for="sessionToken">Session token <span class="hint">(optional - for temporary credentials)</span></label>
+      <input type="password" id="sessionToken" autocomplete="off">
+    </div>
+    {% else %}
+    <div class="msg info" style="display:block;">
+      This app runs with the AWS permissions of the environment it's deployed in (an IAM role).
+      You don't need to enter any credentials.
+    </div>
+    {% endif %}
+
+    <!-- =================== VIEW: SUBMIT REFUNDS =================== -->
+    <div class="view" id="view-submit">
+      <div class="card">
+        <h2>1. Upload adjustment file</h2>
+        <details class="format-guide">
+          <summary>Required file format (click to expand)</summary>
+          <p class="hint">Your file must be a <code>.csv</code> with a header row containing these columns:</p>
+          <table class="fmt">
+            <tr><th>Column</th><th>Required?</th><th>Example</th></tr>
+            <tr><td><code>seller_id</code></td><td>Yes</td><td>123456789012</td></tr>
+            <tr><td><code>aws_account_id</code></td><td>Yes</td><td>111222333444</td></tr>
+            <tr><td><code>invoice_id</code></td><td>Yes</td><td>2500000001</td></tr>
+            <tr><td><code>product_code</code></td><td>Yes</td><td>prod-abc123def456g</td></tr>
+            <tr><td><code>month_id</code></td><td>Yes</td><td>25-Jun</td></tr>
+            <tr><td><code>refund_amount</code></td><td>Yes*</td><td>$1,200.00 or 0.01</td></tr>
+            <tr><td><code>agreement_id</code></td><td>Yes</td><td>agmt-exampleagreement1abcdefg</td></tr>
+            <tr><td><code>max_refund_amount</code></td><td>Optional</td><td>0.02</td></tr>
+          </table>
+          <p class="hint">* The amount column may be named <code>refund_amount</code> or <code>SUM of Calculated Refund (T-Y)</code>. One row per &lt;invoice, agreement&gt;.</p>
+        </details>
+
+        <label for="file">CSV file</label>
+        <input type="file" id="file" accept=".csv">
+        <div class="btn-row" style="margin-bottom:14px;">
+          <button type="button" class="secondary" id="checkBtn">Check file format</button>
+        </div>
+        <div class="msg" id="validateMsg"></div>
+
+        <h2 style="margin-top:18px;">2. Options</h2>
+        <div class="checkbox-row">
+          <input type="checkbox" id="dryRun" checked>
+          <label for="dryRun">Dry run <span class="hint">(validate only, no adjustments submitted)</span></label>
+        </div>
+        <div class="msg" id="submitMsg"></div>
+        <div class="btn-row"><button type="button" id="submitBtn">Start job</button></div>
+      </div>
+
+      <div class="card hidden" id="activeCard">
+        <h2>Current job <span class="badge" id="activeBadge"></span></h2>
+        <div class="meta hint" id="activeMeta"></div>
+        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+        <div class="stat-grid">
+          <div class="stat"><div class="n" id="statTotal">0</div><div class="l">Total</div></div>
+          <div class="stat"><div class="n" id="statProcessed">0</div><div class="l">Processed</div></div>
+          <div class="stat"><div class="n" style="color:var(--green)" id="statSucceeded">0</div><div class="l">Succeeded</div></div>
+          <div class="stat"><div class="n" style="color:var(--red)" id="statFailed">0</div><div class="l">Failed</div></div>
+        </div>
+        <div class="dl-row" id="activeDownloads"></div>
+        <div class="msg err" id="credPanel" style="display:none;">
+          <strong>⚠ Credentials expired — job paused.</strong>
+          <p class="hint" style="color:inherit;margin:6px 0;">Enter fresh credentials to resume from where it left off. Already-processed records are kept.</p>
+          <label for="resumeAccessKey">Access key ID</label>
+          <input type="text" id="resumeAccessKey" autocomplete="off" spellcheck="false">
+          <label for="resumeSecretKey">Secret access key</label>
+          <input type="password" id="resumeSecretKey" autocomplete="off">
+          <label for="resumeSessionToken">Session token <span class="hint">(optional)</span></label>
+          <input type="password" id="resumeSessionToken" autocomplete="off">
+          <div class="btn-row"><button type="button" id="resumeBtn">Resume job</button></div>
+        </div>
+        <div class="btn-row" style="margin:10px 0;"><button type="button" class="secondary" id="cancelBtn">Cancel job</button></div>
+        <label style="margin-top:10px;">Activity log</label>
+        <div class="logs" id="logs"></div>
+      </div>
+
+      <div class="card">
+        <h2>Job history</h2>
+        <p class="hint" style="margin-top:-6px;">Jobs keep running in the background even if you close this page.</p>
+        <div id="jobList"></div>
+      </div>
+    </div>
+
+    <!-- =================== VIEW: CHECK PROCESSED REFUNDS (Reconcile) =================== -->
+    <div class="view hidden" id="view-reconcile">
+      <div class="card">
+        <h2>Check processed refunds</h2>
+        <p class="hint" style="margin-top:-6px;margin-bottom:14px;">
+          Upload the same refund file you submitted. For each agreement we list its billing
+          adjustment requests and confirm whether each invoice was processed
+          (ListBillingAdjustmentRequests + GetBillingAdjustmentRequest). You get two
+          downloadable files: one for processed refunds (with full request detail) and one
+          for everything not processed (in the original file format).
+        </p>
+
+        <label for="recFile">Refund CSV file <span class="hint">(same format as the submit file)</span></label>
+        <input type="file" id="recFile" accept=".csv">
+
+        <div class="msg" id="recMsg"></div>
+        <div class="btn-row">
+          <button type="button" id="recBtn">Check</button>
+          <button type="button" class="secondary hidden" id="recDownloadProcessed">⬇ Processed CSV</button>
+          <button type="button" class="secondary hidden" id="recDownloadNotProcessed">⬇ Not-processed CSV</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="recResultsCard">
+        <h2>Result</h2>
+        <div class="stat-grid">
+          <div class="stat"><div class="n" id="recStatInput">0</div><div class="l">Input rows</div></div>
+          <div class="stat"><div class="n" style="color:var(--green)" id="recStatProcessed">0</div><div class="l">Processed</div></div>
+          <div class="stat"><div class="n" style="color:var(--red)" id="recStatNot">0</div><div class="l">Not processed</div></div>
+          <div class="stat"><div class="n" id="recStatErrors">0</div><div class="l">Errors</div></div>
+        </div>
+        <div class="msg err" id="recErrors" style="display:none;"></div>
+        <h2 style="margin-top:18px;font-size:14px;">Processed</h2>
+        <div class="results-wrap"><table class="results" id="recProcessedTable"></table></div>
+        <h2 style="margin-top:18px;font-size:14px;">Not processed</h2>
+        <div class="results-wrap"><table class="results" id="recNotProcessedTable"></table></div>
+      </div>
+    </div>
+
+    <!-- =================== VIEW: CHECK ONE REQUEST (Get) =================== -->
+    <div class="view hidden" id="view-get">
+      <div class="card">
+        <h2>Check one adjustment request</h2>
+        <p class="hint" style="margin-top:-6px;margin-bottom:14px;">
+          Looks up a single request by agreement ID and billing adjustment request ID (GetBillingAdjustmentRequest).
+        </p>
+        <label for="getAgreementId">Agreement ID</label>
+        <input type="text" id="getAgreementId" placeholder="agmt-..." spellcheck="false">
+        <label for="getRequestId">Billing adjustment request ID</label>
+        <input type="text" id="getRequestId" placeholder="ba-..." spellcheck="false">
+        <div class="msg" id="getMsg"></div>
+        <div class="btn-row"><button type="button" id="getBtn">Check status</button></div>
+      </div>
+
+      <div class="card hidden" id="getResultCard">
+        <h2>Request detail</h2>
+        <table class="kv" id="getResultTable"></table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const MANAGED = {{ 'true' if managed_credentials else 'false' }};
+let activeJobId = null;
+let pollTimer = null;
+
+const $ = (id) => document.getElementById(id);
+function showMsg(el, type, html) { el.className = "msg " + type; el.innerHTML = html; }
+
+// --- credentials shared across views (local mode) ---
+function appendCreds(fd, msgEl) {
+  if (MANAGED) return true;
+  const a = $("accessKey").value.trim(), s = $("secretKey").value.trim();
+  if (!a || !s) { if (msgEl) showMsg(msgEl, "err", "Access key and secret key are required."); return false; }
+  fd.append("access_key", a); fd.append("secret_key", s);
+  fd.append("session_token", $("sessionToken").value.trim());
+  return true;
+}
+
+// --- view switching ---
+document.querySelectorAll(".nav-item").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
+    $("view-" + btn.dataset.view).classList.remove("hidden");
+  });
+});
+
+function fmtEpoch(v) {
+  if (v === null || v === undefined || v === "") return "";
+  let d;
+  if (typeof v === "number") d = new Date(v * 1000);
+  else if (/^\d+(\.\d+)?$/.test(String(v))) d = new Date(Number(v) * 1000);
+  else d = new Date(v);
+  return isNaN(d.getTime()) ? String(v) : d.toISOString().replace("T", " ").slice(0, 19) + " UTC";
+}
+
+/* ============ SUBMIT REFUNDS ============ */
+async function checkFormat() {
+  const fileInput = $("file");
+  if (!fileInput.files.length) { showMsg($("validateMsg"), "err", "Please choose a file first."); return; }
+  const fd = new FormData(); fd.append("file", fileInput.files[0]);
+  showMsg($("validateMsg"), "info", "Checking file format...");
+  try {
+    const res = await fetch("/api/validate", { method: "POST", body: fd });
+    const data = await res.json();
+    if (data.valid) { showMsg($("validateMsg"), "ok", "✓ " + data.message); }
+    else {
+      let html = "✗ " + data.message; const d = data.details || {};
+      if (d.missing_columns && d.missing_columns.length) html += "<ul><li>Missing columns: " + d.missing_columns.join(", ") + "</li></ul>";
+      if (d.row_issues && d.row_issues.length) {
+        html += "<ul>"; d.row_issues.slice(0, 10).forEach(r => { html += "<li>Line " + r.line + ": " + r.issues.join("; ") + "</li>"; });
+        if (d.row_issues.length > 10) html += "<li>...and " + (d.row_issues.length - 10) + " more</li>"; html += "</ul>";
+      }
+      showMsg($("validateMsg"), "err", html);
+    }
+  } catch (e) { showMsg($("validateMsg"), "err", "Error checking file: " + e); }
+}
+
+async function submitJob() {
+  const fileInput = $("file");
+  if (!fileInput.files.length) { showMsg($("submitMsg"), "err", "Please choose a file first."); return; }
+  const fd = new FormData(); fd.append("file", fileInput.files[0]);
+  if (!appendCreds(fd, $("submitMsg"))) return;
+  fd.append("dry_run", $("dryRun").checked ? "true" : "false");
+  $("submitBtn").disabled = true;
+  showMsg($("submitMsg"), "info", "Starting job...");
+  try {
+    const res = await fetch("/api/submit", { method: "POST", body: fd });
+    const data = await res.json();
+    if (!res.ok) { showMsg($("submitMsg"), "err", (data.error || "Failed to start job.") + (data.review_count ? ` (${data.review_count} row(s) need review)` : "")); }
+    else {
+      let m = "Job started" + (data.dry_run ? " (dry run)" : "") + ". " + (data.valid_count || 0) + " valid row(s).";
+      if (data.review_count) m += " " + data.review_count + " row(s) routed to review — download the “Needs review” file below.";
+      m += " Tracking below.";
+      showMsg($("submitMsg"), data.review_count ? "info" : "ok", m); activeJobId = data.job_id; startPolling();
+    }
+  } catch (e) { showMsg($("submitMsg"), "err", "Error: " + e); }
+  finally { $("submitBtn").disabled = false; }
+}
+
+function startPolling() { if (pollTimer) clearInterval(pollTimer); pollActive(); pollTimer = setInterval(pollActive, 2000); }
+async function pollActive() {
+  if (!activeJobId) return;
+  try {
+    const res = await fetch("/api/jobs/" + activeJobId);
+    if (!res.ok) return;
+    const job = await res.json(); renderActive(job);
+    if (["completed", "failed", "cancelled"].includes(job.state)) { clearInterval(pollTimer); pollTimer = null; }
+  } catch (e) {}
+  loadJobs();
+}
+function downloadLinks(job) {
+  const jobId = job.job_id;
+  let links = `<a class="dl" href="/api/jobs/${jobId}/download/csv">⬇ CSV (readable)</a>
+    <a class="dl" href="/api/jobs/${jobId}/download/json">⬇ Summary (JSON)</a>
+    <a class="dl" href="/api/jobs/${jobId}/download/jsonl">⬇ Records (JSON lines)</a>`;
+  if (job.review_count) {
+    links += `<a class="dl" href="/api/jobs/${jobId}/download/review">⬇ Needs review (${job.review_count})</a>`;
+  }
+  return links;
+}
+function renderActive(job) {
+  $("activeCard").classList.remove("hidden");
+  $("activeBadge").className = "badge " + job.state; $("activeBadge").textContent = job.state;
+  $("activeMeta").textContent = job.original_filename + " · " + (job.dry_run ? "Dry run" : "Live run") + " · started " + (job.started_at || "-");
+  const p = job.progress || {}; const total = p.total || 0, processed = p.processed || 0;
+  $("progressBar").style.width = (total ? Math.round((processed / total) * 100) : 0) + "%";
+  $("statTotal").textContent = total; $("statProcessed").textContent = processed;
+  $("statSucceeded").textContent = p.succeeded || 0; $("statFailed").textContent = p.failed || 0;
+  $("logs").textContent = (job.logs || []).join("\n"); $("logs").scrollTop = $("logs").scrollHeight;
+  const done = ["completed", "failed", "cancelled"].includes(job.state);
+  $("cancelBtn").style.display = done ? "none" : "inline-block";
+  $("credPanel").style.display = (job.state === "awaiting_credentials") ? "block" : "none";
+  $("activeDownloads").innerHTML = done ? downloadLinks(job) : "";
+}
+async function resumeJob() {
+  if (!activeJobId) return;
+  const a = $("resumeAccessKey").value.trim(), s = $("resumeSecretKey").value.trim();
+  if (!a || !s) { alert("Access key and secret key are required to resume."); return; }
+  $("resumeBtn").disabled = true;
+  const fd = new FormData(); fd.append("access_key", a); fd.append("secret_key", s); fd.append("session_token", $("resumeSessionToken").value.trim());
+  try {
+    const res = await fetch("/api/jobs/" + activeJobId + "/credentials", { method: "POST", body: fd });
+    const data = await res.json();
+    if (res.ok) { $("resumeSecretKey").value = ""; $("resumeSessionToken").value = ""; $("credPanel").style.display = "none"; startPolling(); }
+    else { alert(data.error || "Could not resume job."); }
+  } catch (e) { alert("Error: " + e); } finally { $("resumeBtn").disabled = false; }
+}
+async function cancelJob() { if (!activeJobId) return; $("cancelBtn").disabled = true; await fetch("/api/jobs/" + activeJobId + "/cancel", { method: "POST" }); $("cancelBtn").disabled = false; }
+async function loadJobs() {
+  try {
+    const res = await fetch("/api/jobs"); const data = await res.json(); const list = $("jobList");
+    if (!data.jobs.length) { list.innerHTML = '<p class="hint">No jobs yet.</p>'; return; }
+    list.innerHTML = data.jobs.map(job => {
+      const p = job.progress || {}; const done = ["completed", "failed", "cancelled"].includes(job.state);
+      return `<div class="job-item"><div><strong>${job.original_filename}</strong>
+          <span class="badge ${job.state}">${job.state}</span>${job.dry_run ? ' <span class="hint">(dry run)</span>' : ''}</div>
+          <div class="meta">Created ${job.created_at || '-'} · Total ${p.total||0}, Succeeded ${p.succeeded||0}, Failed ${p.failed||0}${job.review_count ? ', Needs review '+job.review_count : ''}
+            ${job.error ? '· <span style="color:var(--red)">'+job.error+'</span>' : ''}</div>
+          ${done ? '<div class="dl-row">'+downloadLinks(job)+'</div>' : ''}
+          ${!done ? '<div class="meta"><a href="#" onclick="trackJob(\''+job.job_id+'\');return false;">Track this job ▸</a></div>' : ''}</div>`;
+    }).join("");
+  } catch (e) {}
+}
+function trackJob(jobId) { activeJobId = jobId; startPolling(); $("activeCard").scrollIntoView({ behavior: "smooth" }); }
+
+/* ============ CHECK PROCESSED REFUNDS (Reconcile) ============ */
+const REC_PROCESSED_COLS = ["billingAdjustmentRequestId","agreementId","originalInvoiceId","matchedInvoiceId","adjustmentAmount","currencyCode","status","statusMessage","adjustmentReasonCode","description","createdAt","updatedAt"];
+let recProcessed = [], recNotProcessed = [], recOriginalCols = [], recFilename = "refunds";
+
+function csvCell(v) {
+  if (v === undefined || v === null) v = "";
+  v = String(v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+}
+function downloadCsv(filename, cols, rows) {
+  const lines = [cols.map(csvCell).join(",")];
+  rows.forEach(r => lines.push(cols.map(c => csvCell(r[c])).join(",")));
+  const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = filename; a.click(); URL.revokeObjectURL(a.href);
+}
+
+async function reconcile() {
+  const fileInput = $("recFile");
+  if (!fileInput.files.length) { showMsg($("recMsg"), "err", "Please choose a file first."); return; }
+  const fd = new FormData(); fd.append("file", fileInput.files[0]);
+  if (!appendCreds(fd, $("recMsg"))) return;
+  $("recBtn").disabled = true; showMsg($("recMsg"), "info", "Checking against the service. This may take a moment...");
+  $("recDownloadProcessed").classList.add("hidden");
+  $("recDownloadNotProcessed").classList.add("hidden");
+  try {
+    const res = await fetch("/api/reconcile", { method: "POST", body: fd });
+    const data = await res.json();
+    if (!res.ok) { showMsg($("recMsg"), "err", data.error || "Check failed."); return; }
+    recProcessed = data.processed || [];
+    recNotProcessed = data.not_processed || [];
+    recOriginalCols = data.original_columns || [];
+    recFilename = (data.original_filename || "refunds").replace(/\.csv$/i, "");
+    const c = data.counts || {};
+    let msg = `${c.processed||0} of ${c.input_rows||0} input row(s) processed; ${c.not_processed||0} not processed.`;
+    showMsg($("recMsg"), (c.errors ? "info" : "ok"), msg);
+    renderReconcile(data.errors || []);
+    $("recDownloadProcessed").classList.toggle("hidden", recProcessed.length === 0);
+    $("recDownloadNotProcessed").classList.toggle("hidden", recNotProcessed.length === 0);
+  } catch (e) { showMsg($("recMsg"), "err", "Error: " + e); }
+  finally { $("recBtn").disabled = false; }
+}
+
+function renderTable(tableEl, cols, rows) {
+  if (!rows.length) { tableEl.innerHTML = '<tr><td>None.</td></tr>'; return; }
+  let html = "<tr>" + cols.map(c => `<th>${c}</th>`).join("") + "</tr>";
+  rows.forEach(r => {
+    html += "<tr>" + cols.map(c => {
+      let v = r[c]; if (c === "createdAt" || c === "updatedAt") v = fmtEpoch(v);
+      if (c === "status") return `<td><span class="badge ${r[c]}">${r[c]||""}</span></td>`;
+      return `<td>${v === undefined || v === null ? "" : v}</td>`;
+    }).join("") + "</tr>";
+  });
+  tableEl.innerHTML = html;
+}
+
+function renderReconcile(errors) {
+  $("recResultsCard").classList.remove("hidden");
+  $("recStatInput").textContent = recProcessed.length + recNotProcessed.length;
+  $("recStatProcessed").textContent = recProcessed.length;
+  $("recStatNot").textContent = recNotProcessed.length;
+  $("recStatErrors").textContent = errors.length;
+  if (errors.length) {
+    showMsg($("recErrors"), "err",
+      "<strong>Query errors:</strong><ul>" +
+      errors.slice(0, 10).map(e => `<li>${e.agreementId || ""}${e.invoiceId ? " / " + e.invoiceId : ""}: ${e.error}</li>`).join("") +
+      (errors.length > 10 ? `<li>...and ${errors.length - 10} more</li>` : "") + "</ul>");
+  } else { $("recErrors").style.display = "none"; }
+  renderTable($("recProcessedTable"), REC_PROCESSED_COLS, recProcessed);
+  renderTable($("recNotProcessedTable"), recOriginalCols, recNotProcessed);
+}
+
+function downloadRecProcessed() {
+  if (!recProcessed.length) return;
+  downloadCsv(`processed_${recFilename}.csv`, REC_PROCESSED_COLS, recProcessed);
+}
+function downloadRecNotProcessed() {
+  if (!recNotProcessed.length) return;
+  downloadCsv(`not_processed_${recFilename}.csv`, recOriginalCols, recNotProcessed);
+}
+
+/* ============ CHECK ONE REQUEST (Get) ============ */
+async function getAdjustment() {
+  const aid = $("getAgreementId").value.trim(), rid = $("getRequestId").value.trim();
+  if (!aid || !rid) { showMsg($("getMsg"), "err", "Both agreement ID and request ID are required."); return; }
+  const fd = new FormData(); fd.append("agreement_id", aid); fd.append("billing_adjustment_request_id", rid);
+  if (!appendCreds(fd, $("getMsg"))) return;
+  $("getBtn").disabled = true; showMsg($("getMsg"), "info", "Looking up...");
+  try {
+    const res = await fetch("/api/get-adjustment", { method: "POST", body: fd });
+    const data = await res.json();
+    if (!res.ok) { showMsg($("getMsg"), "err", data.error || "Lookup failed."); $("getResultCard").classList.add("hidden"); return; }
+    showMsg($("getMsg"), "ok", "Found.");
+    const d = data.detail || {}; const t = $("getResultTable"); let html = "";
+    Object.keys(d).forEach(k => {
+      let v = d[k]; if (k === "createdAt" || k === "updatedAt") v = fmtEpoch(v);
+      html += `<tr><td>${k}</td><td>${v === undefined || v === null ? "" : v}</td></tr>`;
+    });
+    t.innerHTML = html; $("getResultCard").classList.remove("hidden");
+  } catch (e) { showMsg($("getMsg"), "err", "Error: " + e); }
+  finally { $("getBtn").disabled = false; }
+}
+
+$("checkBtn").addEventListener("click", checkFormat);
+$("submitBtn").addEventListener("click", submitJob);
+$("cancelBtn").addEventListener("click", cancelJob);
+$("resumeBtn").addEventListener("click", resumeJob);
+$("recBtn").addEventListener("click", reconcile);
+$("recDownloadProcessed").addEventListener("click", downloadRecProcessed);
+$("recDownloadNotProcessed").addEventListener("click", downloadRecNotProcessed);
+$("getBtn").addEventListener("click", getAdjustment);
+
+loadJobs();
+setInterval(loadJobs, 5000);
+</script>
+</body>
+</html>
