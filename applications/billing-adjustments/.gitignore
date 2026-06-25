@@ -1,0 +1,42 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+
+# CLI run output (timestamped result files) — but keep the committed example
+adjustment_results_*.json
+!cli/examples/adjustment_results_example.json
+
+# Real billing input data — keep only the dummy sample(s)
+cli/adjustmentFiles/*
+!cli/adjustmentFiles/sample_company.csv
+
+# Reconciliation and cleaning outputs (may contain real data)
+processed_*.csv
+not_processed_*.csv
+cleaned_*.csv
+needs_review_*.csv
+
+# CLI query outputs (timestamped exports — may contain real billing data)
+cli/list_adjustment_requests_*.csv
+
+# Webapp runtime data (uploaded files, job outputs)
+webapp/uploads/
+webapp/jobs/
+
+# Launcher virtual environment
+webapp/.venv_billing/
+
+# Generated partner-kit deliverable (rebuild with ./build-partner-kit.sh)
+resource/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db

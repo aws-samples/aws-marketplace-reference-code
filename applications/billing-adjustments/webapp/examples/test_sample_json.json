@@ -1,0 +1,14 @@
+{
+  "started_at": "2026-06-12T10:15:42.900000",
+  "dry_run": false,
+  "total_rows": 6,
+  "total_phases": 2,
+  "duplicate_invoices": {
+    "2500000001": ["agmt-exampleagreement1abcdefg", "agmt-exampleagreement2hijklmn"],
+    "2500000003": ["agmt-exampleagreement3opqrstu", "agmt-exampleagreement4vwxyz01"]
+  },
+  "submitted": 6,
+  "succeeded": 5,
+  "failed": 1,
+  "finished_at": "2026-06-12T10:16:50.001000"
+}

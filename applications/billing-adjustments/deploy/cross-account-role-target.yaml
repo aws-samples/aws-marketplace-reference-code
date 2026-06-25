@@ -1,0 +1,77 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Cross-account role for the Billing Adjustments app. Deploy this in the account
+  that OWNS THE AGREEMENTS (the "data" account). It grants least-privilege
+  billing-adjustment permissions and trusts the app's account to assume it.
+
+Parameters:
+  AppAccountId:
+    Type: String
+    AllowedPattern: '^[0-9]{12}$'
+    Description: >
+      The 12-digit AWS account ID where the app is deployed (the account running
+      App Runner). Only principals in this account, presenting the external ID,
+      may assume this role.
+  ExternalId:
+    Type: String
+    MinLength: 8
+    NoEcho: true
+    Description: >
+      A shared secret the app must present when assuming this role (prevents the
+      confused-deputy problem). Use the same value as AssumeRoleExternalId in the
+      app deployment.
+  AppRoleArn:
+    Type: String
+    Default: ''
+    Description: >
+      Optional, for tighter trust. The exact ARN of the app's instance role in the
+      app account (output 'AppRoleArn' from the app stack). If provided, only that
+      role may assume this one. If blank, any principal in AppAccountId with the
+      external ID may assume it.
+  RoleName:
+    Type: String
+    Default: billing-adjustments-cross-account
+    Description: Name for the cross-account role created in this account.
+
+Conditions:
+  HasAppRoleArn: !Not [!Equals [!Ref AppRoleArn, '']]
+
+Resources:
+  CrossAccountRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      MaxSessionDuration: 3600
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !If
+                - HasAppRoleArn
+                - !Ref AppRoleArn
+                - !Sub 'arn:aws:iam::${AppAccountId}:root'
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: !Ref ExternalId
+      Policies:
+        - PolicyName: billing-adjustment-least-privilege
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: BillingAdjustmentActions
+                Effect: Allow
+                Action:
+                  - 'aws-marketplace:ListAgreementInvoiceLineItems'
+                  - 'aws-marketplace:BatchCreateBillingAdjustmentRequest'
+                  - 'aws-marketplace:GetBillingAdjustmentRequest'
+                  - 'aws-marketplace:ListBillingAdjustmentRequests'
+                Resource: '*'
+
+Outputs:
+  RoleArn:
+    Description: >
+      Pass this as the AssumeRoleArn parameter when deploying the app stack
+      (deploy/cloudformation.yaml) in the app account.
+    Value: !GetAtt CrossAccountRole.Arn
