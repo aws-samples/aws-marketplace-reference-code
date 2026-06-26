@@ -26,7 +26,7 @@ import sys
 from datetime import datetime, timezone
 
 import _cli_common  # noqa: F401  (adds repo root to sys.path for `core`)
-from core import COL_AGREEMENT_ID, COL_INVOICE_ID
+from core import COL_AGREEMENT_ID, COL_INVOICE_ID, build_header_map, get_field
 
 # Fields written to the processed output (GetBillingAdjustmentRequest detail).
 PROCESSED_FIELDS = [
@@ -50,13 +50,14 @@ def load_input(filepath):
     with open(filepath, "r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         columns = list(reader.fieldnames or [])
+        header_map = build_header_map(columns)
         records = []
         for row in reader:
             if not any((v or "").strip() for v in row.values()):
                 continue  # skip blank lines
             records.append({
-                "agreement_id": (row.get(COL_AGREEMENT_ID) or "").strip(),
-                "invoice_id": (row.get(COL_INVOICE_ID) or "").strip(),
+                "agreement_id": (get_field(row, header_map, COL_AGREEMENT_ID) or "").strip(),
+                "invoice_id": (get_field(row, header_map, COL_INVOICE_ID) or "").strip(),
                 "original": dict(row),
             })
     return records, columns
@@ -76,7 +77,9 @@ def main():
     if not columns:
         print("ERROR: input file is empty or has no header row.")
         sys.exit(1)
-    if COL_AGREEMENT_ID not in columns or COL_INVOICE_ID not in columns:
+    header_map = build_header_map(columns)
+    if (COL_AGREEMENT_ID.lower() not in header_map
+            or COL_INVOICE_ID.lower() not in header_map):
         print(f"ERROR: input must contain '{COL_AGREEMENT_ID}' and '{COL_INVOICE_ID}' columns. Found: {columns}")
         sys.exit(1)
     if not records:

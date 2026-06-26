@@ -47,6 +47,12 @@ REQUIRED_COLUMNS = [
 # Amount column may use either of these names
 AMOUNT_COLUMN_OPTIONS = ["refund_amount", "SUM of Calculated Refund (T-Y)"]
 
+# Maximum number of digits allowed after the decimal point in a refund amount.
+# The billing-adjustment backend rejects amounts with more precision than this
+# (USD carries 2 minor-unit digits), so the tool validates it up front instead of
+# letting the submission fail server-side.
+MAX_AMOUNT_DECIMALS = 2
+
 COL_AGREEMENT_ID = "agreement_id"
 COL_INVOICE_ID = "invoice_id"
 REVIEW_REASON_COL = "review_reason"
@@ -104,6 +110,50 @@ def format_amount(amount_str):
     return re.sub(r'[$,\s]', '', str(amount_str))
 
 
+def count_decimal_places(amount_str):
+    """Number of digits after the decimal point in a cleaned amount string
+    (e.g. '1341.7012' -> 4, '150.00' -> 2, '150' -> 0). Assumes `$`, commas, and
+    spaces have already been stripped by format_amount."""
+    s = str(amount_str).strip()
+    if '.' not in s:
+        return 0
+    return len(s.split('.', 1)[1])
+
+
+def build_header_map(headers):
+    """Map a normalized (stripped + lowercased) column name to the actual header as
+    written in the file, so columns can be matched case-insensitively (e.g. both
+    `refund_amount` and `Refund_amount` resolve to the same column). When two
+    headers normalize to the same name, the first occurrence wins."""
+    header_map = {}
+    for h in (headers or []):
+        if h is None:
+            continue
+        key = h.strip().lower()
+        if key not in header_map:
+            header_map[key] = h
+    return header_map
+
+
+def resolve_amount_column(header_map):
+    """Return the actual header matching one of AMOUNT_COLUMN_OPTIONS
+    case-insensitively, or None if none is present."""
+    for option in AMOUNT_COLUMN_OPTIONS:
+        actual = header_map.get(option.strip().lower())
+        if actual is not None:
+            return actual
+    return None
+
+
+def get_field(row, header_map, name, default=''):
+    """Read a value from a csv.DictReader row by canonical column name, matching the
+    file's header case-insensitively."""
+    actual = header_map.get((name or '').strip().lower())
+    if actual is None:
+        return default
+    return row.get(actual, default)
+
+
 def validate_file_format(filepath):
     """
     Validate that the uploaded CSV has the required columns and at least one data row.
@@ -128,12 +178,14 @@ def validate_file_format(filepath):
             if not headers:
                 return False, "File is empty or has no header row.", details
 
-            # Check required columns
-            missing = [c for c in REQUIRED_COLUMNS if c not in headers]
+            header_map = build_header_map(headers)
+
+            # Check required columns (case-insensitive)
+            missing = [c for c in REQUIRED_COLUMNS if c.strip().lower() not in header_map]
             details["missing_columns"] = missing
 
-            # Check amount column
-            amount_col = next((c for c in AMOUNT_COLUMN_OPTIONS if c in headers), None)
+            # Check amount column (case-insensitive)
+            amount_col = resolve_amount_column(header_map)
             details["amount_column_found"] = amount_col
 
             if missing:
@@ -151,14 +203,19 @@ def validate_file_format(filepath):
                     continue  # skip blank lines
                 row_count += 1
                 issues = []
-                if not (row.get(COL_AGREEMENT_ID) or '').strip():
+                if not (get_field(row, header_map, COL_AGREEMENT_ID) or '').strip():
                     issues.append("missing agreement_id")
-                if not (row.get(COL_INVOICE_ID) or '').strip():
+                if not (get_field(row, header_map, COL_INVOICE_ID) or '').strip():
                     issues.append("missing invoice_id")
                 amt = format_amount(row.get(amount_col, '0'))
                 try:
                     if float(amt) <= 0:
                         issues.append(f"amount must be > 0 (got '{row.get(amount_col)}')")
+                    elif count_decimal_places(amt) > MAX_AMOUNT_DECIMALS:
+                        issues.append(
+                            f"amount has more than {MAX_AMOUNT_DECIMALS} decimal places "
+                            f"(got '{row.get(amount_col)}')"
+                        )
                 except ValueError:
                     issues.append(f"invalid amount '{row.get(amount_col)}'")
                 if issues:
@@ -185,22 +242,23 @@ def load_csv(filepath):
     with open(filepath, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         headers = reader.fieldnames or []
-        amount_col = next((c for c in AMOUNT_COLUMN_OPTIONS if c in headers), None)
+        header_map = build_header_map(headers)
+        amount_col = resolve_amount_column(header_map)
         if not amount_col:
             raise ValueError(
                 f"Could not find amount column. Expected one of: {AMOUNT_COLUMN_OPTIONS}"
             )
         for row in reader:
-            if not (row.get(COL_INVOICE_ID) or '').strip():
+            if not (get_field(row, header_map, COL_INVOICE_ID) or '').strip():
                 continue
             rows.append({
-                'agreement_id': (row.get(COL_AGREEMENT_ID) or '').strip(),
-                'invoice_id': (row.get(COL_INVOICE_ID) or '').strip(),
+                'agreement_id': (get_field(row, header_map, COL_AGREEMENT_ID) or '').strip(),
+                'invoice_id': (get_field(row, header_map, COL_INVOICE_ID) or '').strip(),
                 'amount': format_amount(row.get(amount_col, '0')),
-                'aws_account_id': (row.get('aws_account_id') or '').strip(),
-                'seller_id': (row.get('seller_id') or '').strip(),
-                'month': (row.get('month_id') or '').strip(),
-                'product_code': (row.get('product_code') or '').strip(),
+                'aws_account_id': (get_field(row, header_map, 'aws_account_id') or '').strip(),
+                'seller_id': (get_field(row, header_map, 'seller_id') or '').strip(),
+                'month': (get_field(row, header_map, 'month_id') or '').strip(),
+                'product_code': (get_field(row, header_map, 'product_code') or '').strip(),
             })
     return rows
 
@@ -235,7 +293,8 @@ def classify_input_rows(filepath):
     with open(filepath, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         columns = list(reader.fieldnames or [])
-        amount_col = next((c for c in AMOUNT_COLUMN_OPTIONS if c in columns), None)
+        header_map = build_header_map(columns)
+        amount_col = resolve_amount_column(header_map)
         if not amount_col:
             raise ValueError(
                 f"Could not find amount column. Expected one of: {AMOUNT_COLUMN_OPTIONS}"
@@ -244,8 +303,8 @@ def classify_input_rows(filepath):
             if not any((v or '').strip() for v in row.values()):
                 continue  # skip fully blank lines
 
-            agreement_id = (row.get(COL_AGREEMENT_ID) or '').strip()
-            invoice_id = (row.get(COL_INVOICE_ID) or '').strip()
+            agreement_id = (get_field(row, header_map, COL_AGREEMENT_ID) or '').strip()
+            invoice_id = (get_field(row, header_map, COL_INVOICE_ID) or '').strip()
             raw_amount = row.get(amount_col, '')
             amount = format_amount(raw_amount)
 
@@ -257,6 +316,11 @@ def classify_input_rows(filepath):
             try:
                 if float(amount) <= 0:
                     reasons.append(f"amount must be > 0 (got '{raw_amount}')")
+                elif count_decimal_places(amount) > MAX_AMOUNT_DECIMALS:
+                    reasons.append(
+                        f"amount has more than {MAX_AMOUNT_DECIMALS} decimal places "
+                        f"(got '{raw_amount}')"
+                    )
             except (ValueError, TypeError):
                 reasons.append(f"invalid amount '{raw_amount}'")
 
@@ -276,10 +340,10 @@ def classify_input_rows(filepath):
                     'agreement_id': agreement_id,
                     'invoice_id': invoice_id,
                     'amount': amount,
-                    'aws_account_id': (row.get('aws_account_id') or '').strip(),
-                    'seller_id': (row.get('seller_id') or '').strip(),
-                    'month': (row.get('month_id') or '').strip(),
-                    'product_code': (row.get('product_code') or '').strip(),
+                    'aws_account_id': (get_field(row, header_map, 'aws_account_id') or '').strip(),
+                    'seller_id': (get_field(row, header_map, 'seller_id') or '').strip(),
+                    'month': (get_field(row, header_map, 'month_id') or '').strip(),
+                    'product_code': (get_field(row, header_map, 'product_code') or '').strip(),
                     'original': dict(row),
                 })
     return valid_records, review_rows, columns, amount_col
@@ -829,6 +893,8 @@ class AdjustmentProcessor:
                     counters['processed'] += 1
                     counters['failed'] += 1
                     summary["failed"] += 1
+                    self._log(f"  invoice {row['invoice_id']} ({row['agreement_id']}): "
+                              f"VALIDATION_FAILED - {error}")
                     writer.write({
                         "phase": phase_num,
                         "agreement_id": row['agreement_id'],
@@ -889,6 +955,10 @@ class AdjustmentProcessor:
                         counters['processed'] += 1
                         counters['failed'] += 1
                         summary["failed"] += 1
+                        err_msg = f"{err.get('code', '')} {err.get('message', '')}".strip() \
+                            or json.dumps(err, default=str)
+                        self._log(f"  invoice {entry.get('invoice_id', '')} ({agreement_id}): "
+                                  f"SUBMIT_FAILED - {err_msg}")
                         writer.write({
                             "phase": phase_num,
                             "agreement_id": agreement_id,
@@ -906,6 +976,8 @@ class AdjustmentProcessor:
                         counters['processed'] += 1
                         counters['failed'] += 1
                         summary["failed"] += 1
+                        self._log(f"  invoice {entry['invoice_id']} ({agreement_id}): "
+                                  f"SUBMIT_FAILED - {e}")
                         writer.write({
                             "phase": phase_num,
                             "agreement_id": agreement_id,
@@ -939,23 +1011,36 @@ class AdjustmentProcessor:
         return summary
 
     def _wait_and_record(self, pending_requests, writer, counters, summary, phase_num):
-        """Poll each submitted request until terminal status, recording incrementally."""
+        """Poll each submitted request until terminal status, recording incrementally.
+
+        On every poll it logs each request's current status (and the service's
+        statusMessage when present) plus the countdown to the next status check, so a
+        request that stays in progress for a while doesn't look stuck."""
         if not pending_requests:
             return
-        self._log(f"Waiting for {len(pending_requests)} submitted request(s) to complete...")
+        self._log(f"Waiting for {len(pending_requests)} submitted request(s) to complete "
+                  f"(polling every {POLL_INTERVAL}s, up to {MAX_POLL_TIME}s)...")
         start = time.time()
+        poll_round = 0
         while pending_requests and (time.time() - start) < MAX_POLL_TIME:
             if self.cancel_check():
                 break
+            poll_round += 1
+            elapsed = int(time.time() - start)
+            self._log(f"Poll #{poll_round} (elapsed {elapsed}s): checking "
+                      f"{len(pending_requests)} pending request(s)...")
             still_pending = []
             for req in pending_requests:
                 status, message = self.get_adjustment_status(req['agreement_id'], req['request_id'])
+                detail = f" - {message}" if message else ""
                 if status in ('COMPLETED', 'VALIDATION_FAILED', 'ERROR'):
                     counters['processed'] += 1
                     if status == 'COMPLETED':
                         counters['succeeded'] += 1
                     else:
                         counters['failed'] += 1
+                    self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
+                              f"{status}{detail}")
                     writer.write({
                         "phase": phase_num,
                         "agreement_id": req['agreement_id'],
@@ -968,9 +1053,16 @@ class AdjustmentProcessor:
                     self.progress_cb(**counters)
                 else:
                     still_pending.append(req)
+                    self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
+                              f"{status or 'PENDING'}{detail} - still processing; "
+                              f"next status check in {DELAY_BETWEEN_BATCHES:.1f}s")
                 time.sleep(DELAY_BETWEEN_BATCHES)
             pending_requests = still_pending
             if pending_requests:
+                elapsed = int(time.time() - start)
+                remaining = max(0, MAX_POLL_TIME - elapsed)
+                self._log(f"{len(pending_requests)} request(s) still pending after {elapsed}s; "
+                          f"next poll in {POLL_INTERVAL}s (about {remaining}s left before timeout).")
                 time.sleep(POLL_INTERVAL)
 
         # Timeouts
