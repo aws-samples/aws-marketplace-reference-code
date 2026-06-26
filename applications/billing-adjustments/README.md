@@ -69,6 +69,12 @@ validation if any are missing). Only `agreement_id`, `invoice_id`, and the amoun
 column drive the actual adjustment; the others are informational — they are used for
 human review/audit and are preserved verbatim in the "needs review" output.
 
+> **Header names are case-insensitive.** Column headers are matched ignoring case and
+> surrounding spaces, so `refund_amount`, `Refund_amount`, and `REFUND_AMOUNT` are all
+> accepted (the same applies to every column, e.g. `invoice_id` / `Invoice_ID`). The
+> values in each row are read regardless of header casing; the original header text is
+> preserved unchanged in any output file.
+
 | Column | Required value? | Type | Description | Example |
 |--------|-----------------|------|-------------|---------|
 | `agreement_id` | **Yes** | Text | Marketplace agreement ID the invoice belongs to. Alphanumeric. | `agmt-byw2g19zkbjhuwxc8ki4w3b4x` |
@@ -118,6 +124,10 @@ Rules:
 
 - The value must parse to a number **greater than 0** (a `0`, blank, or non-numeric
   value is rejected / routed to needs-review).
+- **At most 2 digits after the decimal point.** USD carries two minor-unit digits, and
+  the billing-adjustment backend rejects amounts with more precision, so a value like
+  `150.005` or `13911.6313` is rejected up front (routed to needs-review). Round to 2
+  decimals before submitting (e.g. `13911.6313` → `13911.63`).
 - The **decimal separator must be a period (`.`)**. The European convention
   (`1.234,56` meaning one-thousand-two-hundred-thirty-four point five six) is **not**
   supported — the comma is always treated as a thousands separator and removed.
@@ -210,6 +220,55 @@ what they mean and how to resolve them. They apply to both the CLI and the web a
 | `AccessDeniedException: Current Identity is not KYC Compliant` | Seller account KYC issue | Contact AWS Marketplace support |
 | `ExpiredTokenException` | AWS credentials expired | Refresh credentials (the tools pause and prompt) |
 | `AccessDeniedException` (action not authorized) | Missing IAM permission for a billing-adjustment action | Grant the four `aws-marketplace:` actions (see the deploy/CLI permission setup) |
+
+## Troubleshooting
+
+### macOS: "Start-BillingAdjustments-Mac.command cannot be opened because Apple cannot check it for malicious software"
+
+When you first launch `Start-BillingAdjustments-Mac.command`, macOS Gatekeeper may block it
+with a message like *"cannot be opened because Apple cannot check it for malicious software"*
+(or *"... from an unidentified developer"*). This happens because the file was downloaded
+from the internet and carries a `com.apple.quarantine` flag. Clear the flag and make the
+script executable:
+
+1. Open Terminal and `cd` to the folder where you downloaded/unzipped the kit (adjust the
+   path to wherever the `partner-kit` folder actually is):
+
+   ```bash
+   cd ~/Downloads
+   ```
+
+2. Remove the quarantine flag from the whole kit (recursively):
+
+   ```bash
+   xattr -dr com.apple.quarantine partner-kit
+   ```
+
+3. Confirm the flag is gone:
+
+   ```bash
+   xattr partner-kit/webapp/Start-BillingAdjustments-Mac.command
+   ```
+
+   If `com.apple.quarantine` is **no longer listed** in the output, it worked. (No output at
+   all also means there are no extended attributes left, which is fine.)
+
+4. Make the launcher executable:
+
+   ```bash
+   chmod +x partner-kit/webapp/Start-BillingAdjustments-Mac.command
+   ```
+
+5. Run it — either double-click `Start-BillingAdjustments-Mac.command` in Finder, or run it
+   from Terminal:
+
+   ```bash
+   ~/Downloads/partner-kit/webapp/Start-BillingAdjustments-Mac.command
+   ```
+
+> Tip: if you only want to clear the flag on the one launcher (not the whole kit), point the
+> `xattr -dr com.apple.quarantine` command at the `.command` file directly instead of the
+> `partner-kit` folder.
 
 ## Configuration and operational rules
 
