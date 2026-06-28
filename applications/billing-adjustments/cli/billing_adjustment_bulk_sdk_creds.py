@@ -59,19 +59,41 @@ def write_needs_review_file(review_rows, columns, csv_file):
     return path
 
 
+def write_already_processed_file(records, csv_file):
+    """Write rows skipped by the live pre-check (a COMPLETED/PENDING adjustment request
+    already exists) to already_processed_<input>_<timestamp>.csv. Includes the existing
+    request id so the user can look it up. Returns the path, or None if there were none."""
+    rows = [r for r in records if r.get('status') == 'ALREADY_PROCESSED']
+    if not rows:
+        return None
+    fields = ["agreement_id", "invoice_id", "billing_adjustment_request_id", "amount", "message"]
+    base = re.sub(r'[^A-Za-z0-9_-]', '_', os.path.splitext(os.path.basename(csv_file))[0])
+    path = f"already_processed_{base}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    import csv as _csv
+    with open(path, 'w', newline='', encoding='utf-8') as f:
+        w = _csv.DictWriter(f, fieldnames=fields, extrasaction='ignore')
+        w.writeheader()
+        for r in rows:
+            w.writerow({k: r.get(k, "") for k in fields})
+    return path
+
+
 def parse_args():
     dry_run = False
+    precheck = True
     csv_file = CSV_FILE
     for arg in sys.argv[1:]:
         if arg == '--dry-run':
             dry_run = True
+        elif arg == '--no-precheck':
+            precheck = False
         elif arg.startswith('-'):
             print(f"Unknown option: {arg}")
-            print("Usage: python billing_adjustment_bulk_sdk_creds.py [--dry-run] [csv_file]")
+            print("Usage: python billing_adjustment_bulk_sdk_creds.py [--dry-run] [--no-precheck] [csv_file]")
             sys.exit(1)
         else:
             csv_file = arg
-    return dry_run, csv_file
+    return dry_run, csv_file, precheck
 
 
 def _amount(record):
@@ -105,6 +127,7 @@ def build_summary(records, dry_run):
     summary = {
         "validation_failed": count('VALIDATION_FAILED'),
         "submit_failed": count('SUBMIT_FAILED'),
+        "already_processed": count('ALREADY_PROCESSED'),
         "submitted": count('COMPLETED', 'ERROR', 'TIMEOUT'),
         "completed": count('COMPLETED'),
         "completion_failed": count('ERROR', 'TIMEOUT'),
@@ -123,9 +146,11 @@ def build_summary(records, dry_run):
 
 
 def main():
-    dry_run, csv_file = parse_args()
+    dry_run, csv_file, precheck = parse_args()
 
     print(f"Mode: {'DRY-RUN (validation only)' if dry_run else 'LIVE'}")
+    if not dry_run:
+        print(f"Already-processed pre-check: {'ON' if precheck else 'OFF (--no-precheck)'}")
     print("Using default AWS credential chain")
     print(f"\nLoading CSV: {csv_file}")
 
@@ -154,13 +179,22 @@ def main():
     counters = {}
 
     try:
-        engine_summary = processor.run(valid_records, collector, dry_run=dry_run, counters=counters)
+        engine_summary = processor.run(valid_records, collector, dry_run=dry_run,
+                                       counters=counters, precheck_processed=precheck)
     except CredentialsCancelled:
         print("\nStopped: fresh credentials were not provided.")
         engine_summary = {"cancelled": True}
 
     row_results = build_row_results(collector.records)
     summary = build_summary(collector.records, dry_run)
+
+    already_processed_file = write_already_processed_file(collector.records, csv_file)
+    if already_processed_file:
+        skipped = sum(1 for r in collector.records if r.get('status') == 'ALREADY_PROCESSED')
+        print(f"\n\u26a0 {skipped} row(s) skipped — already have a COMPLETED/PENDING refund "
+              f"and were NOT resubmitted.")
+        print(f"  Saved to: {already_processed_file}")
+        print("  Use the request id in that file with get_adjustment_request.py to review details.")
 
     output = {
         "timestamp": datetime.now().isoformat(),
@@ -169,6 +203,7 @@ def main():
         "total_rows": len(valid_records),
         "needs_review_rows": len(review_rows),
         "needs_review_file": review_file,
+        "already_processed_file": already_processed_file,
         "total_phases": engine_summary.get("total_phases"),
         "duplicate_invoices": engine_summary.get("duplicate_invoices", {}),
         "summary": summary,

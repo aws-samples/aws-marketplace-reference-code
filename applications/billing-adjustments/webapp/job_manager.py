@@ -80,7 +80,7 @@ class JobManager:
     def create_job(self, csv_path, original_filename, credentials, dry_run=False,
                    managed_credentials=False, assume_role_arn=None,
                    assume_role_external_id=None, review_rows=None,
-                   review_columns=None):
+                   review_columns=None, precheck_processed=True):
         job_id = uuid.uuid4().hex[:12]
         jdir = _job_dir(job_id)
         os.makedirs(jdir, exist_ok=True)
@@ -115,7 +115,7 @@ class JobManager:
             "created_at": datetime.now().isoformat(),
             "started_at": None,
             "finished_at": None,
-            "progress": {"total": 0, "processed": 0, "succeeded": 0, "failed": 0},
+            "progress": {"total": 0, "processed": 0, "succeeded": 0, "failed": 0, "skipped": 0},
             "review_count": len(review_rows),
             "logs": [],
             "summary": None,
@@ -130,7 +130,8 @@ class JobManager:
         thread = threading.Thread(
             target=self._run_job,
             args=(job_id, csv_path, credentials, dry_run, cancel_flag, cred_slot,
-                  managed_credentials, assume_role_arn, assume_role_external_id),
+                  managed_credentials, assume_role_arn, assume_role_external_id,
+                  precheck_processed),
             daemon=True,
         )
         with _lock:
@@ -164,7 +165,7 @@ class JobManager:
 
     def _run_job(self, job_id, csv_path, credentials, dry_run, cancel_flag, cred_slot,
                  managed_credentials=False, assume_role_arn=None,
-                 assume_role_external_id=None):
+                 assume_role_external_id=None, precheck_processed=True):
         jdir = _job_dir(job_id)
         status = read_status(job_id)
 
@@ -183,6 +184,7 @@ class JobManager:
                 "processed": counters.get("processed", 0),
                 "succeeded": counters.get("succeeded", 0),
                 "failed": counters.get("failed", 0),
+                "skipped": counters.get("skipped", 0),
             })
             save()
 
@@ -233,9 +235,10 @@ class JobManager:
                 assume_role_external_id=assume_role_external_id,
             )
 
-            counters = {"total": 0, "processed": 0, "succeeded": 0, "failed": 0}
+            counters = {"total": 0, "processed": 0, "succeeded": 0, "failed": 0, "skipped": 0}
             try:
-                summary = processor.run(rows, writer, dry_run=dry_run, counters=counters)
+                summary = processor.run(rows, writer, dry_run=dry_run, counters=counters,
+                                        precheck_processed=precheck_processed)
             except CredentialsCancelled:
                 summary = {
                     "cancelled": True,
@@ -252,8 +255,10 @@ class JobManager:
             status["summary"] = summary
             status["state"] = "cancelled" if cancel_flag["cancel"] else "completed"
             status["finished_at"] = datetime.now().isoformat()
+            skipped_note = (f", Skipped (already processed): {counters['skipped']}"
+                            if counters.get('skipped') else "")
             log_cb(f"Job {status['state']}. "
-                   f"Succeeded: {counters['succeeded']}, Failed: {counters['failed']}.")
+                   f"Succeeded: {counters['succeeded']}, Failed: {counters['failed']}{skipped_note}.")
             save()
 
         except Exception as e:

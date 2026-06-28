@@ -158,6 +158,10 @@
           <input type="checkbox" id="dryRun" checked>
           <label for="dryRun">Dry run <span class="hint">(validate only, no adjustments submitted)</span></label>
         </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="precheck" checked>
+          <label for="precheck">Skip already-processed refunds <span class="hint">(recommended: before submitting, skip any agreement+invoice that already has a COMPLETED/PENDING refund)</span></label>
+        </div>
         <div class="msg" id="submitMsg"></div>
         <div class="btn-row"><button type="button" id="submitBtn">Start job</button></div>
       </div>
@@ -169,8 +173,9 @@
         <div class="stat-grid">
           <div class="stat"><div class="n" id="statTotal">0</div><div class="l">Total</div></div>
           <div class="stat"><div class="n" id="statProcessed">0</div><div class="l">Processed</div></div>
-          <div class="stat"><div class="n" style="color:var(--green)" id="statSucceeded">0</div><div class="l">Succeeded</div></div>
+          <div class="stat"><div class="n" style="color:var(--green)" id="statSucceeded">0</div><div class="l" id="statSucceededLabel">Succeeded</div></div>
           <div class="stat"><div class="n" style="color:var(--red)" id="statFailed">0</div><div class="l">Failed</div></div>
+          <div class="stat"><div class="n" style="color:var(--accent-dark)" id="statSkipped">0</div><div class="l">Skipped</div></div>
         </div>
         <div class="dl-row" id="activeDownloads"></div>
         <div class="msg err" id="credPanel" style="display:none;">
@@ -324,6 +329,7 @@ async function submitJob() {
   const fd = new FormData(); fd.append("file", fileInput.files[0]);
   if (!appendCreds(fd, $("submitMsg"))) return;
   fd.append("dry_run", $("dryRun").checked ? "true" : "false");
+  fd.append("precheck", $("precheck").checked ? "true" : "false");
   $("submitBtn").disabled = true;
   showMsg($("submitMsg"), "info", "Starting job...");
   try {
@@ -369,6 +375,8 @@ function renderActive(job) {
   $("progressBar").style.width = (total ? Math.round((processed / total) * 100) : 0) + "%";
   $("statTotal").textContent = total; $("statProcessed").textContent = processed;
   $("statSucceeded").textContent = p.succeeded || 0; $("statFailed").textContent = p.failed || 0;
+  $("statSkipped").textContent = p.skipped || 0;
+  $("statSucceededLabel").textContent = job.dry_run ? "Would submit" : "Succeeded";
   $("logs").textContent = (job.logs || []).join("\n"); $("logs").scrollTop = $("logs").scrollHeight;
   const done = ["completed", "failed", "cancelled"].includes(job.state);
   $("cancelBtn").style.display = done ? "none" : "inline-block";
@@ -397,7 +405,7 @@ async function loadJobs() {
       const p = job.progress || {}; const done = ["completed", "failed", "cancelled"].includes(job.state);
       return `<div class="job-item"><div><strong>${job.original_filename}</strong>
           <span class="badge ${job.state}">${job.state}</span>${job.dry_run ? ' <span class="hint">(dry run)</span>' : ''}</div>
-          <div class="meta">Created ${job.created_at || '-'} · Total ${p.total||0}, Succeeded ${p.succeeded||0}, Failed ${p.failed||0}${job.review_count ? ', Needs review '+job.review_count : ''}
+          <div class="meta">Created ${job.created_at || '-'} · Total ${p.total||0}, ${job.dry_run ? 'Would submit' : 'Succeeded'} ${p.succeeded||0}, Failed ${p.failed||0}${p.skipped ? ', Skipped '+p.skipped : ''}${job.review_count ? ', Needs review '+job.review_count : ''}
             ${job.error ? '· <span style="color:var(--red)">'+job.error+'</span>' : ''}</div>
           ${done ? '<div class="dl-row">'+downloadLinks(job)+'</div>' : ''}
           ${!done ? '<div class="meta"><a href="#" onclick="trackJob(\''+job.job_id+'\');return false;">Track this job ▸</a></div>' : ''}</div>`;

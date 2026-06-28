@@ -180,6 +180,7 @@ def api_submit():
         return jsonify({"error": "No file selected."}), 400
 
     dry_run = request.form.get("dry_run", "false").lower() == "true"
+    precheck_processed = request.form.get("precheck", "true").lower() == "true"
 
     credentials = None
     if not MANAGED_CREDENTIALS:
@@ -245,6 +246,7 @@ def api_submit():
         assume_role_external_id=ASSUME_ROLE_EXTERNAL_ID,
         review_rows=review_rows,
         review_columns=columns,
+        precheck_processed=precheck_processed,
     )
     return jsonify({
         "job_id": job_id,

@@ -809,10 +809,77 @@ class AdjustmentProcessor:
 
         return processed, not_processed, errors
 
-    def run(self, rows, writer, dry_run=False, counters=None):
+    def find_already_processed(self, rows, block_statuses=('COMPLETED', 'PENDING'), cache=None):
+        """Live pre-submission guard against duplicate refunds.
+
+        For each `<agreement, invoice>` in `rows`, check the service for an existing
+        billing adjustment request. A row is treated as **already processed** (and must
+        NOT be resubmitted) when a request exists for its invoice with a status in
+        `block_statuses` (default `COMPLETED`/`PENDING`). Rows whose only existing
+        request(s) are `VALIDATION_FAILED` (no refund actually happened) are still
+        submittable.
+
+        This matters because the deterministic client token only de-duplicates within
+        the API's 8-hour idempotency window; once a run spans or follows that window,
+        this live check is what prevents a second refund.
+
+        Returns (to_submit, already, errors):
+          - to_submit: rows safe to submit (no blocking request found)
+          - already:   rows that already have a blocking request; each is the original
+                       row dict plus 'existing_request_id' and 'existing_status'
+          - errors:    list of {'agreementId', 'error'} for agreements that could not be
+                       verified. Their rows are placed in `to_submit` so a transient
+                       listing failure does not block the run (the client token still
+                       guards within 8h); the caller should surface the warning.
+        """
+        cache = cache if cache is not None else {}
+        to_submit, already, errors = [], [], []
+        by_agreement = defaultdict(list)
+        for r in rows:
+            by_agreement[r['agreement_id']].append(r)
+        for aid, agrows in by_agreement.items():
+            if aid in cache:
+                invoice_map, list_failed = cache[aid]
+            else:
+                items, list_errors = self.list_adjustment_requests([aid], statuses=None)
+                list_failed = bool(list_errors)
+                invoice_map = defaultdict(list)
+                if not list_failed:
+                    for it in items:
+                        inv = str(it.get('originalInvoiceId') or '').strip()
+                        if inv:
+                            invoice_map[inv].append(it)
+                cache[aid] = (invoice_map, list_failed)
+                if list_failed:
+                    for le in list_errors:
+                        errors.append({'agreementId': aid, 'error': le.get('error')})
+            if list_failed:
+                # Could not verify this agreement -> do not block; rely on the token.
+                to_submit.extend(agrows)
+                continue
+            for r in agrows:
+                existing = invoice_map.get(str(r['invoice_id']).strip(), [])
+                blocking = [it for it in existing if it.get('status') in block_statuses]
+                if blocking:
+                    chosen = next((it for it in blocking if it.get('status') == 'COMPLETED'),
+                                  blocking[0])
+                    r2 = dict(r)
+                    r2['existing_request_id'] = chosen.get('billingAdjustmentRequestId')
+                    r2['existing_status'] = chosen.get('status')
+                    already.append(r2)
+                else:
+                    to_submit.append(r)
+        return to_submit, already, errors
+
+    def run(self, rows, writer, dry_run=False, counters=None, precheck_processed=True):
         """
         Main processing. Writes each record as it is resolved.
-        counters: mutable dict to update {total, processed, succeeded, failed}
+        counters: mutable dict to update {total, processed, succeeded, failed, skipped}
+        precheck_processed: for LIVE runs, before submitting each row, check the service
+            for an existing COMPLETED/PENDING adjustment request on the same
+            <agreement, invoice> and skip it (status ALREADY_PROCESSED) instead of
+            risking a duplicate refund once the 8-hour idempotency window has lapsed.
+            Ignored for dry-run. Defaults to True (safe by default).
         Returns a summary dict.
         """
         counters = counters if counters is not None else {}
@@ -821,6 +888,7 @@ class AdjustmentProcessor:
         counters.setdefault('processed', 0)
         counters.setdefault('succeeded', 0)
         counters.setdefault('failed', 0)
+        counters.setdefault('skipped', 0)
 
         # Wrap the writer so we also accumulate $ totals (submitted/completed/failed)
         # for the summary, in addition to the counts. Delegates writes unchanged.
@@ -842,7 +910,12 @@ class AdjustmentProcessor:
             "submitted": 0,
             "succeeded": 0,
             "failed": 0,
+            "already_processed": 0,
         }
+
+        # Cache of existing adjustment requests per agreement, reused across phases so
+        # the live pre-check lists each agreement at most once per run.
+        precheck_cache = {}
 
         # Dry-run only: accumulate per-invoice requested totals to flag when the sum
         # of all rows for one invoice exceeds its maxAdjustmentAmount.
@@ -867,28 +940,6 @@ class AdjustmentProcessor:
                 if is_valid:
                     row['max_adjustment_amount'] = max_amount
                     validated.append(row)
-                    if dry_run:
-                        # In dry-run, a valid invoice is the final result for this record
-                        counters['processed'] += 1
-                        counters['succeeded'] += 1
-                        summary["succeeded"] += 1
-                        agg = dry_run_invoice_totals[row['invoice_id']]
-                        try:
-                            agg["total"] += float(row['amount'])
-                        except (TypeError, ValueError):
-                            pass
-                        agg["max"] = max_amount
-                        agg["rows"] += 1
-                        writer.write({
-                            "phase": phase_num,
-                            "agreement_id": row['agreement_id'],
-                            "invoice_id": row['invoice_id'],
-                            "amount": row['amount'],
-                            "status": "DRY_RUN_OK",
-                            "billing_adjustment_request_id": "",
-                            "message": f"Would submit. Max allowed: {max_amount}",
-                        })
-                        self.progress_cb(**counters)
                 else:
                     counters['processed'] += 1
                     counters['failed'] += 1
@@ -907,11 +958,72 @@ class AdjustmentProcessor:
                     self.progress_cb(**counters)
                 time.sleep(DELAY_BETWEEN_BATCHES)
 
+            if not validated:
+                continue
+
+            # Pre-submission guard — runs for live AND dry-run (when enabled). It skips
+            # any <agreement, invoice> that already has a COMPLETED/PENDING adjustment
+            # request so a re-run (or a run that spans the 8-hour idempotency window)
+            # cannot create a duplicate refund. In dry-run nothing is submitted, but the
+            # already-processed rows are surfaced as a warning and excluded from the
+            # DRY_RUN_OK preview, so the preview reflects only genuinely new refunds.
+            if precheck_processed:
+                self._log("Checking for already-processed refunds...")
+                validated, already_processed, precheck_errors = self.find_already_processed(
+                    validated, cache=precheck_cache
+                )
+                for pe in precheck_errors:
+                    self._log(f"  WARNING: could not verify agreement {pe['agreementId']} "
+                              f"({pe['error']}); its rows are treated as not-yet-processed.")
+                for r in already_processed:
+                    counters['processed'] += 1
+                    counters['skipped'] = counters.get('skipped', 0) + 1
+                    summary["already_processed"] += 1
+                    tail = "; would skip (dry-run)" if dry_run else "; skipping (not resubmitted)"
+                    self._log(f"  invoice {r['invoice_id']} ({r['agreement_id']}): "
+                              f"ALREADY_PROCESSED - existing {r['existing_status']} request "
+                              f"{r['existing_request_id']}{tail}")
+                    writer.write({
+                        "phase": phase_num,
+                        "agreement_id": r['agreement_id'],
+                        "invoice_id": r['invoice_id'],
+                        "amount": r['amount'],
+                        "status": "ALREADY_PROCESSED",
+                        "billing_adjustment_request_id": r.get('existing_request_id', ''),
+                        "message": (f"Skipped: an existing {r['existing_status']} adjustment "
+                                    f"request ({r['existing_request_id']}) already exists for "
+                                    f"this <agreement, invoice>."),
+                    })
+                    self.progress_cb(**counters)
+
             if dry_run:
+                # Record the rows that WOULD be submitted in a live run.
+                for row in validated:
+                    counters['processed'] += 1
+                    counters['succeeded'] += 1
+                    summary["succeeded"] += 1
+                    agg = dry_run_invoice_totals[row['invoice_id']]
+                    try:
+                        agg["total"] += float(row['amount'])
+                    except (TypeError, ValueError):
+                        pass
+                    agg["max"] = row.get('max_adjustment_amount')
+                    agg["rows"] += 1
+                    writer.write({
+                        "phase": phase_num,
+                        "agreement_id": row['agreement_id'],
+                        "invoice_id": row['invoice_id'],
+                        "amount": row['amount'],
+                        "status": "DRY_RUN_OK",
+                        "billing_adjustment_request_id": "",
+                        "message": f"Would submit. Max allowed: {row.get('max_adjustment_amount')}",
+                    })
+                    self.progress_cb(**counters)
                 continue  # No submission in dry-run
 
             if not validated:
                 continue
+
 
             # Submit batches
             grouped = group_by_agreement(validated)
