@@ -228,12 +228,12 @@
         <h2>Result</h2>
         <div class="stat-grid">
           <div class="stat"><div class="n" id="recStatInput">0</div><div class="l">Input rows</div></div>
-          <div class="stat"><div class="n" style="color:var(--green)" id="recStatProcessed">0</div><div class="l">Processed</div></div>
+          <div class="stat"><div class="n" style="color:var(--green)" id="recStatProcessed">0</div><div class="l">Already processed</div></div>
           <div class="stat"><div class="n" style="color:var(--red)" id="recStatNot">0</div><div class="l">Not processed</div></div>
           <div class="stat"><div class="n" id="recStatErrors">0</div><div class="l">Errors</div></div>
         </div>
         <div class="msg err" id="recErrors" style="display:none;"></div>
-        <h2 style="margin-top:18px;font-size:14px;">Processed</h2>
+        <h2 style="margin-top:18px;font-size:14px;" id="recProcessedHeading">Matched adjustment requests</h2>
         <div class="results-wrap"><table class="results" id="recProcessedTable"></table></div>
         <h2 style="margin-top:18px;font-size:14px;">Not processed</h2>
         <div class="results-wrap"><table class="results" id="recNotProcessedTable"></table></div>
@@ -447,9 +447,12 @@ async function reconcile() {
     recOriginalCols = data.original_columns || [];
     recFilename = (data.original_filename || "refunds").replace(/\.csv$/i, "");
     const c = data.counts || {};
-    let msg = `${c.processed||0} of ${c.input_rows||0} input row(s) processed; ${c.not_processed||0} not processed.`;
+    const inputRows = c.input_rows || 0;
+    const notProc = recNotProcessed.length;
+    const matched = Math.max(0, inputRows - notProc);
+    let msg = `${matched} of ${inputRows} input row(s) already processed; ${notProc} not processed.`;
     showMsg($("recMsg"), (c.errors ? "info" : "ok"), msg);
-    renderReconcile(data.errors || []);
+    renderReconcile(data.errors || [], inputRows);
     $("recDownloadProcessed").classList.toggle("hidden", recProcessed.length === 0);
     $("recDownloadNotProcessed").classList.toggle("hidden", recNotProcessed.length === 0);
   } catch (e) { showMsg($("recMsg"), "err", "Error: " + e); }
@@ -469,12 +472,15 @@ function renderTable(tableEl, cols, rows) {
   tableEl.innerHTML = html;
 }
 
-function renderReconcile(errors) {
+function renderReconcile(errors, inputRows) {
   $("recResultsCard").classList.remove("hidden");
-  $("recStatInput").textContent = recProcessed.length + recNotProcessed.length;
-  $("recStatProcessed").textContent = recProcessed.length;
-  $("recStatNot").textContent = recNotProcessed.length;
+  const notProc = recNotProcessed.length;
+  const total = (typeof inputRows === "number" && inputRows >= 0) ? inputRows : (recProcessed.length + notProc);
+  $("recStatInput").textContent = total;
+  $("recStatProcessed").textContent = Math.max(0, total - notProc);
+  $("recStatNot").textContent = notProc;
   $("recStatErrors").textContent = errors.length;
+  $("recProcessedHeading").textContent = `Matched adjustment requests (${recProcessed.length})`;
   if (errors.length) {
     showMsg($("recErrors"), "err",
       "<strong>Query errors:</strong><ul>" +
