@@ -8,6 +8,7 @@ Process bulk billing adjustments (refunds) for AWS Marketplace sellers using the
 - **`check_adjustment_status.py`** — Checks the status of previously submitted adjustment requests
 - **`check_processed_refunds.py`** — Reconciles a refund input file against the service: lists each agreement's requests, confirms which input invoices were processed, and writes a processed file and a not-processed file
 - **`clean_refund_file.py`** — Pre-flight cleaner: splits an input file into a cleaned file (safe to submit, de-duplicated) and a `needs_review` file (invalid or duplicate rows, with a reason). Does not call AWS
+- **`check_file_format.py`** — Validates an input file's format (required columns, amount column, per-row issues) and prints a pass/fail report. Does not call AWS. CLI equivalent of the web UI's "Check file format" button
 - **`list_adjustment_requests.py`** — Queries `ListBillingAdjustmentRequests` across one or more agreements with optional status/date filters (CSV output)
 - **`get_adjustment_request.py`** — Looks up a single request (or a file of pairs) via `GetBillingAdjustmentRequest`
 
@@ -203,6 +204,20 @@ python billing_adjustment_bulk_sdk_creds.py adjustmentFiles/sample_company.csv
 
 If no CSV file is specified, defaults to `adjustmentFiles/sample_company.csv`.
 
+> **Live runs pre-check for already-processed refunds (on by default).** Before
+> submitting each row, a live run lists the agreement's existing adjustment requests and
+> **skips** any `<agreement, invoice>` that already has a `COMPLETED` or `PENDING`
+> request — writing it to `already_processed_<input>_<timestamp>.csv` (with the existing
+> request id) instead of resubmitting. This is the durable guard against duplicate
+> refunds once the API's 8-hour idempotency window has lapsed. Rows whose only prior
+> request is `VALIDATION_FAILED` are still submitted (genuine retries aren't blocked).
+> Pass `--no-precheck` to skip this step (faster, only for a batch you've already
+> verified is fresh):
+>
+> ```bash
+> python billing_adjustment_bulk_sdk_creds.py --no-precheck adjustmentFiles/sample_company.csv
+> ```
+
 > **Invalid and duplicate rows are handled automatically.** Before processing, the
 > script splits the input into rows that are safe to submit and rows that need
 > review. Rows with a missing or placeholder `agreement_id`/`invoice_id` (e.g.
@@ -211,6 +226,23 @@ If no CSV file is specified, defaults to `adjustmentFiles/sample_company.csv`.
 > plus a `review_reason`) and are **not** submitted. Only the first occurrence of
 > each `<agreement, invoice>` is processed. The path is also recorded in the results
 > JSON under `needs_review_file`.
+
+### Check File Format (No AWS Calls)
+
+To validate an input file's format **without** calling AWS or submitting anything —
+the CLI equivalent of the web UI's "Check file format" button:
+
+```bash
+python check_file_format.py adjustmentFiles/sample_company.csv
+# machine-readable output
+python check_file_format.py refunds.csv --json
+```
+
+It reports the columns found, any missing required columns, which amount column was
+detected (case-insensitive), the data-row count, and any row-level issues (missing
+`agreement_id`/`invoice_id`, non-positive amount, or more than 2 decimal places). It
+exits `0` when the file is valid and `1` when it is not, so it can gate a script. To
+also split a file into cleaned + needs-review outputs, use `clean_refund_file.py`.
 
 ### Clean a File Without Submitting (Pre-flight)
 
@@ -269,6 +301,19 @@ python list_adjustment_requests.py agmt-aaa agmt-bbb
 python list_adjustment_requests.py --agreements-file ids.txt \
     --status COMPLETED --created-after 2026-06-01 --created-before 2026-06-30
 ```
+
+> **API reference:** [`ListBillingAdjustmentRequests`](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_ListBillingAdjustmentRequests.html).
+> The script exposes every filter the API accepts **except `agreementType`** — the
+> service rejects that one in combination with the other filters ("combination of
+> filters is not supported"), so it is intentionally not sent. `nextToken` is handled
+> for you: the script paginates through all pages automatically unless you pass
+> `--max-results` (1–50), which returns a single page. Valid `--status` values are
+> `PENDING`, `VALIDATION_FAILED`, and `COMPLETED`.
+>
+> **Dates → timestamps:** `--created-after` / `--created-before` accept `YYYY-MM-DD`
+> (or full ISO). The script parses them to UTC datetimes (`--created-before` snaps to
+> end-of-day `23:59:59`), and boto3 serializes those to the numeric epoch **timestamp**
+> the API's `createdAfter` / `createdBefore` parameters expect.
 
 ### Look Up One Request
 
@@ -389,6 +434,7 @@ web app:
 | Status | Meaning |
 |--------|---------|
 | `DRY_RUN_OK` | Passed validation in dry-run (not submitted) |
+| `ALREADY_PROCESSED` | Live pre-check found an existing COMPLETED/PENDING request for this `<agreement, invoice>`; row skipped (not resubmitted). See `already_processed_<input>_<timestamp>.csv` |
 | `VALIDATION_FAILED` | Invoice not found, non-adjustable type, or amount exceeds max (pre-submit) |
 | `SUBMIT_FAILED` | The create call (`BatchCreateBillingAdjustmentRequest`) was rejected |
 | `COMPLETED` | Adjustment processed successfully |
@@ -440,6 +486,7 @@ for the shared list (`ResourceNotFoundException`, `REFUND_AMOUNT_EXCEEDS_MAXIMUM
 
 - [ ] Set up AWS credentials (see Credential Options above)
 - [ ] Place CSV file in `adjustmentFiles/` with required columns
+- [ ] Reconcile first (safety): `python check_processed_refunds.py <file.csv>` — if any `<agreement, invoice>` shows up as already processed, remove those rows or confirm you really intend to refund again (especially if >8h since any prior run, when the idempotency token no longer guards against duplicates)
 - [ ] Run dry-run: `python billing_adjustment_bulk_sdk_creds.py --dry-run <file.csv>`
 - [ ] Review dry-run output — check for validation failures and aggregate warnings
 - [ ] Run live: `python billing_adjustment_bulk_sdk_creds.py <file.csv>`

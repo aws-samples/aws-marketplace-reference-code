@@ -192,6 +192,7 @@ Here is what each value means and what to do about it.
 |--------|-------|---------|------------|
 | `COMPLETED` | after submit (service) | The adjustment was accepted and fully processed by AWS. | Done — the refund is applied. |
 | `DRY_RUN_OK` | dry-run only | The invoice passed pre-flight validation and **would** be submitted in a live run. Nothing was submitted. | Re-run without dry-run to actually submit. |
+| `ALREADY_PROCESSED` | live pre-check (before submit) | The live run found an existing `COMPLETED` or `PENDING` adjustment request for this `<agreement, invoice>`, so the row was **skipped** (not resubmitted) to avoid a duplicate refund. The existing request id is recorded. | None needed — the refund already exists / is in flight. Use **Check one request** / `get_adjustment_request.py` with the recorded request id to review it. |
 | `VALIDATION_FAILED` | pre-submit check, **or** service terminal status | Two cases: (a) the row failed the pre-flight check — invoice not found, not an adjustable invoice type (e.g. `CREDIT_MEMO`), or amount > `maxAdjustmentAmount` — so **nothing was submitted**; or (b) a submitted request was rejected by the service during processing (e.g. KYC/compliance, agreement state). | Fix the input/data; the `message` column has the reason. Re-running unchanged won't help. |
 | `SUBMIT_FAILED` | submit (create call) | The row passed validation, the tool called `BatchCreateBillingAdjustmentRequest`, and that call rejected the entry or errored (throttling, permissions, conflict, API error). **No request was created.** | Usually retry-safe — the deterministic client token prevents duplicates. Check the `message`. |
 | `ERROR` | service terminal status | While polling, `GetBillingAdjustmentRequest` returned an error status for the request. | Investigate the `message`; may require AWS Marketplace support. |
@@ -346,6 +347,33 @@ for **8 hours** from the first request. What this means in practice:
   Do not rely on the token to prevent duplicates across days. The durable backstop is
   the per-invoice `maxAdjustmentAmount`: once an invoice has been refunded up to its
   maximum, further refunds are rejected regardless of the token.
+
+> **Recommended pre-flight: reconcile the input file before you submit.** Because the
+> 8-hour window can lapse between runs, the reliable way to avoid an accidental second
+> refund is to reconcile the *exact file you are about to submit* against the service
+> first — run **Check processed refunds** (web UI) or
+> `python check_processed_refunds.py <your-file.csv>` (CLI). Any `<agreement, invoice>`
+> that comes back in the **processed** output has already been refunded; treat that as a
+> warning to remove those rows (or confirm you truly intend to refund them again) before
+> running the live submit. This check does **not** depend on the idempotency window — it
+> works no matter how long ago the prior run happened, so it is the safest guard once
+> more than 8 hours may have passed.
+
+**Built-in live pre-check (automatic).** You don't have to remember to reconcile first —
+every **live run checks each `<agreement, invoice>` against the service immediately
+before submitting it.** If an existing `COMPLETED` or `PENDING` adjustment request is
+found, that row is **skipped** (status `ALREADY_PROCESSED`, the existing request id is
+recorded) instead of being resubmitted. Rows whose only prior request is
+`VALIDATION_FAILED` (no refund happened) are still submitted, so genuine retries are not
+blocked. This is what protects you once the 8-hour idempotency window has lapsed, and it
+is **on by default**. It also runs during a **dry run** (when enabled) as a preview, so
+the dry-run report labels already-refunded rows `ALREADY_PROCESSED` and the `DRY_RUN_OK`
+count reflects only genuinely new refunds — a warning before you commit to the live run.
+The CLI exposes `--no-precheck` to skip it (faster, for a verified
+fresh batch); the web app runs it automatically. Skipped rows appear in the run output —
+`already_processed_<input>_<timestamp>.csv` (CLI) or the job's `records` with status
+`ALREADY_PROCESSED` (web) — so you can review them with **Check one request** /
+`get_adjustment_request.py`.
 
 **Trade-off:** because the amount is intentionally *not* part of the token, you
 cannot issue two different refunds against the same invoice and agreement through the
