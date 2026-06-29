@@ -176,6 +176,7 @@
           <div class="stat"><div class="n" style="color:var(--green)" id="statSucceeded">0</div><div class="l" id="statSucceededLabel">Succeeded</div></div>
           <div class="stat"><div class="n" style="color:var(--red)" id="statFailed">0</div><div class="l">Failed</div></div>
           <div class="stat"><div class="n" style="color:var(--accent-dark)" id="statSkipped">0</div><div class="l">Skipped</div></div>
+          <div class="stat"><div class="n" style="color:var(--muted)" id="statNeedReview">0</div><div class="l">Need review</div></div>
         </div>
         <div class="dl-row" id="activeDownloads"></div>
         <div class="msg err" id="credPanel" style="display:none;">
@@ -338,7 +339,7 @@ async function submitJob() {
     if (!res.ok) { showMsg($("submitMsg"), "err", (data.error || "Failed to start job.") + (data.review_count ? ` (${data.review_count} row(s) need review)` : "")); }
     else {
       let m = "Job started" + (data.dry_run ? " (dry run)" : "") + ". " + (data.valid_count || 0) + " valid row(s).";
-      if (data.review_count) m += " " + data.review_count + " row(s) routed to review — download the “Needs review” file below.";
+      if (data.review_count) m += " " + data.review_count + " row(s) need review (shown as NEED_REVIEW in the CSV).";
       m += " Tracking below.";
       showMsg($("submitMsg"), data.review_count ? "info" : "ok", m); activeJobId = data.job_id; startPolling();
     }
@@ -362,9 +363,6 @@ function downloadLinks(job) {
   let links = `<a class="dl" href="/api/jobs/${jobId}/download/csv">⬇ CSV (readable)</a>
     <a class="dl" href="/api/jobs/${jobId}/download/json">⬇ Summary (JSON)</a>
     <a class="dl" href="/api/jobs/${jobId}/download/jsonl">⬇ Records (JSON lines)</a>`;
-  if (job.review_count) {
-    links += `<a class="dl" href="/api/jobs/${jobId}/download/review">⬇ Needs review (${job.review_count})</a>`;
-  }
   return links;
 }
 function renderActive(job) {
@@ -376,6 +374,7 @@ function renderActive(job) {
   $("statTotal").textContent = total; $("statProcessed").textContent = processed;
   $("statSucceeded").textContent = p.succeeded || 0; $("statFailed").textContent = p.failed || 0;
   $("statSkipped").textContent = p.skipped || 0;
+  $("statNeedReview").textContent = p.need_review || 0;
   $("statSucceededLabel").textContent = job.dry_run ? "Would submit" : "Succeeded";
   $("logs").textContent = (job.logs || []).join("\n"); $("logs").scrollTop = $("logs").scrollHeight;
   const done = ["completed", "failed", "cancelled"].includes(job.state);

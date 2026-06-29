@@ -9,8 +9,8 @@ Beyond submitting refunds, the toolset can **reconcile** a refund file against t
 service (check which invoices were actually processed) and look up individual or
 filtered adjustment requests. It also **auto-separates invalid and duplicate rows**
 into a "needs review" file so a bad row never blocks the rest of the batch. These are
-available both in the web UI (**Check processed refunds**, **Check one request**, and
-the needs-review download on submit) and as CLI scripts (`check_processed_refunds.py`,
+available both in the web UI (**Check processed refunds**, **Check one request**, with
+needs-review rows surfaced in the run's records output) and as CLI scripts (`check_processed_refunds.py`,
 `clean_refund_file.py`, `list_adjustment_requests.py`, `get_adjustment_request.py`).
 
 ## Ways to use it
@@ -193,6 +193,7 @@ Here is what each value means and what to do about it.
 | `COMPLETED` | after submit (service) | The adjustment was accepted and fully processed by AWS. | Done — the refund is applied. |
 | `DRY_RUN_OK` | dry-run only | The invoice passed pre-flight validation and **would** be submitted in a live run. Nothing was submitted. | Re-run without dry-run to actually submit. |
 | `ALREADY_PROCESSED` | live pre-check (before submit) | The live run found an existing `COMPLETED` or `PENDING` adjustment request for this `<agreement, invoice>`, so the row was **skipped** (not resubmitted) to avoid a duplicate refund. The existing request id is recorded. | None needed — the refund already exists / is in flight. Use **Check one request** / `get_adjustment_request.py` with the recorded request id to review it. |
+| `NEED_REVIEW` | pre-processing (before the run) | The row was set aside **before** the run — missing/placeholder `agreement_id` or `invoice_id`, a non-positive/invalid amount, more than 2 decimal places, or a duplicate `<agreement, invoice>` in the file. **Nothing was submitted.** In the web app it appears in `records.csv` so one file shows the complete picture; the CLI writes these to a separate needs-review file. | Fix the row(s) and re-upload; the `message` column has the reason. |
 | `VALIDATION_FAILED` | pre-submit check, **or** service terminal status | Two cases: (a) the row failed the pre-flight check — invoice not found, not an adjustable invoice type (e.g. `CREDIT_MEMO`), or amount > `maxAdjustmentAmount` — so **nothing was submitted**; or (b) a submitted request was rejected by the service during processing (e.g. KYC/compliance, agreement state). | Fix the input/data; the `message` column has the reason. Re-running unchanged won't help. |
 | `SUBMIT_FAILED` | submit (create call) | The row passed validation, the tool called `BatchCreateBillingAdjustmentRequest`, and that call rejected the entry or errored (throttling, permissions, conflict, API error). **No request was created.** | Usually retry-safe — the deterministic client token prevents duplicates. Check the `message`. |
 | `ERROR` | service terminal status | While polling, `GetBillingAdjustmentRequest` returned an error status for the request. | Investigate the `message`; may require AWS Marketplace support. |
