@@ -26,10 +26,39 @@ from botocore.session import get_session as _get_botocore_session
 
 # Defaults (can be overridden via AdjustmentConfig)
 BATCH_SIZE = 5
-CALLS_PER_SECOND = 2
-DELAY_BETWEEN_BATCHES = 1.0 / CALLS_PER_SECOND
+
+# Per-operation request rates, from the AWS Marketplace Agreement service quotas
+# (per AWS account). Each API call path is paced to its OWN documented limit instead
+# of a single global rate, so the read paths are not throttled down to the slowest
+# (write) limit.
+# https://docs.aws.amazon.com/marketplace/latest/developerguide/agreement-service-quotas.html
+BATCH_CREATE_CALLS_PER_SECOND = 2               # BatchCreateBillingAdjustmentRequest
+GET_CALLS_PER_SECOND = 5                         # GetBillingAdjustmentRequest
+LIST_BILLING_ADJUSTMENTS_CALLS_PER_SECOND = 5   # ListBillingAdjustmentRequests
+LIST_INVOICE_LINE_ITEMS_CALLS_PER_SECOND = 10   # ListAgreementInvoiceLineItems
+
+# Backwards-compatible global default = the most restrictive path (the write/submit).
+# Kept because core/__init__.py re-exports these names and CLI scripts import them.
+CALLS_PER_SECOND = BATCH_CREATE_CALLS_PER_SECOND
+DELAY_BETWEEN_BATCHES = 1.0 / CALLS_PER_SECOND   # submit pacing (2/s -> 0.5s)
+
+# Per-operation inter-call delays (seconds), derived from the quotas above.
+SUBMIT_DELAY = 1.0 / BATCH_CREATE_CALLS_PER_SECOND                                 # 0.50s
+GET_DELAY = 1.0 / GET_CALLS_PER_SECOND                                             # 0.20s
+LIST_BILLING_ADJUSTMENTS_DELAY = 1.0 / LIST_BILLING_ADJUSTMENTS_CALLS_PER_SECOND   # 0.20s
+VALIDATE_DELAY = 1.0 / LIST_INVOICE_LINE_ITEMS_CALLS_PER_SECOND                    # 0.10s
+
+# Status polling. The total budget SCALES with the number of pending requests so a
+# large batch is not falsely timed out: one status sweep of N requests already costs
+# ~ N / GET_CALLS_PER_SECOND seconds in pacing alone. We allow up to MAX_POLL_SWEEPS
+# full sweeps (each followed by a POLL_INTERVAL idle wait), bounded by a floor (so
+# small batches behave as before) and an absolute ceiling. See _compute_poll_budget().
 POLL_INTERVAL = 60
-MAX_POLL_TIME = 600
+MIN_POLL_TIME = 600          # floor in seconds (small batches)
+MAX_POLL_SWEEPS = 5          # number of full status sweeps to allow
+MAX_POLL_TIME_CAP = 7200     # absolute ceiling in seconds (2 hours)
+# Back-compat alias; the effective budget is computed per-run in _wait_and_record.
+MAX_POLL_TIME = MIN_POLL_TIME
 CURRENCY_CODE = "USD"
 ADJUSTMENT_REASON = "OTHER"
 ENDPOINT_URL = "https://agreement-marketplace.us-east-1.amazonaws.com"
@@ -385,6 +414,18 @@ def create_batches(grouped_rows, batch_size):
     return batches
 
 
+def _compute_poll_budget(n_pending):
+    """Total seconds to wait for `n_pending` requests to reach a terminal status.
+
+    The budget scales with the batch so large runs are not falsely timed out: a single
+    status sweep of N requests costs ~ N / GET_CALLS_PER_SECOND seconds of pacing
+    alone, so we budget MAX_POLL_SWEEPS sweeps plus their inter-sweep idle waits,
+    bounded by MIN_POLL_TIME (floor) and MAX_POLL_TIME_CAP (ceiling)."""
+    sweep_cost = n_pending / GET_CALLS_PER_SECOND
+    budget = MAX_POLL_SWEEPS * (sweep_cost + POLL_INTERVAL)
+    return min(MAX_POLL_TIME_CAP, max(MIN_POLL_TIME, int(budget)))
+
+
 class _AmountTally:
     """Wraps a record writer to also accumulate dollar totals by outcome, so the
     run summary can report $ submitted / completed / failed alongside the counts.
@@ -715,7 +756,7 @@ class AdjustmentProcessor:
                     token = resp.get('nextToken')
                     if not token or max_results:
                         break
-                    time.sleep(DELAY_BETWEEN_BATCHES)
+                    time.sleep(LIST_BILLING_ADJUSTMENTS_DELAY)
         return items, errors
 
     def reconcile_refunds(self, records):
@@ -766,6 +807,7 @@ class AdjustmentProcessor:
 
             self._log(f"Listing adjustment requests for agreement {aid}...")
             items, list_errors = self.list_adjustment_requests([aid], statuses=None)
+            time.sleep(LIST_BILLING_ADJUSTMENTS_DELAY)  # pace per-agreement list calls to quota
             if list_errors:
                 # List failed for this agreement -> all its rows are not processed.
                 for le in list_errors:
@@ -803,6 +845,7 @@ class AdjustmentProcessor:
                     detail['matchedInvoiceId'] = invoice_id
                     processed.append(detail)
                     matched_any = True
+                    time.sleep(GET_DELAY)  # pace GetBillingAdjustmentRequest calls to quota
                 if not matched_any:
                     # Listed but could not be confirmed via Get -> not processed.
                     not_processed.append(rec.get('original', {}))
@@ -853,6 +896,10 @@ class AdjustmentProcessor:
                 if list_failed:
                     for le in list_errors:
                         errors.append({'agreementId': aid, 'error': le.get('error')})
+                # Pace successive ListBillingAdjustmentRequests calls (one per agreement)
+                # to the operation's quota; list_adjustment_requests only paces between
+                # pages, not between agreements.
+                time.sleep(LIST_BILLING_ADJUSTMENTS_DELAY)
             if list_failed:
                 # Could not verify this agreement -> do not block; rely on the token.
                 to_submit.extend(agrows)
@@ -956,7 +1003,7 @@ class AdjustmentProcessor:
                         "message": error,
                     })
                     self.progress_cb(**counters)
-                time.sleep(DELAY_BETWEEN_BATCHES)
+                time.sleep(VALIDATE_DELAY)
 
             if not validated:
                 continue
@@ -1100,7 +1147,7 @@ class AdjustmentProcessor:
                             "message": str(e),
                         })
                         self.progress_cb(**counters)
-                time.sleep(DELAY_BETWEEN_BATCHES)
+                time.sleep(SUBMIT_DELAY)
 
             # Poll for completion of this phase's submitted requests
             self._wait_and_record(pending_requests, writer, counters, summary, phase_num)
@@ -1130,11 +1177,13 @@ class AdjustmentProcessor:
         request that stays in progress for a while doesn't look stuck."""
         if not pending_requests:
             return
+        max_poll_time = _compute_poll_budget(len(pending_requests))
         self._log(f"Waiting for {len(pending_requests)} submitted request(s) to complete "
-                  f"(polling every {POLL_INTERVAL}s, up to {MAX_POLL_TIME}s)...")
+                  f"(checks paced at {GET_CALLS_PER_SECOND}/s, polling every "
+                  f"{POLL_INTERVAL}s, up to {max_poll_time}s)...")
         start = time.time()
         poll_round = 0
-        while pending_requests and (time.time() - start) < MAX_POLL_TIME:
+        while pending_requests and (time.time() - start) < max_poll_time:
             if self.cancel_check():
                 break
             poll_round += 1
@@ -1167,12 +1216,12 @@ class AdjustmentProcessor:
                     still_pending.append(req)
                     self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
                               f"{status or 'PENDING'}{detail} - still processing; "
-                              f"next status check in {DELAY_BETWEEN_BATCHES:.1f}s")
-                time.sleep(DELAY_BETWEEN_BATCHES)
+                              f"next status check in {GET_DELAY:.1f}s")
+                time.sleep(GET_DELAY)
             pending_requests = still_pending
             if pending_requests:
                 elapsed = int(time.time() - start)
-                remaining = max(0, MAX_POLL_TIME - elapsed)
+                remaining = max(0, max_poll_time - elapsed)
                 self._log(f"{len(pending_requests)} request(s) still pending after {elapsed}s; "
                           f"next poll in {POLL_INTERVAL}s (about {remaining}s left before timeout).")
                 time.sleep(POLL_INTERVAL)
@@ -1188,6 +1237,6 @@ class AdjustmentProcessor:
                 "amount": req['amount'],
                 "status": "TIMEOUT",
                 "billing_adjustment_request_id": req['request_id'],
-                "message": f"Timed out after {MAX_POLL_TIME}s",
+                "message": f"Timed out after {max_poll_time}s",
             })
             self.progress_cb(**counters)
