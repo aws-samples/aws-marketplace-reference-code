@@ -10,7 +10,6 @@ Background job manager for billing adjustment processing.
 
 import os
 import json
-import csv
 import uuid
 import threading
 import traceback
@@ -22,7 +21,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from core import (
     AdjustmentProcessor, RecordWriter, load_csv, CredentialsCancelled,
-    REVIEW_REASON_COL,
+    REVIEW_REASON_COL, COL_AGREEMENT_ID, COL_INVOICE_ID,
+    build_header_map, get_field, resolve_amount_column,
 )
 
 
@@ -91,20 +91,10 @@ class JobManager:
             "records_csv": "records.csv",
         }
 
-        # Write the needs-review file (invalid + duplicate rows) so the user can
-        # download it and fix those entries separately.
+        # Needs-review rows (invalid + duplicate) are merged into the main records
+        # file as NEED_REVIEW by _run_job, so a single file shows the complete picture.
+        # No separate needs-review file is produced.
         review_rows = review_rows or []
-        if review_rows:
-            review_cols = list(review_columns or [])
-            if REVIEW_REASON_COL not in review_cols:
-                review_cols = review_cols + [REVIEW_REASON_COL]
-            with open(os.path.join(jdir, "needs_review.csv"), 'w', newline='',
-                      encoding='utf-8') as f:
-                w = csv.DictWriter(f, fieldnames=review_cols, extrasaction='ignore')
-                w.writeheader()
-                for r in review_rows:
-                    w.writerow(r)
-            outputs["needs_review_csv"] = "needs_review.csv"
 
         status = {
             "job_id": job_id,
@@ -115,7 +105,8 @@ class JobManager:
             "created_at": datetime.now().isoformat(),
             "started_at": None,
             "finished_at": None,
-            "progress": {"total": 0, "processed": 0, "succeeded": 0, "failed": 0, "skipped": 0},
+            "progress": {"total": len(review_rows), "processed": 0, "succeeded": 0,
+                         "failed": 0, "skipped": 0, "need_review": len(review_rows)},
             "review_count": len(review_rows),
             "logs": [],
             "summary": None,
@@ -131,7 +122,7 @@ class JobManager:
             target=self._run_job,
             args=(job_id, csv_path, credentials, dry_run, cancel_flag, cred_slot,
                   managed_credentials, assume_role_arn, assume_role_external_id,
-                  precheck_processed),
+                  precheck_processed, review_rows, review_columns),
             daemon=True,
         )
         with _lock:
@@ -165,7 +156,8 @@ class JobManager:
 
     def _run_job(self, job_id, csv_path, credentials, dry_run, cancel_flag, cred_slot,
                  managed_credentials=False, assume_role_arn=None,
-                 assume_role_external_id=None, precheck_processed=True):
+                 assume_role_external_id=None, precheck_processed=True,
+                 review_rows=None, review_columns=None):
         jdir = _job_dir(job_id)
         status = read_status(job_id)
 
@@ -178,13 +170,18 @@ class JobManager:
             status["logs"] = status["logs"][-500:]  # cap log size
             save()
 
+        review_count = len(review_rows or [])
+
         def progress_cb(**counters):
+            # Total/processed include the needs-review rows so the grid reconciles:
+            # total = input-file rows; succeeded + failed + skipped + need_review = total.
             status["progress"].update({
-                "total": counters.get("total", status["progress"]["total"]),
-                "processed": counters.get("processed", 0),
+                "total": counters.get("total", 0) + review_count,
+                "processed": counters.get("processed", 0) + review_count,
                 "succeeded": counters.get("succeeded", 0),
                 "failed": counters.get("failed", 0),
                 "skipped": counters.get("skipped", 0),
+                "need_review": review_count,
             })
             save()
 
@@ -222,6 +219,24 @@ class JobManager:
                 csv_path=os.path.join(jdir, "records.csv"),
             )
 
+            # Include the needs-review rows in the main records file so a single file
+            # shows the complete picture (status NEED_REVIEW). They are written up front
+            # and are NOT counted in the run's progress/summary — they were separated
+            # out before processing. No separate needs-review file is produced.
+            if review_rows:
+                _hmap = build_header_map(review_columns or [])
+                _amount_col = resolve_amount_column(_hmap)
+                for rr in review_rows:
+                    writer.write({
+                        "phase": "",
+                        "agreement_id": (get_field(rr, _hmap, COL_AGREEMENT_ID) or "").strip(),
+                        "invoice_id": (get_field(rr, _hmap, COL_INVOICE_ID) or "").strip(),
+                        "amount": (rr.get(_amount_col, "") if _amount_col else ""),
+                        "status": "NEED_REVIEW",
+                        "billing_adjustment_request_id": "",
+                        "message": rr.get(REVIEW_REASON_COL, ""),
+                    })
+
             processor = AdjustmentProcessor(
                 access_key=credentials.get("access_key") if credentials else None,
                 secret_key=credentials.get("secret_key") if credentials else None,
@@ -257,8 +272,10 @@ class JobManager:
             status["finished_at"] = datetime.now().isoformat()
             skipped_note = (f", Skipped (already processed): {counters['skipped']}"
                             if counters.get('skipped') else "")
+            review_note = f", Need review: {review_count}" if review_count else ""
             log_cb(f"Job {status['state']}. "
-                   f"Succeeded: {counters['succeeded']}, Failed: {counters['failed']}{skipped_note}.")
+                   f"Succeeded: {counters['succeeded']}, Failed: {counters['failed']}"
+                   f"{skipped_note}{review_note}.")
             save()
 
         except Exception as e:

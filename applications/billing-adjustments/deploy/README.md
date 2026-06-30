@@ -33,6 +33,21 @@ binary or collecting credentials:
 > if an action name differs, update `cloudformation.yaml` (same-account) and/or
 > `cross-account-role-target.yaml` (cross-account).
 
+## Architecture and roles
+
+![Deployment architecture: the deployer builds/pushes to Amazon ECR and runs CloudFormation, which creates the app role, the ECR-access role, and the App Runner service (managed compute, no EC2). The App Runner task assumes the app role to call the AWS Marketplace Agreement APIs, or assumes a cross-account role in the DATA account.](deploy.png)
+
+| Identity | What it is | Assumed by / trust | Permissions |
+|----------|------------|--------------------|-------------|
+| **Deployer principal** | You at deploy time (`publish-image.sh` + `cloudformation deploy`) | your own login | ECR push, CloudFormation, IAM role create/pass, App Runner (the deployer policy under *Who runs the deployment*). **No `aws-marketplace` perms.** |
+| **`billing-adjustments-app-role`** | The running app's identity | `tasks.apprunner.amazonaws.com` | Same-account: the 4 `aws-marketplace` actions. Cross-account: only `sts:AssumeRole` on the target role. |
+| **`billing-adjustments-ecr-access-role`** | Lets App Runner pull the private image | `build.apprunner.amazonaws.com` | Managed `AWSAppRunnerServicePolicyForECRAccess` (private ECR only). |
+| **`BillingAdjustmentsXAcctRole`** (DATA account) | Holds the real perms where the agreements live | APP account principal + `ExternalId` | The 4 `aws-marketplace` actions. |
+
+Two things to note: the **deployer is not the app role** (the deployer *creates* and
+`PassRole`s it, but never runs as it), and **App Runner is fully managed** — your
+container runs on AWS-managed compute with no EC2 instance in your account.
+
 ## Prerequisites
 
 - A container engine — **Docker (with buildx)** or **Finch** — and the AWS CLI, on a
@@ -40,6 +55,119 @@ binary or collecting credentials:
   account. `publish-image.sh` auto-detects which engine to use (override with
   `CONTAINER_ENGINE=docker|finch`). For Finch, start its VM first: `finch vm start`.
 - The target account must have access to the Marketplace Agreement billing APIs.
+
+## Who runs the deployment (deployer permissions)
+
+Deploying is a **one-time, elevated operation** — it creates IAM roles and an App
+Runner service (and, for a private image, pushes to ECR). This is separate from
+*running* the app: the running service uses only the least-privilege role the stack
+creates, never the deployer's permissions.
+
+You have two options:
+
+1. **A cloud / AWS administrator deploys it.** Simplest — an admin typically already
+   has the required rights. Recommended if you just want it stood up.
+2. **Delegate to a specific person or role** that has the least-privilege deployer
+   policy below attached. Use this when you don't want to hand out admin, or for a
+   security review of exactly what the deployment touches. Note it contains **no
+   `aws-marketplace:` permissions** — those live only on the app role the stack
+   creates, not on the deployer.
+
+<details>
+<summary><strong>Least-privilege deployer IAM policy</strong> (click to expand)</summary>
+
+This policy uses **example values** — account `111122223333` and region `us-east-1`.
+Replace `111122223333` with the account you're deploying into (find it with
+`aws sts get-caller-identity --query Account --output text`). Leave `us-east-1` unless
+you deploy ECR/App Runner in another region — the Marketplace API itself is always
+`us-east-1` regardless of where you host the app. Keep `billing-adjustments` unless you
+change the `ServiceName` parameter. For a **public image**
+(`ImageRepositoryType=ECR_PUBLIC`) you can drop the two `Ecr*` statements and the
+`billing-adjustments-ecr-access-role` entry from `PassRole` (no image build/push and no
+ECR access role).
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    { "Sid": "EcrAuthToken", "Effect": "Allow", "Action": "ecr:GetAuthorizationToken", "Resource": "*" },
+    {
+      "Sid": "EcrPushImage",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:DescribeRepositories", "ecr:CreateRepository", "ecr:BatchCheckLayerAvailability",
+        "ecr:InitiateLayerUpload", "ecr:UploadLayerPart", "ecr:CompleteLayerUpload",
+        "ecr:PutImage", "ecr:BatchGetImage", "ecr:GetDownloadUrlForLayer"
+      ],
+      "Resource": "arn:aws:ecr:us-east-1:111122223333:repository/billing-adjustments"
+    },
+    {
+      "Sid": "CloudFormationStack",
+      "Effect": "Allow",
+      "Action": [
+        "cloudformation:CreateStack", "cloudformation:UpdateStack", "cloudformation:DeleteStack",
+        "cloudformation:DescribeStacks", "cloudformation:DescribeStackEvents",
+        "cloudformation:ListStackResources", "cloudformation:GetTemplate",
+        "cloudformation:CreateChangeSet", "cloudformation:DescribeChangeSet",
+        "cloudformation:ExecuteChangeSet", "cloudformation:DeleteChangeSet"
+      ],
+      "Resource": "arn:aws:cloudformation:us-east-1:111122223333:stack/billing-adjustments/*"
+    },
+    {
+      "Sid": "CloudFormationValidate",
+      "Effect": "Allow",
+      "Action": ["cloudformation:ValidateTemplate", "cloudformation:GetTemplateSummary"],
+      "Resource": "*"
+    },
+    {
+      "Sid": "IamRolesForStack",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole", "iam:DeleteRole", "iam:GetRole", "iam:GetRolePolicy",
+        "iam:PutRolePolicy", "iam:DeleteRolePolicy", "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy", "iam:ListRolePolicies", "iam:ListAttachedRolePolicies",
+        "iam:TagRole", "iam:UntagRole"
+      ],
+      "Resource": "arn:aws:iam::111122223333:role/billing-adjustments-*"
+    },
+    {
+      "Sid": "IamPassRoleToAppRunner",
+      "Effect": "Allow",
+      "Action": "iam:PassRole",
+      "Resource": [
+        "arn:aws:iam::111122223333:role/billing-adjustments-app-role",
+        "arn:aws:iam::111122223333:role/billing-adjustments-ecr-access-role"
+      ]
+    },
+    {
+      "Sid": "AppRunnerServiceLinkedRole",
+      "Effect": "Allow",
+      "Action": "iam:CreateServiceLinkedRole",
+      "Resource": "arn:aws:iam::111122223333:role/aws-service-role/apprunner.amazonaws.com/*",
+      "Condition": { "StringEquals": { "iam:AWSServiceName": "apprunner.amazonaws.com" } }
+    },
+    {
+      "Sid": "AppRunnerService",
+      "Effect": "Allow",
+      "Action": [
+        "apprunner:CreateService", "apprunner:UpdateService", "apprunner:DeleteService",
+        "apprunner:DescribeService", "apprunner:ListServices", "apprunner:ListOperations",
+        "apprunner:DescribeOperation", "apprunner:StartDeployment", "apprunner:TagResource",
+        "apprunner:ListTagsForResource"
+      ],
+      "Resource": "*"
+    },
+    { "Sid": "StsIdentity", "Effect": "Allow", "Action": "sts:GetCallerIdentity", "Resource": "*" }
+  ]
+}
+```
+</details>
+
+> **Cross-account:** the person deploying `cross-account-role-target.yaml` in the
+> **DATA account** (example: `444455556666`) needs CloudFormation on that stack plus
+> `iam:CreateRole` / `PutRolePolicy` / `GetRole` / `DeleteRole` on
+> `arn:aws:iam::444455556666:role/BillingAdjustmentsXAcctRole` — a separate, smaller
+> policy in that account.
 
 ## Step 1 — Build and push the image
 

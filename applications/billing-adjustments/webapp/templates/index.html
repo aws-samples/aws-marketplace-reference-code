@@ -131,18 +131,18 @@
         <h2>1. Upload adjustment file</h2>
         <details class="format-guide">
           <summary>Required file format (click to expand)</summary>
-          <p class="hint">Your file must be a <code>.csv</code> with a header row containing these columns:</p>
+          <p class="hint">Your file must be a <code>.csv</code> with a header row. All columns below must be present in the header row:</p>
           <table class="fmt">
-            <tr><th>Column</th><th>Required?</th><th>Example</th></tr>
-            <tr><td><code>seller_id</code></td><td>Yes</td><td>123456789012</td></tr>
-            <tr><td><code>aws_account_id</code></td><td>Yes</td><td>111222333444</td></tr>
-            <tr><td><code>invoice_id</code></td><td>Yes</td><td>2500000001</td></tr>
-            <tr><td><code>product_code</code></td><td>Yes</td><td>prod-abc123def456g</td></tr>
-            <tr><td><code>month_id</code></td><td>Yes</td><td>25-Jun</td></tr>
-            <tr><td><code>refund_amount</code></td><td>Yes*</td><td>$1,200.00 or 0.01</td></tr>
-            <tr><td><code>agreement_id</code></td><td>Yes</td><td>agmt-exampleagreement1abcdefg</td></tr>
-            <tr><td><code>max_refund_amount</code></td><td>Optional</td><td>0.02</td></tr>
+            <tr><th>Column</th><th>Required value?</th><th>Example</th></tr>
+            <tr><td><code>agreement_id</code></td><td>Yes</td><td>agmt-byw2g19zkbjhuwxc8ki4w3b4x</td></tr>
+            <tr><td><code>invoice_id</code></td><td>Yes</td><td>2519920101</td></tr>
+            <tr><td><code>refund_amount</code></td><td>Yes*</td><td>0.01, 150.00, or $1,200.00</td></tr>
+            <tr><td><code>seller_id</code></td><td>Header only</td><td>348230509592</td></tr>
+            <tr><td><code>aws_account_id</code></td><td>Header only</td><td>013579169436</td></tr>
+            <tr><td><code>product_code</code></td><td>Header only</td><td>2brlrrc75ciw9evgh9mbpygbn</td></tr>
+            <tr><td><code>month_id</code></td><td>Header only</td><td>Jan 2026</td></tr>
           </table>
+          <p class="hint">"Header only" means the column must exist, but its value may be blank. Only <code>agreement_id</code>, <code>invoice_id</code>, and the amount column drive the adjustment; the rest are reference only.</p>
           <p class="hint">* The amount column may be named <code>refund_amount</code> or <code>SUM of Calculated Refund (T-Y)</code>. One row per &lt;invoice, agreement&gt;.</p>
         </details>
 
@@ -176,6 +176,7 @@
           <div class="stat"><div class="n" style="color:var(--green)" id="statSucceeded">0</div><div class="l" id="statSucceededLabel">Succeeded</div></div>
           <div class="stat"><div class="n" style="color:var(--red)" id="statFailed">0</div><div class="l">Failed</div></div>
           <div class="stat"><div class="n" style="color:var(--accent-dark)" id="statSkipped">0</div><div class="l">Skipped</div></div>
+          <div class="stat"><div class="n" style="color:var(--muted)" id="statNeedReview">0</div><div class="l">Need review</div></div>
         </div>
         <div class="dl-row" id="activeDownloads"></div>
         <div class="msg err" id="credPanel" style="display:none;">
@@ -338,7 +339,7 @@ async function submitJob() {
     if (!res.ok) { showMsg($("submitMsg"), "err", (data.error || "Failed to start job.") + (data.review_count ? ` (${data.review_count} row(s) need review)` : "")); }
     else {
       let m = "Job started" + (data.dry_run ? " (dry run)" : "") + ". " + (data.valid_count || 0) + " valid row(s).";
-      if (data.review_count) m += " " + data.review_count + " row(s) routed to review — download the “Needs review” file below.";
+      if (data.review_count) m += " " + data.review_count + " row(s) need review (shown as NEED_REVIEW in the CSV).";
       m += " Tracking below.";
       showMsg($("submitMsg"), data.review_count ? "info" : "ok", m); activeJobId = data.job_id; startPolling();
     }
@@ -362,9 +363,6 @@ function downloadLinks(job) {
   let links = `<a class="dl" href="/api/jobs/${jobId}/download/csv">⬇ CSV (readable)</a>
     <a class="dl" href="/api/jobs/${jobId}/download/json">⬇ Summary (JSON)</a>
     <a class="dl" href="/api/jobs/${jobId}/download/jsonl">⬇ Records (JSON lines)</a>`;
-  if (job.review_count) {
-    links += `<a class="dl" href="/api/jobs/${jobId}/download/review">⬇ Needs review (${job.review_count})</a>`;
-  }
   return links;
 }
 function renderActive(job) {
@@ -376,6 +374,7 @@ function renderActive(job) {
   $("statTotal").textContent = total; $("statProcessed").textContent = processed;
   $("statSucceeded").textContent = p.succeeded || 0; $("statFailed").textContent = p.failed || 0;
   $("statSkipped").textContent = p.skipped || 0;
+  $("statNeedReview").textContent = p.need_review || 0;
   $("statSucceededLabel").textContent = job.dry_run ? "Would submit" : "Succeeded";
   $("logs").textContent = (job.logs || []).join("\n"); $("logs").scrollTop = $("logs").scrollHeight;
   const done = ["completed", "failed", "cancelled"].includes(job.state);

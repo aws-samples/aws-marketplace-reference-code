@@ -199,7 +199,7 @@ def api_submit():
 
     # Split the file into rows we can process vs. rows that need review (invalid
     # agreement/invoice/amount, or duplicate <agreement, invoice> combinations).
-    # The bad rows are routed to a downloadable "needs review" file instead of
+    # The bad rows are surfaced as NEED_REVIEW in the records output instead of
     # blocking the whole upload.
     try:
         valid_records, review_rows, columns, _amount_col = classify_input_rows(path)
@@ -512,7 +512,7 @@ def api_job_credentials(job_id):
 @app.route("/api/jobs/<job_id>/download/<kind>")
 @login_required
 def api_download(job_id, kind):
-    """Download outputs: kind in {csv, json, jsonl, review}."""
+    """Download outputs: kind in {csv, json, jsonl}."""
     status = read_status(job_id)
     if not status:
         abort(404)
@@ -520,7 +520,6 @@ def api_download(job_id, kind):
         "csv": "records.csv",
         "json": "summary.json",
         "jsonl": "records.jsonl",
-        "review": "needs_review.csv",
     }
     fname = filenames.get(kind)
     if not fname:
@@ -528,9 +527,8 @@ def api_download(job_id, kind):
     jdir = _job_dir(job_id)
     if not os.path.exists(os.path.join(jdir, fname)):
         abort(404)
-    ext = "csv" if kind in ("csv", "review") else ("json" if kind == "json" else "jsonl")
-    suffix = "needs_review" if kind == "review" else kind
-    download_name = f"{os.path.splitext(status['original_filename'])[0]}_{suffix}.{ext}"
+    ext = "csv" if kind == "csv" else ("json" if kind == "json" else "jsonl")
+    download_name = f"{os.path.splitext(status['original_filename'])[0]}_{kind}.{ext}"
     return send_from_directory(jdir, fname, as_attachment=True, download_name=download_name)
 
 

@@ -39,10 +39,11 @@ billing adjustments without using the command line.
 10. **Automatic invalid/duplicate handling** — On submit, rows that can't be
     processed are not allowed to block the run. Rows with a missing/placeholder
     `agreement_id` or `invoice_id` (e.g. `#N/A`), a bad amount, or a duplicate
-    `<agreement, invoice>` combination are routed to a **Needs review** file. Only
-    the clean, de-duplicated rows are submitted, and the run reports how many rows
-    were set aside. Download the **Needs review** file (original columns plus a
-    `review_reason`) from the job's download row to fix those entries separately.
+    `<agreement, invoice>` combination are set aside as **NEED_REVIEW**. Only the
+    clean, de-duplicated rows are submitted, and the run reports how many were set
+    aside. The set-aside rows appear in the run's **records CSV** with status
+    `NEED_REVIEW` and the reason in the `message` column, so one file shows the
+    complete picture — fix those entries and re-upload.
 
 ## Install
 
