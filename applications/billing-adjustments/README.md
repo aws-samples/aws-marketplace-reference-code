@@ -197,7 +197,7 @@ Here is what each value means and what to do about it.
 | `VALIDATION_FAILED` | pre-submit check, **or** service terminal status | Two cases: (a) the row failed the pre-flight check — invoice not found, not an adjustable invoice type (e.g. `CREDIT_MEMO`), or amount > `maxAdjustmentAmount` — so **nothing was submitted**; or (b) a submitted request was rejected by the service during processing (e.g. KYC/compliance, agreement state). | Fix the input/data; the `message` column has the reason. Re-running unchanged won't help. |
 | `SUBMIT_FAILED` | submit (create call) | The row passed validation, the tool called `BatchCreateBillingAdjustmentRequest`, and that call rejected the entry or errored (throttling, permissions, conflict, API error). **No request was created.** | Usually retry-safe — the deterministic client token prevents duplicates. Check the `message`. |
 | `ERROR` | service terminal status | While polling, `GetBillingAdjustmentRequest` returned an error status for the request. | Investigate the `message`; may require AWS Marketplace support. |
-| `TIMEOUT` | polling | The tool stopped waiting after the poll limit (`MAX_POLL_TIME`, 10 min). The request **may still finish** server-side. | Re-check later with **Check one request** (UI) or `check_adjustment_status.py`. Not necessarily a failure. |
+| `TIMEOUT` | polling | The tool stopped waiting after the poll budget elapsed. The budget **scales with the number of pending requests** (floor 10 min, up to a 2-hour cap), so large batches aren't falsely timed out. The request **may still finish** server-side. | Re-check later with **Check one request** (UI) or `check_adjustment_status.py`. Not necessarily a failure. |
 | `PENDING` | in-flight (transient) | Submitted but not yet in a terminal state. Not written as a final row by the Web UI, but shown by the CLI status checker. | Wait and re-check. |
 
 **`VALIDATION_FAILED` vs `SUBMIT_FAILED` in one line:** `VALIDATION_FAILED` means the
@@ -282,10 +282,14 @@ These constants near the top of the shared engine control its behavior:
 |---------|---------|---------|
 | `CSV_FILE` | `adjustmentFiles/sample_company.csv` | Default input file when none is passed on the command line |
 | `BATCH_SIZE` | `5` | Max invoices per `BatchCreateBillingAdjustmentRequest` call |
-| `CALLS_PER_SECOND` | `2` | Client-side API rate limit (TPS) |
-| `DELAY_BETWEEN_BATCHES` | `1.0 / CALLS_PER_SECOND` (0.5s) | Pause between API calls to honor the rate limit |
-| `POLL_INTERVAL` | `60` | Seconds between status polls while waiting for a phase to complete |
-| `MAX_POLL_TIME` | `600` | Max seconds to wait for a phase before marking remaining requests `TIMEOUT` |
+| `CALLS_PER_SECOND` | `2` | Back-compat global default = the slowest (write) path, `BatchCreateBillingAdjustmentRequest`. Each API path is now paced to its **own** quota (see *API rate limits* below). |
+| `DELAY_BETWEEN_BATCHES` / `SUBMIT_DELAY` | `0.5s` | Submit pacing (`BatchCreateBillingAdjustmentRequest`, 2/s). |
+| `GET_DELAY` | `0.2s` | Status-poll pacing (`GetBillingAdjustmentRequest`, 5/s). |
+| `LIST_BILLING_ADJUSTMENTS_DELAY` | `0.2s` | Reconcile + already-processed pre-check pacing (`ListBillingAdjustmentRequests`, 5/s). |
+| `VALIDATE_DELAY` | `0.1s` | Invoice-validation pacing (`ListAgreementInvoiceLineItems`, 10/s). |
+| `POLL_INTERVAL` | `60` | Seconds of idle wait between status sweeps. |
+| `MAX_POLL_TIME` | `600` | Back-compat floor alias (== `MIN_POLL_TIME`). |
+| `MIN_POLL_TIME` / `MAX_POLL_SWEEPS` / `MAX_POLL_TIME_CAP` | `600` / `5` / `7200` | Status-poll budget. The total wait **scales** with the number of pending requests — `MAX_POLL_SWEEPS × (pending / GET_CALLS_PER_SECOND + POLL_INTERVAL)`, clamped between `MIN_POLL_TIME` and `MAX_POLL_TIME_CAP` — so large batches aren't falsely `TIMEOUT`-ed. |
 | `CURRENCY_CODE` | `USD` | Currency sent with each adjustment. The tool currently supports **USD only** — see [Input file format → Currency](#currency). |
 | `ADJUSTMENT_REASON` | `OTHER` | `adjustmentReasonCode` sent with each adjustment |
 | `ENDPOINT_URL` | `https://agreement-marketplace.us-east-1.amazonaws.com` | Marketplace Agreement API endpoint |
@@ -294,6 +298,48 @@ These constants near the top of the shared engine control its behavior:
 (Both the web app and the CLI use the shared engine in `core/engine.py`; these
 constants live there. `CSV_FILE` is a CLI-only default in
 `cli/billing_adjustment_bulk_sdk_creds.py`.)
+
+### API rate limits (service quotas)
+
+The tool paces each API call path to its **own** documented request rate from the
+[AWS Marketplace Agreement service quotas](https://docs.aws.amazon.com/marketplace/latest/developerguide/agreement-service-quotas.html)
+(per AWS account), rather than a single global rate. This keeps the read-heavy phases
+(validation, polling, reconciliation) fast while staying within quota.
+
+| Operation | Tool phase | Quota | Pacing constant |
+|-----------|-----------|-------|-----------------|
+| `BatchCreateBillingAdjustmentRequest` | Submit | 2/s | `SUBMIT_DELAY` (0.5s) |
+| `GetBillingAdjustmentRequest` | Status polling | 5/s | `GET_DELAY` (0.2s) |
+| `ListBillingAdjustmentRequests` | Reconcile + already-processed pre-check | 5/s | `LIST_BILLING_ADJUSTMENTS_DELAY` (0.2s) |
+| `ListAgreementInvoiceLineItems` | Invoice validation | 10/s | `VALIDATE_DELAY` (0.1s) |
+
+The boto3 client also uses adaptive retries, so brief throttling backs off and retries
+automatically. These are the current default quotas — always confirm against the
+[quota page](https://docs.aws.amazon.com/marketplace/latest/developerguide/agreement-service-quotas.html),
+since your account's limits can differ or change.
+
+### Best practices for large refund files
+
+- **Test with a small set first.** Before running a full file, copy ~**20 rows** into a
+  separate CSV and run a **dry run** (and ideally one small live run) against it. This
+  confirms your credentials, file format, and that the agreements/invoices validate —
+  without putting the whole list at risk.
+- **Split very large lists into batches of ~250 rows.** The tool will process a large
+  file in one go, but submission is rate-limited to ~2/second by the
+  `BatchCreateBillingAdjustmentRequest` quota (about 8 minutes per 1,000 single-invoice
+  rows), and it submits the whole file before it starts polling for completion. For
+  large lists, splitting the input into chunks of about **250 rows** per run gives you:
+  - **Progressive results** — completed refunds land after each chunk instead of waiting
+    for the entire file to be submitted first.
+  - **Bounded, predictable poll windows** — fewer requests are in flight at once, so each
+    run's status-poll budget stays small.
+  - **Smaller blast radius** — a credential expiry or interruption affects only the
+    current chunk; already-completed chunks are already saved.
+
+  Chunks much smaller than ~250 are less efficient (they poll before requests have had
+  time to settle, adding status calls), so ~250 is a good balance. Re-running is safe:
+  the already-processed pre-check and the deterministic client token skip anything that
+  was already refunded.
 
 ### Retries on credential failure
 
