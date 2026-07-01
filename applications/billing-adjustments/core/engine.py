@@ -92,14 +92,19 @@ NA_PLACEHOLDERS = {"", "#N/A", "N/A", "NA", "NULL", "NONE", "#REF!", "#VALUE!", 
 
 CLIENT_TOKEN_NAMESPACE = uuid.UUID('12345678-1234-5678-1234-567812345678')
 
-# Error codes / messages that indicate expired or invalid credentials
+# Error codes / messages that indicate expired or invalid credentials.
+# NOTE: AccessDenied/AccessDeniedException is deliberately NOT here. An
+# authorization/compliance denial (e.g. "Current identity is not KYC compliant")
+# is a per-request rejection, not a credentials problem — re-entering credentials
+# can never resolve it. Treating it as a credential error caused an infinite
+# "enter fresh credentials" pause loop and hid the real reason. Such errors are
+# now surfaced per invoice as VALIDATION_FAILED with the real API message.
 CREDENTIAL_ERROR_CODES = [
     'ExpiredTokenException',
     'ExpiredToken',
     'InvalidIdentityToken',
     'InvalidClientTokenId',
     'UnrecognizedClientException',
-    'AccessDeniedException',
 ]
 CREDENTIAL_ERROR_MESSAGES = [
     'security token included in the request is invalid',
@@ -122,6 +127,20 @@ def is_credential_error(error):
         return True
     msg = str(error).lower()
     return any(m in msg for m in CREDENTIAL_ERROR_MESSAGES)
+
+
+def extract_api_error(error):
+    """Return (code, message) from a botocore ClientError-style exception, falling
+    back to str(error) for the message when the structured fields are absent."""
+    err = getattr(error, 'response', {}).get('Error', {})
+    return err.get('Code', ''), err.get('Message', '') or str(error)
+
+
+def is_access_denied(error):
+    """True for an authorization/compliance denial (e.g. seller not KYC compliant).
+    These are per-request rejections, not credential problems."""
+    code, _ = extract_api_error(error)
+    return code in ('AccessDenied', 'AccessDeniedException')
 
 
 def generate_client_token(agreement_id, invoice_id):
@@ -1131,20 +1150,32 @@ class AdjustmentProcessor:
                 except CredentialsCancelled:
                     raise
                 except Exception as e:
+                    # An authorization/compliance denial (e.g. the seller behind this
+                    # agreement is not KYC compliant) is a per-request rejection, not a
+                    # broken submit call: retrying won't help. Surface it as
+                    # VALIDATION_FAILED with the real API message so the row is
+                    # actionable, and reserve SUBMIT_FAILED for genuine call failures.
+                    if is_access_denied(e):
+                        _, api_msg = extract_api_error(e)
+                        status = "VALIDATION_FAILED"
+                        reason = api_msg
+                    else:
+                        status = "SUBMIT_FAILED"
+                        reason = str(e)
                     for entry in entries:
                         counters['processed'] += 1
                         counters['failed'] += 1
                         summary["failed"] += 1
                         self._log(f"  invoice {entry['invoice_id']} ({agreement_id}): "
-                                  f"SUBMIT_FAILED - {e}")
+                                  f"{status} - {reason}")
                         writer.write({
                             "phase": phase_num,
                             "agreement_id": agreement_id,
                             "invoice_id": entry['invoice_id'],
                             "amount": entry['amount'],
-                            "status": "SUBMIT_FAILED",
+                            "status": status,
                             "billing_adjustment_request_id": "",
-                            "message": str(e),
+                            "message": reason,
                         })
                         self.progress_cb(**counters)
                 time.sleep(SUBMIT_DELAY)
