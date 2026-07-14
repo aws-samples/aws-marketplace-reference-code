@@ -361,6 +361,30 @@ def api_list_adjustments():
                     "agreement_ids_queried": len(agreement_ids)})
 
 
+@app.route("/api/lookup-invoices", methods=["POST"])
+@login_required
+def api_lookup_invoices():
+    """List all invoices for a given agreement ID."""
+    agreement_id = (request.form.get("agreement_id") or "").strip()
+    if not agreement_id:
+        return jsonify({"error": "Agreement ID is required."}), 400
+
+    processor, err = _build_processor()
+    if err:
+        return err
+    try:
+        invoices = processor.list_invoices_for_agreement(agreement_id)
+    except CredentialsCancelled:
+        return jsonify({"error": "Credentials unavailable."}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+    return jsonify({
+        "agreement_id": agreement_id,
+        "count": len(invoices),
+        "invoices": invoices,
+    })
+
+
 @app.route("/api/get-adjustment", methods=["POST"])
 @login_required
 def api_get_adjustment():

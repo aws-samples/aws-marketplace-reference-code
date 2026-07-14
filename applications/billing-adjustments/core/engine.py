@@ -691,6 +691,39 @@ class AdjustmentProcessor:
         except Exception as e:
             return False, None, str(e)
 
+    def list_invoices_for_agreement(self, agreement_id):
+        """List all invoices for an agreement via ListAgreementInvoiceLineItems.
+
+        Returns a list of dicts with invoice_id, invoice_type, amount,
+        max_refundable, and currency_code for each invoice group.
+        """
+        summaries = []
+        next_token = None
+        while True:
+            params = {
+                'agreementId': agreement_id,
+                'groupBy': 'INVOICE_ID',
+            }
+            if next_token:
+                params['nextToken'] = next_token
+            response = self._call('list_agreement_invoice_line_items', **params)
+            summaries.extend(response.get('agreementInvoiceLineItemGroupSummaries', []))
+            next_token = response.get('nextToken')
+            if not next_token:
+                break
+
+        results = []
+        for s in summaries:
+            pricing = s.get('pricingCurrencyAmount', {})
+            results.append({
+                'invoice_id': s.get('invoiceId'),
+                'invoice_type': s.get('invoiceType', 'UNKNOWN'),
+                'amount': pricing.get('amount'),
+                'max_refundable': pricing.get('maxAdjustmentAmount'),
+                'currency_code': pricing.get('currencyCode', 'USD'),
+            })
+        return results
+
     def _create_batch_entries(self, entries):
         return [
             {

@@ -101,6 +101,7 @@
   <nav class="sidebar">
     <button type="button" class="nav-item active" data-view="submit">Submit refunds</button>
     <button type="button" class="nav-item" data-view="reconcile">Check processed refunds</button>
+    <button type="button" class="nav-item" data-view="lookup">Lookup invoices</button>
     <button type="button" class="nav-item" data-view="get">Check one request</button>
   </nav>
 
@@ -238,6 +239,26 @@
         <div class="results-wrap"><table class="results" id="recProcessedTable"></table></div>
         <h2 style="margin-top:18px;font-size:14px;">Not processed</h2>
         <div class="results-wrap"><table class="results" id="recNotProcessedTable"></table></div>
+      </div>
+    </div>
+
+    <!-- =================== VIEW: LOOKUP INVOICES =================== -->
+    <div class="view hidden" id="view-lookup">
+      <div class="card">
+        <h2>Lookup invoices for an agreement</h2>
+        <p class="hint" style="margin-top:-6px;margin-bottom:14px;">
+          Enter an agreement ID to list all invoices associated with it,
+          including the invoice amount and maximum refundable amount for each.
+        </p>
+        <label for="lookupAgreementId">Agreement ID</label>
+        <input type="text" id="lookupAgreementId" placeholder="agmt-..." spellcheck="false">
+        <div class="msg" id="lookupMsg"></div>
+        <div class="btn-row"><button type="button" id="lookupBtn">Lookup</button></div>
+      </div>
+
+      <div class="card hidden" id="lookupResultCard">
+        <h2>Invoices <span class="badge" id="lookupCount"></span></h2>
+        <div class="results-wrap"><table class="results" id="lookupTable"></table></div>
       </div>
     </div>
 
@@ -499,6 +520,36 @@ function downloadRecNotProcessed() {
   downloadCsv(`not_processed_${recFilename}.csv`, recOriginalCols, recNotProcessed);
 }
 
+/* ============ LOOKUP INVOICES ============ */
+async function lookupInvoices() {
+  const aid = $("lookupAgreementId").value.trim();
+  if (!aid) { showMsg($("lookupMsg"), "err", "Agreement ID is required."); return; }
+  showMsg($("lookupMsg"), "", "Looking up invoices...");
+  $("lookupResultCard").classList.add("hidden");
+  const fd = new FormData();
+  fd.append("agreement_id", aid);
+  if (!appendCreds(fd, $("lookupMsg"))) return;
+  try {
+    const resp = await fetch("/api/lookup-invoices", { method: "POST", body: fd });
+    const data = await resp.json();
+    if (data.error) { showMsg($("lookupMsg"), "err", data.error); return; }
+    showMsg($("lookupMsg"), "ok", `Found ${data.count} invoice(s).`);
+    $("lookupCount").textContent = data.count;
+    const tbl = $("lookupTable");
+    tbl.innerHTML = "<tr><th>Invoice ID</th><th>Type</th><th>Amount</th><th>Max Refundable</th><th>Currency</th></tr>";
+    if (data.invoices.length === 0) {
+      tbl.innerHTML += '<tr><td colspan="5" style="text-align:center;color:var(--muted);">No invoices found for this agreement.</td></tr>';
+    } else {
+      data.invoices.forEach(inv => {
+        const amt = inv.amount !== null && inv.amount !== undefined ? inv.amount : "—";
+        const maxRef = inv.max_refundable !== null && inv.max_refundable !== undefined ? inv.max_refundable : "—";
+        tbl.innerHTML += `<tr><td>${inv.invoice_id || "—"}</td><td>${inv.invoice_type}</td><td>${amt}</td><td>${maxRef}</td><td>${inv.currency_code}</td></tr>`;
+      });
+    }
+    $("lookupResultCard").classList.remove("hidden");
+  } catch (e) { showMsg($("lookupMsg"), "err", e.message); }
+}
+
 /* ============ CHECK ONE REQUEST (Get) ============ */
 async function getAdjustment() {
   const aid = $("getAgreementId").value.trim(), rid = $("getRequestId").value.trim();
@@ -529,6 +580,7 @@ $("recBtn").addEventListener("click", reconcile);
 $("recDownloadProcessed").addEventListener("click", downloadRecProcessed);
 $("recDownloadNotProcessed").addEventListener("click", downloadRecNotProcessed);
 $("getBtn").addEventListener("click", getAdjustment);
+$("lookupBtn").addEventListener("click", lookupInvoices);
 
 loadJobs();
 setInterval(loadJobs, 5000);
