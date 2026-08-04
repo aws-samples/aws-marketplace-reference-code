@@ -766,6 +766,15 @@ class AdjustmentProcessor:
         ]
 
     def get_adjustment_status(self, agreement_id, request_id):
+        """Return (status, statusMessage) for a request.
+
+        On success, status is the service's own status ('PENDING', 'COMPLETED',
+        'VALIDATION_FAILED', 'ERROR', ...). If the status CALL itself fails (a
+        transient network/throttle error, a 5xx, a partial outage), the request's
+        real status is unknown, so we return the sentinel 'POLL_ERROR' rather than
+        'ERROR'. The poller treats 'POLL_ERROR' as "unknown — retry", so a transient
+        blip while polling can never mark an already-submitted refund as terminally
+        failed. A genuine service-returned 'ERROR' is still terminal."""
         try:
             response = self._call(
                 'get_billing_adjustment_request',
@@ -776,7 +785,7 @@ class AdjustmentProcessor:
         except CredentialsCancelled:
             raise
         except Exception as e:
-            return 'ERROR', str(e)
+            return 'POLL_ERROR', str(e)
 
     def get_adjustment_detail(self, agreement_id, request_id):
         """GetBillingAdjustmentRequest — full detail for one request."""
@@ -1432,12 +1441,27 @@ class AdjustmentProcessor:
                         counters['processed'] += 1
                         counters['failed'] += 1
                         busy.discard(req['invoice_id'])
+                        # If the last check couldn't reach the service, the request may
+                        # actually have completed — say so. A re-run's pre-check will
+                        # detect it (ALREADY_PROCESSED) and never create a duplicate.
+                        if status == 'POLL_ERROR':
+                            tmsg = (f"Timed out after {poll_budget}s; status could not be "
+                                    f"confirmed (last error: {message}). The request may "
+                                    f"have completed — re-run to reconcile.")
+                        else:
+                            tmsg = f"Timed out after {poll_budget}s"
                         self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
-                                  f"TIMEOUT after {poll_budget}s")
+                                  f"TIMEOUT - {tmsg}")
                         _emit(req['phase'], req['agreement_id'], req['invoice_id'],
-                              req['amount'], "TIMEOUT", req['request_id'],
-                              f"Timed out after {poll_budget}s")
+                              req['amount'], "TIMEOUT", req['request_id'], tmsg)
                         made_progress = True
+                    elif status == 'POLL_ERROR':
+                        # Transient failure retrieving status: we do NOT know the real
+                        # state, so keep the request in flight and retry on the next
+                        # sweep. The per-request deadline above bounds the retrying.
+                        still.append(req)
+                        self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
+                                  f"status check failed ({message}); will retry")
                     else:
                         still.append(req)
                         self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
