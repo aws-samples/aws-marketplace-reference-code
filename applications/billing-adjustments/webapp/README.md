@@ -44,6 +44,13 @@ billing adjustments without using the command line.
     aside. The set-aside rows appear in the run's **records CSV** with status
     `NEED_REVIEW` and the reason in the `message` column, so one file shows the
     complete picture — fix those entries and re-upload.
+11. **Fail-closed duplicate guard** — before each submit the run verifies the
+    `<agreement, invoice>` against the service. If that check **cannot be completed**
+    (the listing call keeps failing after an automatic retry), the row is held as
+    **NEED_REVIEW** and **not submitted** — the tool never submits unverified and
+    "hopes" the idempotency token blocks a duplicate, because that token expires after
+    8 hours. Just re-run once the service is reachable; already-processed rows are
+    skipped automatically.
 
 ## Install
 

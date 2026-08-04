@@ -64,10 +64,12 @@ the CLI, and the reconcile/clean tools. A committed dummy example lives at
 
 ### Columns
 
-All of the columns below must be **present in the header row** (the file fails
-validation if any are missing). Only `agreement_id`, `invoice_id`, and the amount
-column drive the actual adjustment; the others are informational — they are used for
-human review/audit and are preserved verbatim in the "needs review" output.
+Only three columns are **required**: `agreement_id`, `invoice_id`, and the amount
+column (`refund_amount`). These drive the actual adjustment, so each must be present
+in the header **and** hold a value on every row. The remaining columns are
+**optional** reference fields — they are used for human review/audit and are
+preserved verbatim in any output, but the tool never reads them to drive a refund, so
+you may leave them blank or **omit them from the file entirely**.
 
 > **Header names are case-insensitive.** Column headers are matched ignoring case and
 > surrounding spaces, so `refund_amount`, `Refund_amount`, and `REFUND_AMOUNT` are all
@@ -75,18 +77,22 @@ human review/audit and are preserved verbatim in the "needs review" output.
 > values in each row are read regardless of header casing; the original header text is
 > preserved unchanged in any output file.
 
-| Column | Required value? | Type | Description | Example |
-|--------|-----------------|------|-------------|---------|
-| `agreement_id` | **Yes** | Text | Marketplace agreement ID the invoice belongs to. Alphanumeric. | `agmt-byw2g19zkbjhuwxc8ki4w3b4x` |
-| `invoice_id` | **Yes** | Text | The original invoice ID to adjust. May be all digits **or** alphanumeric. Must be treated as text (see below). | `2519920101` or `EUMPINGB26-12125` |
-| `refund_amount` | **Yes** | Number (as text) | The amount to refund. See **Amount format** and **Currency** below. A second name, `SUM of Calculated Refund (T-Y)`, is also accepted for this column. | `0.01`, `150.00`, `$1,200.00` |
-| `seller_id` | Header only | Text | Seller (proposer) account ID. Reference only. | `348230509592` |
-| `aws_account_id` | Header only | Text | Buyer (acceptor) account ID. Reference only. **Keep as text** — 12-digit IDs can have leading zeros. | `013579169436` |
-| `product_code` | Header only | Text | Product code. Reference only. | `2brlrrc75ciw9evgh9mbpygbn` |
-| `month_id` | Header only | Text | Billing month label. Reference only. | `Jan 2026` |
+> **Column order does not matter.** Columns are matched by header name, not by
+> position, so they may appear in any order (that is why the example file lists them in
+> a different order than the table above).
 
-"Header only" means the column must exist, but the value may be blank without failing
-validation.
+| Column | Required? | Type | Description | Example |
+|--------|-----------|------|-------------|---------|
+| `agreement_id` | **Required** | Text | Marketplace agreement ID the invoice belongs to. Alphanumeric. | `agmt-byw2g19zkbjhuwxc8ki4w3b4x` |
+| `invoice_id` | **Required** | Text | The original invoice ID to adjust. May be all digits **or** alphanumeric. Must be treated as text (see below). | `2519920101` or `EUMPINGB26-12125` |
+| `refund_amount` | **Required** | Number (as text) | The amount to refund. See **Amount format** and **Currency** below. A second name, `SUM of Calculated Refund (T-Y)`, is also accepted for this column. | `0.01`, `150.00`, `$1,200.00` |
+| `seller_id` | Optional | Text | Seller (proposer) account ID. Reference only. | `348230509592` |
+| `aws_account_id` | Optional | Text | Buyer (acceptor) account ID. Reference only. **Keep as text** — 12-digit IDs can have leading zeros. | `013579169436` |
+| `product_code` | Optional | Text | Product code. Reference only. | `2brlrrc75ciw9evgh9mbpygbn` |
+| `month_id` | Optional | Text | Billing month label. Reference only, free-form — stored but never parsed. | `2026-01` |
+
+"Optional" means the column may be omitted from the file entirely, or included with
+blank values, without failing validation.
 
 > **One row per `<invoice_id, agreement_id>`.** Because the idempotency client token is
 > derived from `agreement_id` + `invoice_id` (see *Idempotency guardrail*), a repeated
@@ -193,7 +199,7 @@ Here is what each value means and what to do about it.
 | `COMPLETED` | after submit (service) | The adjustment was accepted and fully processed by AWS. | Done — the refund is applied. |
 | `DRY_RUN_OK` | dry-run only | The invoice passed pre-flight validation and **would** be submitted in a live run. Nothing was submitted. | Re-run without dry-run to actually submit. |
 | `ALREADY_PROCESSED` | live pre-check (before submit) | The live run found an existing `COMPLETED` or `PENDING` adjustment request for this `<agreement, invoice>`, so the row was **skipped** (not resubmitted) to avoid a duplicate refund. The existing request id is recorded. | None needed — the refund already exists / is in flight. Use **Check one request** / `get_adjustment_request.py` with the recorded request id to review it. |
-| `NEED_REVIEW` | pre-processing (before the run) | The row was set aside **before** the run — missing/placeholder `agreement_id` or `invoice_id`, a non-positive/invalid amount, more than 2 decimal places, or a duplicate `<agreement, invoice>` in the file. **Nothing was submitted.** In the web app it appears in `records.csv` so one file shows the complete picture; the CLI writes these to a separate needs-review file. | Fix the row(s) and re-upload; the `message` column has the reason. |
+| `NEED_REVIEW` | pre-processing (before the run) **or** live pre-check (during the run) | Two cases, and in **both nothing was submitted**: (a) the row was set aside **before** the run — missing/placeholder `agreement_id` or `invoice_id`, a non-positive/invalid amount, more than 2 decimal places, or a duplicate `<agreement, invoice>` in the file; or (b) the live pre-check **could not verify** whether a refund already exists (the `ListBillingAdjustmentRequests` call kept failing after retry), so the row was **held rather than submitted blind** — the fail-closed duplicate guard. In the web app it appears in `records.csv` so one file shows the complete picture; the CLI writes these to a separate needs-review file. | Case (a): fix the row(s) and re-upload. Case (b): just **re-run once listing recovers** — already-processed rows are skipped automatically. The `message` column says which. |
 | `VALIDATION_FAILED` | pre-submit check, **or** service terminal status | Two cases: (a) the row failed the pre-flight check — invoice not found, not an adjustable invoice type (e.g. `CREDIT_MEMO`), or amount > `maxAdjustmentAmount` — so **nothing was submitted**; or (b) a submitted request was rejected by the service during processing (e.g. KYC/compliance, agreement state). | Fix the input/data; the `message` column has the reason. Re-running unchanged won't help. |
 | `SUBMIT_FAILED` | submit (create call) | The row passed validation, the tool called `BatchCreateBillingAdjustmentRequest`, and that call rejected the entry or errored (throttling, permissions, conflict, API error). **No request was created.** | Usually retry-safe — the deterministic client token prevents duplicates. Check the `message`. |
 | `ERROR` | service terminal status | While polling, `GetBillingAdjustmentRequest` returned an error status for the request. | Investigate the `message`; may require AWS Marketplace support. |
@@ -391,9 +397,12 @@ for **8 hours** from the first request. What this means in practice:
   you from accidental re-runs, retries, and double-submits during a working session.
 - **After 8 hours:** the token is no longer remembered, so the *same* token could be
   accepted as a *new* request — which could create a second refund for that invoice.
-  Do not rely on the token to prevent duplicates across days. The durable backstop is
-  the per-invoice `maxAdjustmentAmount`: once an invoice has been refunded up to its
-  maximum, further refunds are rejected regardless of the token.
+  Do not rely on the token to prevent duplicates across days. The durable backstops are
+  (1) the **built-in live pre-check** below, which queries the service for an existing
+  refund before every submit and **fails closed** (holds the row for review) if it
+  cannot verify — so it never submits blind past the window; and (2) the per-invoice
+  `maxAdjustmentAmount`: once an invoice has been refunded up to its maximum, further
+  refunds are rejected regardless of the token.
 
 > **Recommended pre-flight: reconcile the input file before you submit.** Because the
 > 8-hour window can lapse between runs, the reliable way to avoid an accidental second
@@ -421,6 +430,16 @@ fresh batch); the web app runs it automatically. Skipped rows appear in the run 
 `already_processed_<input>_<timestamp>.csv` (CLI) or the job's `records` with status
 `ALREADY_PROCESSED` (web) — so you can review them with **Check one request** /
 `get_adjustment_request.py`.
+
+> **Fail-closed guarantee.** If the pre-check *cannot verify* an `<agreement, invoice>`
+> — the `ListBillingAdjustmentRequests` call keeps failing (throttling, a 5xx blip, a
+> partial pagination failure) even after a bounded automatic retry — that row is **held
+> for review (`NEED_REVIEW`) and is NOT submitted.** The tool never falls back to
+> "submit anyway and rely on the client token," because that token no longer protects
+> you once the 8-hour window has lapsed, so falling open could create a duplicate refund.
+> Re-run once listing recovers; already-processed rows are skipped automatically, so the
+> re-run only completes what was left. (Credential-expiry errors are handled separately —
+> the run pauses for fresh credentials rather than marking rows for review.)
 
 **Trade-off:** because the amount is intentionally *not* part of the token, you
 cannot issue two different refunds against the same invoice and agreement through the

@@ -128,6 +128,9 @@ def build_summary(records, dry_run):
         "validation_failed": count('VALIDATION_FAILED'),
         "submit_failed": count('SUBMIT_FAILED'),
         "already_processed": count('ALREADY_PROCESSED'),
+        # Rows the engine held back because it could not verify whether a refund
+        # already exists (fail-closed duplicate guard). NOT submitted; re-run to retry.
+        "need_review": count('NEED_REVIEW'),
         "submitted": count('COMPLETED', 'ERROR', 'TIMEOUT'),
         "completed": count('COMPLETED'),
         "completion_failed": count('ERROR', 'TIMEOUT'),
@@ -195,6 +198,13 @@ def main():
               f"and were NOT resubmitted.")
         print(f"  Saved to: {already_processed_file}")
         print("  Use the request id in that file with get_adjustment_request.py to review details.")
+
+    need_review = sum(1 for r in collector.records if r.get('status') == 'NEED_REVIEW')
+    if need_review:
+        print(f"\n⚠ {need_review} row(s) could NOT be verified against existing refunds "
+              f"(listing failed) and were NOT submitted, to avoid a possible duplicate refund.")
+        print("  These are recorded as NEED_REVIEW. Re-run once listing succeeds; "
+              "already-processed rows are skipped automatically.")
 
     output = {
         "timestamp": datetime.now().isoformat(),
