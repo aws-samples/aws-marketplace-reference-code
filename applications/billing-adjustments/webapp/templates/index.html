@@ -75,6 +75,7 @@
   .badge.failed, .badge.VALIDATION_FAILED { background: #fdecea; color: var(--red); }
   .badge.cancelled, .badge.queued, .badge.PENDING { background: #eef1f4; color: var(--muted); }
   .badge.awaiting_credentials { background: #fff3e0; color: var(--accent-dark); }
+  .badge.credentials_timeout { background: #fdecea; color: var(--red); }
   .job-item { border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 10px; }
   .job-item .meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
   .dl-row { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
@@ -132,19 +133,20 @@
         <h2>1. Upload adjustment file</h2>
         <details class="format-guide">
           <summary>Required file format (click to expand)</summary>
-          <p class="hint">Your file must be a <code>.csv</code> with a header row. All columns below must be present in the header row:</p>
+          <p class="hint">Your file must be a <code>.csv</code> with a header row. Only the three <strong>Required</strong> columns below must be present (header and a value on every row):</p>
           <table class="fmt">
-            <tr><th>Column</th><th>Required value?</th><th>Example</th></tr>
-            <tr><td><code>agreement_id</code></td><td>Yes</td><td>agmt-byw2g19zkbjhuwxc8ki4w3b4x</td></tr>
-            <tr><td><code>invoice_id</code></td><td>Yes</td><td>2519920101</td></tr>
-            <tr><td><code>refund_amount</code></td><td>Yes*</td><td>0.01, 150.00, or $1,200.00</td></tr>
-            <tr><td><code>seller_id</code></td><td>Header only</td><td>348230509592</td></tr>
-            <tr><td><code>aws_account_id</code></td><td>Header only</td><td>013579169436</td></tr>
-            <tr><td><code>product_code</code></td><td>Header only</td><td>2brlrrc75ciw9evgh9mbpygbn</td></tr>
-            <tr><td><code>month_id</code></td><td>Header only</td><td>Jan 2026</td></tr>
+            <tr><th>Column</th><th>Required?</th><th>Example</th></tr>
+            <tr><td><code>agreement_id</code></td><td>Required</td><td>agmt-byw2g19zkbjhuwxc8ki4w3b4x</td></tr>
+            <tr><td><code>invoice_id</code></td><td>Required</td><td>2519920101</td></tr>
+            <tr><td><code>refund_amount</code></td><td>Required*</td><td>0.01, 150.00, or $1,200.00</td></tr>
+            <tr><td><code>seller_id</code></td><td>Optional</td><td>348230509592</td></tr>
+            <tr><td><code>aws_account_id</code></td><td>Optional</td><td>013579169436</td></tr>
+            <tr><td><code>product_code</code></td><td>Optional</td><td>2brlrrc75ciw9evgh9mbpygbn</td></tr>
+            <tr><td><code>month_id</code></td><td>Optional</td><td>2026-01</td></tr>
           </table>
-          <p class="hint">"Header only" means the column must exist, but its value may be blank. Only <code>agreement_id</code>, <code>invoice_id</code>, and the amount column drive the adjustment; the rest are reference only.</p>
+          <p class="hint">Only <code>agreement_id</code>, <code>invoice_id</code>, and the amount column drive the adjustment. The <strong>Optional</strong> columns are reference only — you may leave them blank or omit them from the file entirely; if present, they are carried through to the output untouched.</p>
           <p class="hint">* The amount column may be named <code>refund_amount</code> or <code>SUM of Calculated Refund (T-Y)</code>. One row per &lt;invoice, agreement&gt;.</p>
+          <p class="hint">Column order doesn't matter — columns are matched by header name, not position.</p>
         </details>
 
         <label for="file">CSV file</label>
@@ -375,7 +377,7 @@ async function pollActive() {
     const res = await fetch("/api/jobs/" + activeJobId);
     if (!res.ok) return;
     const job = await res.json(); renderActive(job);
-    if (["completed", "failed", "cancelled"].includes(job.state)) { clearInterval(pollTimer); pollTimer = null; }
+    if (["completed", "failed", "cancelled", "credentials_timeout"].includes(job.state)) { clearInterval(pollTimer); pollTimer = null; }
   } catch (e) {}
   loadJobs();
 }
@@ -398,7 +400,7 @@ function renderActive(job) {
   $("statNeedReview").textContent = p.need_review || 0;
   $("statSucceededLabel").textContent = job.dry_run ? "Would submit" : "Succeeded";
   $("logs").textContent = (job.logs || []).join("\n"); $("logs").scrollTop = $("logs").scrollHeight;
-  const done = ["completed", "failed", "cancelled"].includes(job.state);
+  const done = ["completed", "failed", "cancelled", "credentials_timeout"].includes(job.state);
   $("cancelBtn").style.display = done ? "none" : "inline-block";
   $("credPanel").style.display = (job.state === "awaiting_credentials") ? "block" : "none";
   $("activeDownloads").innerHTML = done ? downloadLinks(job) : "";
@@ -422,7 +424,7 @@ async function loadJobs() {
     const res = await fetch("/api/jobs"); const data = await res.json(); const list = $("jobList");
     if (!data.jobs.length) { list.innerHTML = '<p class="hint">No jobs yet.</p>'; return; }
     list.innerHTML = data.jobs.map(job => {
-      const p = job.progress || {}; const done = ["completed", "failed", "cancelled"].includes(job.state);
+      const p = job.progress || {}; const done = ["completed", "failed", "cancelled", "credentials_timeout"].includes(job.state);
       return `<div class="job-item"><div><strong>${job.original_filename}</strong>
           <span class="badge ${job.state}">${job.state}</span>${job.dry_run ? ' <span class="hint">(dry run)</span>' : ''}</div>
           <div class="meta">Created ${job.created_at || '-'} · Total ${p.total||0}, ${job.dry_run ? 'Would submit' : 'Succeeded'} ${p.succeeded||0}, Failed ${p.failed||0}${p.skipped ? ', Skipped '+p.skipped : ''}${job.review_count ? ', Needs review '+job.review_count : ''}

@@ -10,6 +10,7 @@ Background job manager for billing adjustment processing.
 
 import os
 import json
+import time
 import uuid
 import threading
 import traceback
@@ -28,6 +29,27 @@ from core import (
 
 JOBS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "jobs")
 os.makedirs(JOBS_DIR, exist_ok=True)
+
+
+def _env_positive_int(name, default):
+    """Read a positive integer from the environment, falling back to `default`
+    for missing/blank/invalid/non-positive values."""
+    try:
+        val = int(str(os.environ.get(name, "")).strip())
+        return val if val > 0 else default
+    except (ValueError, TypeError):
+        return default
+
+
+# Bound how long a paused job waits for fresh credentials before it stops on its
+# own, so a run can never hang in "awaiting_credentials" forever (as observed when
+# a seller closed the tab mid-run). 30 min leaves ample room for a legitimate
+# refresh (the longest successful pause on record was ~19 min) while guaranteeing
+# the job eventually finishes and records what it completed. Both values are
+# overridable via environment for operators who want a different window.
+CREDENTIAL_WAIT_TIMEOUT = _env_positive_int("CREDENTIAL_WAIT_TIMEOUT_SECONDS", 1800)
+# How often to log a "still waiting" heartbeat so a long pause doesn't look frozen.
+CREDENTIAL_WAIT_NOTICE_INTERVAL = _env_positive_int("CREDENTIAL_WAIT_NOTICE_SECONDS", 120)
 
 # In-memory registry of running jobs (thread + cancel flag). Status lives on disk.
 _jobs = {}
@@ -117,7 +139,8 @@ class JobManager:
 
         cancel_flag = {"cancel": False}
         # Slot used to pass fresh credentials into a paused job (expired creds).
-        cred_slot = {"event": threading.Event(), "creds": None}
+        # `timed_out` is set if the bounded credential wait elapses (see _run_job).
+        cred_slot = {"event": threading.Event(), "creds": None, "timed_out": False}
         thread = threading.Thread(
             target=self._run_job,
             args=(job_id, csv_path, credentials, dry_run, cancel_flag, cred_slot,
@@ -175,32 +198,62 @@ class JobManager:
         def progress_cb(**counters):
             # Total/processed include the needs-review rows so the grid reconciles:
             # total = input-file rows; succeeded + failed + skipped + need_review = total.
+            # need_review = pre-validation bad rows (review_count) + rows the engine
+            # held back because it could not verify whether a refund already exists
+            # (the fail-closed duplicate guard). Both must never be submitted.
             status["progress"].update({
                 "total": counters.get("total", 0) + review_count,
                 "processed": counters.get("processed", 0) + review_count,
                 "succeeded": counters.get("succeeded", 0),
                 "failed": counters.get("failed", 0),
                 "skipped": counters.get("skipped", 0),
-                "need_review": review_count,
+                "need_review": review_count + counters.get("need_review", 0),
             })
             save()
 
         def request_credentials():
-            """Pause the job and block until the user supplies fresh credentials
-            via the UI, or the job is cancelled. Returns creds dict or None."""
+            """Pause the job and block until the user supplies fresh credentials via
+            the UI, the job is cancelled, or the bounded wait elapses.
+
+            Returns the creds dict on success, or None to stop the job (on cancel or
+            timeout). The wait is bounded by CREDENTIAL_WAIT_TIMEOUT so a run can never
+            hang forever in 'awaiting_credentials' if the seller walks away."""
+            timeout_min = CREDENTIAL_WAIT_TIMEOUT // 60
+            deadline = time.time() + CREDENTIAL_WAIT_TIMEOUT
             status["state"] = "awaiting_credentials"
-            log_cb("Paused: AWS credentials expired. Enter fresh credentials in the "
-                   "UI to resume from where it left off.")
+            status["credentials_deadline"] = datetime.fromtimestamp(deadline).isoformat()
+            log_cb(f"Paused: AWS credentials expired. Enter fresh credentials in the UI "
+                   f"to resume from where it left off. Waiting up to {timeout_min} min; "
+                   f"the job stops on its own if none are provided.")
             save()
             cred_slot["event"].clear()
+            next_notice = time.time() + CREDENTIAL_WAIT_NOTICE_INTERVAL
             while not cred_slot["event"].is_set():
                 if cancel_flag["cancel"]:
                     return None
+                remaining = deadline - time.time()
+                if remaining <= 0:
+                    cred_slot["timed_out"] = True
+                    status["state"] = "credentials_timeout"
+                    log_cb(f"Timed out after {timeout_min} min waiting for fresh "
+                           f"credentials. Stopping the job — refunds completed so far "
+                           f"are recorded; re-run with fresh credentials to finish the "
+                           f"rest (already-processed rows are skipped automatically).")
+                    save()
+                    return None
+                # Heartbeat so a long (but legitimate) pause doesn't look frozen.
+                if time.time() >= next_notice:
+                    mins, secs = divmod(int(remaining), 60)
+                    log_cb(f"Still waiting for fresh credentials... about "
+                           f"{mins} min {secs} s left before the job stops on its own.")
+                    next_notice = time.time() + CREDENTIAL_WAIT_NOTICE_INTERVAL
+                    save()
                 cred_slot["event"].wait(timeout=1)
             if cancel_flag["cancel"] and not cred_slot["creds"]:
                 return None
             new_creds = cred_slot["creds"]
             cred_slot["creds"] = None
+            status.pop("credentials_deadline", None)
             status["state"] = "running"
             save()
             return new_creds
@@ -250,29 +303,41 @@ class JobManager:
                 assume_role_external_id=assume_role_external_id,
             )
 
-            counters = {"total": 0, "processed": 0, "succeeded": 0, "failed": 0, "skipped": 0}
+            counters = {"total": 0, "processed": 0, "succeeded": 0, "failed": 0,
+                        "skipped": 0, "need_review": 0}
             try:
                 summary = processor.run(rows, writer, dry_run=dry_run, counters=counters,
                                         precheck_processed=precheck_processed)
             except CredentialsCancelled:
+                timed_out = cred_slot.get("timed_out", False)
                 summary = {
                     "cancelled": True,
-                    "reason": "credentials_not_provided",
+                    "reason": "credentials_timeout" if timed_out else "credentials_not_provided",
                     "submitted": 0,
                     "succeeded": counters["succeeded"],
                     "failed": counters["failed"],
                 }
-                log_cb("Job stopped: fresh credentials were not provided.")
+                log_cb("Job stopped: timed out waiting for fresh credentials."
+                       if timed_out else
+                       "Job stopped: fresh credentials were not provided.")
 
             with open(os.path.join(jdir, "summary.json"), 'w', encoding='utf-8') as f:
                 json.dump(summary, f, indent=2, default=str)
 
             status["summary"] = summary
-            status["state"] = "cancelled" if cancel_flag["cancel"] else "completed"
+            if cancel_flag["cancel"]:
+                status["state"] = "cancelled"
+            elif cred_slot.get("timed_out"):
+                status["state"] = "credentials_timeout"
+            else:
+                status["state"] = "completed"
             status["finished_at"] = datetime.now().isoformat()
             skipped_note = (f", Skipped (already processed): {counters['skipped']}"
                             if counters.get('skipped') else "")
-            review_note = f", Need review: {review_count}" if review_count else ""
+            # Need review = pre-validation bad rows + rows the engine held back because
+            # it could not verify whether a refund already exists (fail-closed guard).
+            total_review = review_count + counters.get('need_review', 0)
+            review_note = f", Need review: {total_review}" if total_review else ""
             log_cb(f"Job {status['state']}. "
                    f"Succeeded: {counters['succeeded']}, Failed: {counters['failed']}"
                    f"{skipped_note}{review_note}.")

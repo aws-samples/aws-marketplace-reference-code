@@ -17,7 +17,7 @@ import time
 import re
 import os
 from datetime import datetime
-from collections import defaultdict
+from collections import defaultdict, deque
 
 import boto3
 from botocore.config import Config
@@ -48,12 +48,22 @@ GET_DELAY = 1.0 / GET_CALLS_PER_SECOND                                          
 LIST_BILLING_ADJUSTMENTS_DELAY = 1.0 / LIST_BILLING_ADJUSTMENTS_CALLS_PER_SECOND   # 0.20s
 VALIDATE_DELAY = 1.0 / LIST_INVOICE_LINE_ITEMS_CALLS_PER_SECOND                    # 0.10s
 
+# Bounded application-level retry for the safety-critical duplicate pre-check list
+# call. boto3 already retries transient errors internally (max_attempts=3); these
+# extra attempts guard the pre-check specifically, because when it cannot verify an
+# agreement the affected rows are held for review (NEED_REVIEW) and NEVER submitted
+# unverified — retrying first avoids sending a brief throttle/5xx straight to review.
+PRECHECK_LIST_RETRIES = 3        # attempts (in addition to boto3's own retries)
+PRECHECK_LIST_RETRY_DELAY = 2.0  # base seconds between attempts (grows linearly)
+
 # Status polling. The total budget SCALES with the number of pending requests so a
 # large batch is not falsely timed out: one status sweep of N requests already costs
 # ~ N / GET_CALLS_PER_SECOND seconds in pacing alone. We allow up to MAX_POLL_SWEEPS
 # full sweeps (each followed by a POLL_INTERVAL idle wait), bounded by a floor (so
 # small batches behave as before) and an absolute ceiling. See _compute_poll_budget().
-POLL_INTERVAL = 60
+POLL_INTERVAL = 60           # ceiling for the idle wait between status sweeps
+POLL_INTERVAL_START = 5      # first idle wait; backs off toward POLL_INTERVAL
+POLL_BACKOFF_FACTOR = 2      # multiply the idle wait after each no-progress sweep
 MIN_POLL_TIME = 600          # floor in seconds (small batches)
 MAX_POLL_SWEEPS = 5          # number of full status sweeps to allow
 MAX_POLL_TIME_CAP = 7200     # absolute ceiling in seconds (2 hours)
@@ -64,14 +74,21 @@ ADJUSTMENT_REASON = "OTHER"
 ENDPOINT_URL = "https://agreement-marketplace.us-east-1.amazonaws.com"
 REGION = "us-east-1"
 
-# Required CSV columns (header must contain these)
+# Required CSV columns (header must contain these). These plus an amount column
+# (see AMOUNT_COLUMN_OPTIONS) are the only columns the tool actually needs: they
+# identify the invoice to adjust and by how much.
 REQUIRED_COLUMNS = [
+    "invoice_id",
+    "agreement_id",
+]
+# Optional "reference" columns. If present they are carried through to the output
+# for the operator's convenience, but the tool never reads them to drive a refund,
+# so they may be omitted entirely from the file.
+REFERENCE_COLUMNS = [
     "seller_id",
     "aws_account_id",
-    "invoice_id",
     "product_code",
     "month_id",
-    "agreement_id",
 ]
 # Amount column may use either of these names
 AMOUNT_COLUMN_OPTIONS = ["refund_amount", "SUM of Calculated Refund (T-Y)"]
@@ -209,6 +226,7 @@ def validate_file_format(filepath):
     """
     details = {
         "required_columns": REQUIRED_COLUMNS,
+        "reference_columns": REFERENCE_COLUMNS,
         "amount_column_options": AMOUNT_COLUMN_OPTIONS,
         "found_columns": [],
         "missing_columns": [],
@@ -656,6 +674,16 @@ class AdjustmentProcessor:
 
     def validate_invoice(self, agreement_id, invoice_id, requested_amount):
         """Validate invoice via ListAgreementInvoiceLineItems with pagination."""
+        # Cheap local guard first: the billing-adjustment backend rejects an
+        # adjustmentAmount with more than MAX_AMOUNT_DECIMALS decimal places (USD has
+        # 2 minor-unit digits). Catch it here — the universal pre-submit gate, hit by
+        # every entry point — so it fails as a clear VALIDATION_FAILED instead of a
+        # cryptic server-side VALIDATION_EXCEPTION at submit time (e.g. "16.9176").
+        clean_amount = format_amount(requested_amount)
+        if count_decimal_places(clean_amount) > MAX_AMOUNT_DECIMALS:
+            return False, None, (
+                f"amount must have at most {MAX_AMOUNT_DECIMALS} decimal places "
+                f"(got '{requested_amount}')")
         try:
             summaries = []
             next_token = None
@@ -758,6 +786,21 @@ class AdjustmentProcessor:
             agreementId=agreement_id,
         )
         return {k: v for k, v in response.items() if k != 'ResponseMetadata'}
+
+    def _recover_existing_request(self, agreement_id, invoice_id):
+        """When a submit fails with 'client token is invalid', look up whether a
+        request already exists for this agreement+invoice. Returns the matching
+        request dict (with billingAdjustmentRequestId and status) or None."""
+        try:
+            items, _ = self.list_adjustment_requests(
+                [agreement_id], statuses=None, max_results=50)
+            inv_str = str(invoice_id).strip()
+            for it in items:
+                if str(it.get('originalInvoiceId', '')).strip() == inv_str:
+                    return it
+        except Exception:
+            pass
+        return None
 
     def list_adjustment_requests(self, agreement_ids, statuses=None,
                                  catalog='AWSMarketplace',
@@ -904,6 +947,29 @@ class AdjustmentProcessor:
 
         return processed, not_processed, errors
 
+    def _list_adjustment_requests_verified(self, aid):
+        """List an agreement's adjustment requests for the duplicate pre-check, with a
+        bounded application-level retry.
+
+        Returns (items, list_failed). list_failed is True only if EVERY attempt failed
+        (partial pagination failures count as a failure too, since a missed page could
+        hide an existing request). boto3 already retries internally; these extra
+        attempts exist because a pre-check failure holds rows for review rather than
+        submitting them, so it is worth trying harder before giving up. Credential
+        errors are not retried here — they propagate (as CredentialsCancelled) so the
+        job pauses for fresh credentials instead of being treated as unverifiable."""
+        last_errors = None
+        for attempt in range(PRECHECK_LIST_RETRIES):
+            items, list_errors = self.list_adjustment_requests([aid], statuses=None)
+            if not list_errors:
+                return items, False
+            last_errors = list_errors
+            if attempt < PRECHECK_LIST_RETRIES - 1:
+                self._log(f"  could not list existing requests for agreement {aid} "
+                          f"(attempt {attempt + 1}/{PRECHECK_LIST_RETRIES}); retrying...")
+                time.sleep(PRECHECK_LIST_RETRY_DELAY * (attempt + 1))
+        return [], (last_errors or [{'error': 'unknown listing error'}])
+
     def find_already_processed(self, rows, block_statuses=('COMPLETED', 'PENDING'), cache=None):
         """Live pre-submission guard against duplicate refunds.
 
@@ -916,19 +982,26 @@ class AdjustmentProcessor:
 
         This matters because the deterministic client token only de-duplicates within
         the API's 8-hour idempotency window; once a run spans or follows that window,
-        this live check is what prevents a second refund.
+        this live check is the ONLY thing that prevents a second refund.
 
-        Returns (to_submit, already, errors):
-          - to_submit: rows safe to submit (no blocking request found)
-          - already:   rows that already have a blocking request; each is the original
-                       row dict plus 'existing_request_id' and 'existing_status'
-          - errors:    list of {'agreementId', 'error'} for agreements that could not be
-                       verified. Their rows are placed in `to_submit` so a transient
-                       listing failure does not block the run (the client token still
-                       guards within 8h); the caller should surface the warning.
+        FAIL CLOSED: if an agreement cannot be verified (its list call fails even after
+        the bounded retry), its rows are returned in `unverifiable` — NOT `to_submit` —
+        so the run can never submit an unverified refund without the user's involvement.
+        Previously such rows fell through to submission "relying on the client token",
+        which silently allowed a duplicate refund once the 8-hour token window lapsed.
+
+        Returns (to_submit, already, unverifiable, errors):
+          - to_submit:    rows safe to submit (verified: no blocking request found)
+          - already:      rows that already have a blocking request; each is the original
+                          row dict plus 'existing_request_id' and 'existing_status'
+          - unverifiable: rows whose agreement could not be verified; each is the original
+                          row dict plus 'verify_error'. The caller MUST hold these for
+                          review and must NOT submit them.
+          - errors:       list of {'agreementId', 'error'} for agreements that could not
+                          be verified (for surfacing a warning to the operator).
         """
         cache = cache if cache is not None else {}
-        to_submit, already, errors = [], [], []
+        to_submit, already, unverifiable, errors = [], [], [], []
         by_agreement = defaultdict(list)
         for r in rows:
             by_agreement[r['agreement_id']].append(r)
@@ -936,8 +1009,7 @@ class AdjustmentProcessor:
             if aid in cache:
                 invoice_map, list_failed = cache[aid]
             else:
-                items, list_errors = self.list_adjustment_requests([aid], statuses=None)
-                list_failed = bool(list_errors)
+                items, list_failed = self._list_adjustment_requests_verified(aid)
                 invoice_map = defaultdict(list)
                 if not list_failed:
                     for it in items:
@@ -946,15 +1018,27 @@ class AdjustmentProcessor:
                             invoice_map[inv].append(it)
                 cache[aid] = (invoice_map, list_failed)
                 if list_failed:
-                    for le in list_errors:
+                    for le in list_failed if isinstance(list_failed, list) else []:
                         errors.append({'agreementId': aid, 'error': le.get('error')})
                 # Pace successive ListBillingAdjustmentRequests calls (one per agreement)
                 # to the operation's quota; list_adjustment_requests only paces between
                 # pages, not between agreements.
                 time.sleep(LIST_BILLING_ADJUSTMENTS_DELAY)
             if list_failed:
-                # Could not verify this agreement -> do not block; rely on the token.
-                to_submit.extend(agrows)
+                # Could not verify this agreement -> FAIL CLOSED. Hold the rows for
+                # review; do NOT submit unverified (the token cannot be relied on past
+                # the 8-hour idempotency window). `list_failed` carries the underlying
+                # error list (see _list_adjustment_requests_verified); derive the reason
+                # from it so a cache hit reports the same detail as the first check.
+                verify_msg = "; ".join(
+                    str(e.get('error')) for e in list_failed
+                    if isinstance(e, dict)
+                ) if isinstance(list_failed, list) else ""
+                verify_msg = verify_msg or "listing existing requests failed"
+                for r in agrows:
+                    r2 = dict(r)
+                    r2['verify_error'] = verify_msg
+                    unverifiable.append(r2)
                 continue
             for r in agrows:
                 existing = invoice_map.get(str(r['invoice_id']).strip(), [])
@@ -968,7 +1052,7 @@ class AdjustmentProcessor:
                     already.append(r2)
                 else:
                     to_submit.append(r)
-        return to_submit, already, errors
+        return to_submit, already, unverifiable, errors
 
     def run(self, rows, writer, dry_run=False, counters=None, precheck_processed=True):
         """
@@ -988,6 +1072,7 @@ class AdjustmentProcessor:
         counters.setdefault('succeeded', 0)
         counters.setdefault('failed', 0)
         counters.setdefault('skipped', 0)
+        counters.setdefault('need_review', 0)
 
         # Wrap the writer so we also accumulate $ totals (submitted/completed/failed)
         # for the summary, in addition to the counts. Delegates writes unchanged.
@@ -995,21 +1080,37 @@ class AdjustmentProcessor:
 
         duplicate_invoices = find_duplicate_invoices(valid_rows)
         if duplicate_invoices:
-            self._log(f"Found {len(duplicate_invoices)} invoice(s) across multiple agreements (handled in phases).")
+            self._log(f"Found {len(duplicate_invoices)} invoice(s) that appear on multiple "
+                      f"agreements; each such invoice's refunds are processed one at a time "
+                      f"(never concurrently), while different invoices run concurrently.")
 
-        phases = group_rows_by_invoice_occurrence(valid_rows)
-        self._log(f"Processing in {len(phases)} phase(s). Dry run: {dry_run}")
+        # Build one ordered chain per invoice_id. Refunds for the SAME invoice must be
+        # processed strictly one-at-a-time — an invoice may have at most one in-flight
+        # billing-adjustment request at any moment — but DIFFERENT invoices are
+        # independent and their requests are in flight concurrently. Each row is tagged
+        # with its 1-based occurrence within its invoice chain; that number is recorded
+        # as the record's "phase" (identical meaning to the previous phase-based model).
+        remaining = {}
+        for _r in valid_rows:
+            remaining.setdefault(_r['invoice_id'], deque()).append(_r)
+        for _inv, _dq in remaining.items():
+            for _i, _row in enumerate(_dq, 1):
+                _row['occurrence'] = _i
+        max_depth = max((len(_dq) for _dq in remaining.values()), default=0)
+        self._log(f"Processing {len(valid_rows)} row(s) across {len(remaining)} invoice "
+                  f"chain(s) (max chain depth {max_depth}). Dry run: {dry_run}")
 
         summary = {
             "started_at": datetime.now().isoformat(),
             "dry_run": dry_run,
             "total_rows": len(valid_rows),
-            "total_phases": len(phases),
+            "total_phases": max_depth,
             "duplicate_invoices": duplicate_invoices,
             "submitted": 0,
             "succeeded": 0,
             "failed": 0,
             "already_processed": 0,
+            "need_review": 0,
         }
 
         # Cache of existing adjustment requests per agreement, reused across phases so
@@ -1020,18 +1121,65 @@ class AdjustmentProcessor:
         # of all rows for one invoice exceeds its maxAdjustmentAmount.
         dry_run_invoice_totals = defaultdict(lambda: {"total": 0.0, "max": None, "rows": 0})
 
-        for phase_num, phase_rows in enumerate(phases, 1):
+        # ---- pipelined per-invoice scheduler --------------------------------
+        # `busy` holds invoice_ids that currently have an in-flight request, so a later
+        # occurrence of the same invoice is never submitted until the earlier one
+        # reaches a terminal status (this is what keeps the same invoice on different
+        # agreements from ever being in flight at the same time). `in_flight` holds the
+        # submitted requests we are polling; requests for DIFFERENT invoices are in
+        # flight together, so their server-side processing overlaps instead of being
+        # serialized behind a global phase barrier.
+        busy = set()
+        in_flight = []
+        # Per-request wait budget (same scaling/cap as the previous phase model, but
+        # applied per request so one slow request cannot hang the whole run).
+        poll_budget = _compute_poll_budget(len(valid_rows))
+        # Idle wait between status sweeps starts short and backs off toward
+        # POLL_INTERVAL, so fast-completing refunds are detected quickly while a long
+        # tail of slow requests isn't polled needlessly often. Resets on any progress.
+        poll_wait = POLL_INTERVAL_START
+        cancelled = False
+
+        def _emit(occurrence, agreement_id, invoice_id, amount, status, req_id, message):
+            writer.write({
+                "phase": occurrence,
+                "agreement_id": agreement_id,
+                "invoice_id": invoice_id,
+                "amount": amount,
+                "status": status,
+                "billing_adjustment_request_id": req_id,
+                "message": message,
+            })
+            self.progress_cb(**counters)
+
+        while True:
             if self.cancel_check():
-                self._log("Job cancelled.")
-                summary["cancelled"] = True
+                cancelled = True
                 break
 
-            self._log(f"=== Phase {phase_num}/{len(phases)}: {len(phase_rows)} row(s) ===")
+            # Pull the head of every invoice chain that is not currently in flight.
+            # Within a wave every invoice_id is distinct, so these can be validated and
+            # submitted together (still batched per agreement). An invoice already in
+            # flight contributes nothing this wave — its next occurrence waits.
+            ready = []
+            for _inv in list(remaining.keys()):
+                if _inv in busy:
+                    continue
+                _dq = remaining[_inv]
+                ready.append(_dq.popleft())
+                if not _dq:
+                    del remaining[_inv]
 
-            # Validate
+            if not ready and not in_flight:
+                break
+
+            made_progress = bool(ready)
+
+            # ---------- validate ----------
             validated = []
-            for row in phase_rows:
+            for row in ready:
                 if self.cancel_check():
+                    cancelled = True
                     break
                 is_valid, max_amount, error = self.validate_invoice(
                     row['agreement_id'], row['invoice_id'], row['amount']
@@ -1045,35 +1193,41 @@ class AdjustmentProcessor:
                     summary["failed"] += 1
                     self._log(f"  invoice {row['invoice_id']} ({row['agreement_id']}): "
                               f"VALIDATION_FAILED - {error}")
-                    writer.write({
-                        "phase": phase_num,
-                        "agreement_id": row['agreement_id'],
-                        "invoice_id": row['invoice_id'],
-                        "amount": row['amount'],
-                        "status": "VALIDATION_FAILED",
-                        "billing_adjustment_request_id": "",
-                        "message": error,
-                    })
-                    self.progress_cb(**counters)
+                    _emit(row['occurrence'], row['agreement_id'], row['invoice_id'],
+                          row['amount'], "VALIDATION_FAILED", "", error)
                 time.sleep(VALIDATE_DELAY)
+            if cancelled:
+                break
 
-            if not validated:
-                continue
-
-            # Pre-submission guard — runs for live AND dry-run (when enabled). It skips
-            # any <agreement, invoice> that already has a COMPLETED/PENDING adjustment
-            # request so a re-run (or a run that spans the 8-hour idempotency window)
-            # cannot create a duplicate refund. In dry-run nothing is submitted, but the
-            # already-processed rows are surfaced as a warning and excluded from the
-            # DRY_RUN_OK preview, so the preview reflects only genuinely new refunds.
-            if precheck_processed:
+            # ---------- pre-submission dedup guard (live AND dry-run) ----------
+            # Skips any <agreement, invoice> that already has a COMPLETED/PENDING
+            # request so a re-run (or a run spanning the 8-hour idempotency window)
+            # cannot create a duplicate refund.
+            if precheck_processed and validated:
                 self._log("Checking for already-processed refunds...")
-                validated, already_processed, precheck_errors = self.find_already_processed(
-                    validated, cache=precheck_cache
-                )
+                validated, already_processed, unverifiable, precheck_errors = \
+                    self.find_already_processed(validated, cache=precheck_cache)
+                # FAIL CLOSED: rows whose agreement could not be verified are held for
+                # review and never submitted, so a duplicate refund can never be created
+                # without the user's involvement (the client token cannot be relied on
+                # past the 8-hour idempotency window). Re-run once the listing recovers.
+                for r in unverifiable:
+                    counters['processed'] += 1
+                    counters['need_review'] = counters.get('need_review', 0) + 1
+                    summary["need_review"] = summary.get("need_review", 0) + 1
+                    self._log(f"  invoice {r['invoice_id']} ({r['agreement_id']}): "
+                              f"NEED_REVIEW - could not verify whether a refund already "
+                              f"exists ({r.get('verify_error')}); NOT submitted.")
+                    _emit(r['occurrence'], r['agreement_id'], r['invoice_id'], r['amount'],
+                          "NEED_REVIEW", "",
+                          f"Held for review: could not verify existing refunds for this "
+                          f"<agreement, invoice> ({r.get('verify_error')}). Not submitted "
+                          f"to avoid a possible duplicate refund. Re-run once listing "
+                          f"succeeds; already-processed rows are skipped automatically.")
                 for pe in precheck_errors:
                     self._log(f"  WARNING: could not verify agreement {pe['agreementId']} "
-                              f"({pe['error']}); its rows are treated as not-yet-processed.")
+                              f"({pe['error']}); its rows are held for review (NEED_REVIEW), "
+                              f"not submitted.")
                 for r in already_processed:
                     counters['processed'] += 1
                     counters['skipped'] = counters.get('skipped', 0) + 1
@@ -1082,21 +1236,14 @@ class AdjustmentProcessor:
                     self._log(f"  invoice {r['invoice_id']} ({r['agreement_id']}): "
                               f"ALREADY_PROCESSED - existing {r['existing_status']} request "
                               f"{r['existing_request_id']}{tail}")
-                    writer.write({
-                        "phase": phase_num,
-                        "agreement_id": r['agreement_id'],
-                        "invoice_id": r['invoice_id'],
-                        "amount": r['amount'],
-                        "status": "ALREADY_PROCESSED",
-                        "billing_adjustment_request_id": r.get('existing_request_id', ''),
-                        "message": (f"Skipped: an existing {r['existing_status']} adjustment "
-                                    f"request ({r['existing_request_id']}) already exists for "
-                                    f"this <agreement, invoice>."),
-                    })
-                    self.progress_cb(**counters)
+                    _emit(r['occurrence'], r['agreement_id'], r['invoice_id'], r['amount'],
+                          "ALREADY_PROCESSED", r.get('existing_request_id', ''),
+                          (f"Skipped: an existing {r['existing_status']} adjustment request "
+                           f"({r['existing_request_id']}) already exists for this "
+                           f"<agreement, invoice>."))
 
+            # ---------- dry-run: record what WOULD be submitted (no submission) ----------
             if dry_run:
-                # Record the rows that WOULD be submitted in a live run.
                 for row in validated:
                     counters['processed'] += 1
                     counters['succeeded'] += 1
@@ -1108,113 +1255,219 @@ class AdjustmentProcessor:
                         pass
                     agg["max"] = row.get('max_adjustment_amount')
                     agg["rows"] += 1
-                    writer.write({
-                        "phase": phase_num,
-                        "agreement_id": row['agreement_id'],
-                        "invoice_id": row['invoice_id'],
-                        "amount": row['amount'],
-                        "status": "DRY_RUN_OK",
-                        "billing_adjustment_request_id": "",
-                        "message": f"Would submit. Max allowed: {row.get('max_adjustment_amount')}",
-                    })
-                    self.progress_cb(**counters)
-                continue  # No submission in dry-run
+                    _emit(row['occurrence'], row['agreement_id'], row['invoice_id'],
+                          row['amount'], "DRY_RUN_OK", "",
+                          f"Would submit. Max allowed: {row.get('max_adjustment_amount')}")
+                validated = []   # nothing is submitted in a dry run
 
-            if not validated:
-                continue
+            # ---------- live: submit this wave (batched per agreement) ----------
+            if validated:
+                grouped = group_by_agreement(validated)
+                batches = create_batches(grouped, BATCH_SIZE)
+                self._log(f"Submitting {len(batches)} batch(es)...")
+                for batch in batches:
+                    if self.cancel_check():
+                        cancelled = True
+                        break
+                    agreement_id = batch['agreement_id']
+                    entries = batch['entries']
+                    entry_by_token = {
+                        generate_client_token(e['agreement_id'], e['invoice_id']): e
+                        for e in entries
+                    }
+                    handled = set()   # invoice_ids given a terminal record in this batch
+                    try:
+                        response = self._call(
+                            'batch_create_billing_adjustment_request',
+                            billingAdjustmentRequestEntries=self._create_batch_entries(entries)
+                        )
+                        items = response.get('items', [])
+                        errors = response.get('errors', [])
+                        summary["submitted"] += len(items)
 
+                        for item in items:
+                            token = item.get('clientToken')
+                            entry = entry_by_token.get(token) or entries[0]
+                            in_flight.append({
+                                'request_id': item.get('billingAdjustmentRequestId'),
+                                'agreement_id': agreement_id,
+                                'invoice_id': entry['invoice_id'],
+                                'amount': entry['amount'],
+                                'phase': entry.get('occurrence', ''),
+                                'deadline': time.time() + poll_budget,
+                            })
+                            busy.add(entry['invoice_id'])
 
-            # Submit batches
-            grouped = group_by_agreement(validated)
-            batches = create_batches(grouped, BATCH_SIZE)
-            self._log(f"Submitting {len(batches)} batch(es)...")
+                        for err in errors:
+                            token = err.get('clientToken')
+                            entry = entry_by_token.get(token, {})
+                            err_code = err.get('code', '')
+                            err_message = err.get('message', '')
 
-            pending_requests = []
-            for batch in batches:
-                if self.cancel_check():
-                    break
-                agreement_id = batch['agreement_id']
-                entries = batch['entries']
-                entry_by_token = {
-                    generate_client_token(e['agreement_id'], e['invoice_id']): e
-                    for e in entries
-                }
-                try:
-                    response = self._call(
-                        'batch_create_billing_adjustment_request',
-                        billingAdjustmentRequestEntries=self._create_batch_entries(entries)
-                    )
-                    items = response.get('items', [])
-                    errors = response.get('errors', [])
-                    summary["submitted"] += len(items)
+                            # "client token is invalid" => the token was already used by
+                            # an earlier submit (e.g. a run that timed out locally but
+                            # succeeded server-side). Recover the existing request and
+                            # poll it instead of failing permanently.
+                            if (err_code == 'VALIDATION_EXCEPTION'
+                                    and 'client token' in err_message.lower()
+                                    and entry.get('invoice_id')):
+                                existing = self._recover_existing_request(
+                                    agreement_id, entry['invoice_id'])
+                                if existing:
+                                    req_id = existing.get('billingAdjustmentRequestId')
+                                    ex_status = existing.get('status', '')
+                                    if ex_status == 'COMPLETED':
+                                        counters['processed'] += 1
+                                        counters['skipped'] = counters.get('skipped', 0) + 1
+                                        summary["already_processed"] += 1
+                                        self._log(
+                                            f"  invoice {entry['invoice_id']} ({agreement_id}): "
+                                            f"ALREADY_COMPLETED - recovered existing {req_id}")
+                                        _emit(entry.get('occurrence', ''), agreement_id,
+                                              entry['invoice_id'], entry.get('amount', ''),
+                                              "ALREADY_PROCESSED", req_id,
+                                              f"Client token reused; existing request "
+                                              f"{req_id} is already {ex_status}.")
+                                        handled.add(entry['invoice_id'])
+                                    else:
+                                        # Still in progress — recover it and poll.
+                                        self._log(
+                                            f"  invoice {entry['invoice_id']} ({agreement_id}): "
+                                            f"recovered existing {ex_status} request {req_id}; polling")
+                                        in_flight.append({
+                                            'request_id': req_id,
+                                            'agreement_id': agreement_id,
+                                            'invoice_id': entry['invoice_id'],
+                                            'amount': entry.get('amount', ''),
+                                            'phase': entry.get('occurrence', ''),
+                                            'deadline': time.time() + poll_budget,
+                                        })
+                                        busy.add(entry['invoice_id'])
+                                        summary["submitted"] += 1
+                                    continue
 
-                    for item in items:
-                        req_id = item.get('billingAdjustmentRequestId')
-                        token = item.get('clientToken')
-                        entry = entry_by_token.get(token) or entries[0]
-                        pending_requests.append({
-                            'request_id': req_id,
-                            'agreement_id': agreement_id,
-                            'invoice_id': entry['invoice_id'],
-                            'amount': entry['amount'],
-                            'phase': phase_num,
-                        })
+                            # genuine submit failure for this entry
+                            counters['processed'] += 1
+                            counters['failed'] += 1
+                            summary["failed"] += 1
+                            err_msg = f"{err_code} {err_message}".strip() \
+                                or json.dumps(err, default=str)
+                            self._log(f"  invoice {entry.get('invoice_id', '')} ({agreement_id}): "
+                                      f"SUBMIT_FAILED - {err_msg}")
+                            _emit(entry.get('occurrence', ''), agreement_id,
+                                  entry.get('invoice_id', ''), entry.get('amount', ''),
+                                  "SUBMIT_FAILED", "", json.dumps(err, default=str))
+                            if entry.get('invoice_id'):
+                                handled.add(entry['invoice_id'])
 
-                    for err in errors:
-                        token = err.get('clientToken')
-                        entry = entry_by_token.get(token, {})
+                        # Fail-safe: any entry the service neither accepted (now in
+                        # flight) nor returned an error for must still be closed out, so
+                        # a chain can never stall or be resubmitted in a loop.
+                        for entry in entries:
+                            inv = entry['invoice_id']
+                            if inv in busy or inv in handled:
+                                continue
+                            counters['processed'] += 1
+                            counters['failed'] += 1
+                            summary["failed"] += 1
+                            self._log(f"  invoice {inv} ({agreement_id}): SUBMIT_FAILED - "
+                                      f"no result returned for this entry")
+                            _emit(entry.get('occurrence', ''), agreement_id, inv,
+                                  entry.get('amount', ''), "SUBMIT_FAILED", "",
+                                  "No result returned by BatchCreateBillingAdjustmentRequest.")
+                    except CredentialsCancelled:
+                        raise
+                    except Exception as e:
+                        # An authorization/compliance denial (e.g. the seller behind this
+                        # agreement is not KYC compliant) is a per-request rejection, not a
+                        # broken submit call: retrying won't help. Surface it as
+                        # VALIDATION_FAILED with the real API message so the row is
+                        # actionable, and reserve SUBMIT_FAILED for genuine call failures.
+                        if is_access_denied(e):
+                            _, api_msg = extract_api_error(e)
+                            status = "VALIDATION_FAILED"
+                            reason = api_msg
+                        else:
+                            status = "SUBMIT_FAILED"
+                            reason = str(e)
+                        for entry in entries:
+                            counters['processed'] += 1
+                            counters['failed'] += 1
+                            summary["failed"] += 1
+                            self._log(f"  invoice {entry['invoice_id']} ({agreement_id}): "
+                                      f"{status} - {reason}")
+                            _emit(entry.get('occurrence', ''), agreement_id,
+                                  entry['invoice_id'], entry['amount'], status, "", reason)
+                    time.sleep(SUBMIT_DELAY)
+            if cancelled:
+                break
+
+            # ---------- poll one sweep over the in-flight requests ----------
+            # As each request reaches a terminal status its invoice is freed, so that
+            # invoice's next occurrence becomes eligible on the next wave — without
+            # waiting for unrelated invoices to finish.
+            if in_flight:
+                still = []
+                for idx, req in enumerate(in_flight):
+                    if self.cancel_check():
+                        cancelled = True
+                        still.extend(in_flight[idx:])
+                        break
+                    status, message = self.get_adjustment_status(
+                        req['agreement_id'], req['request_id'])
+                    detail = f" - {message}" if message else ""
+                    if status in ('COMPLETED', 'VALIDATION_FAILED', 'ERROR'):
+                        counters['processed'] += 1
+                        if status == 'COMPLETED':
+                            counters['succeeded'] += 1
+                        else:
+                            counters['failed'] += 1
+                        busy.discard(req['invoice_id'])
+                        self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
+                                  f"{status}{detail}")
+                        _emit(req['phase'], req['agreement_id'], req['invoice_id'],
+                              req['amount'], status, req['request_id'], message or "")
+                        made_progress = True
+                    elif time.time() >= req['deadline']:
                         counters['processed'] += 1
                         counters['failed'] += 1
-                        summary["failed"] += 1
-                        err_msg = f"{err.get('code', '')} {err.get('message', '')}".strip() \
-                            or json.dumps(err, default=str)
-                        self._log(f"  invoice {entry.get('invoice_id', '')} ({agreement_id}): "
-                                  f"SUBMIT_FAILED - {err_msg}")
-                        writer.write({
-                            "phase": phase_num,
-                            "agreement_id": agreement_id,
-                            "invoice_id": entry.get('invoice_id', ''),
-                            "amount": entry.get('amount', ''),
-                            "status": "SUBMIT_FAILED",
-                            "billing_adjustment_request_id": "",
-                            "message": json.dumps(err, default=str),
-                        })
-                        self.progress_cb(**counters)
-                except CredentialsCancelled:
-                    raise
-                except Exception as e:
-                    # An authorization/compliance denial (e.g. the seller behind this
-                    # agreement is not KYC compliant) is a per-request rejection, not a
-                    # broken submit call: retrying won't help. Surface it as
-                    # VALIDATION_FAILED with the real API message so the row is
-                    # actionable, and reserve SUBMIT_FAILED for genuine call failures.
-                    if is_access_denied(e):
-                        _, api_msg = extract_api_error(e)
-                        status = "VALIDATION_FAILED"
-                        reason = api_msg
+                        busy.discard(req['invoice_id'])
+                        self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
+                                  f"TIMEOUT after {poll_budget}s")
+                        _emit(req['phase'], req['agreement_id'], req['invoice_id'],
+                              req['amount'], "TIMEOUT", req['request_id'],
+                              f"Timed out after {poll_budget}s")
+                        made_progress = True
                     else:
-                        status = "SUBMIT_FAILED"
-                        reason = str(e)
-                    for entry in entries:
-                        counters['processed'] += 1
-                        counters['failed'] += 1
-                        summary["failed"] += 1
-                        self._log(f"  invoice {entry['invoice_id']} ({agreement_id}): "
-                                  f"{status} - {reason}")
-                        writer.write({
-                            "phase": phase_num,
-                            "agreement_id": agreement_id,
-                            "invoice_id": entry['invoice_id'],
-                            "amount": entry['amount'],
-                            "status": status,
-                            "billing_adjustment_request_id": "",
-                            "message": reason,
-                        })
-                        self.progress_cb(**counters)
-                time.sleep(SUBMIT_DELAY)
+                        still.append(req)
+                        self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
+                                  f"{status or 'PENDING'}{detail} - still processing")
+                    time.sleep(GET_DELAY)
+                in_flight = still
+            if cancelled:
+                break
 
-            # Poll for completion of this phase's submitted requests
-            self._wait_and_record(pending_requests, writer, counters, summary, phase_num)
+            # Idle only when we are purely waiting on server-side completion (no ready
+            # work was done and nothing completed this pass). The wait backs off from
+            # POLL_INTERVAL_START toward POLL_INTERVAL, and resets on any progress.
+            if made_progress:
+                poll_wait = POLL_INTERVAL_START
+            elif in_flight:
+                self._log(f"{len(in_flight)} request(s) still processing; next status "
+                          f"check in {poll_wait}s.")
+                time.sleep(poll_wait)
+                poll_wait = min(POLL_INTERVAL, poll_wait * POLL_BACKOFF_FACTOR)
+
+        # If cancelled, close out anything still in flight so the counts reconcile.
+        if cancelled:
+            self._log("Job cancelled.")
+            summary["cancelled"] = True
+            for req in in_flight:
+                counters['processed'] += 1
+                counters['failed'] += 1
+                _emit(req['phase'], req['agreement_id'], req['invoice_id'], req['amount'],
+                      "TIMEOUT", req['request_id'],
+                      "Job cancelled while the request was in progress.")
 
         summary["finished_at"] = datetime.now().isoformat()
         summary["succeeded"] = counters['succeeded']
@@ -1232,75 +1485,3 @@ class AdjustmentProcessor:
                     })
             summary["aggregate_warnings"] = warnings
         return summary
-
-    def _wait_and_record(self, pending_requests, writer, counters, summary, phase_num):
-        """Poll each submitted request until terminal status, recording incrementally.
-
-        On every poll it logs each request's current status (and the service's
-        statusMessage when present) plus the countdown to the next status check, so a
-        request that stays in progress for a while doesn't look stuck."""
-        if not pending_requests:
-            return
-        max_poll_time = _compute_poll_budget(len(pending_requests))
-        self._log(f"Waiting for {len(pending_requests)} submitted request(s) to complete "
-                  f"(checks paced at {GET_CALLS_PER_SECOND}/s, polling every "
-                  f"{POLL_INTERVAL}s, up to {max_poll_time}s)...")
-        start = time.time()
-        poll_round = 0
-        while pending_requests and (time.time() - start) < max_poll_time:
-            if self.cancel_check():
-                break
-            poll_round += 1
-            elapsed = int(time.time() - start)
-            self._log(f"Poll #{poll_round} (elapsed {elapsed}s): checking "
-                      f"{len(pending_requests)} pending request(s)...")
-            still_pending = []
-            for req in pending_requests:
-                status, message = self.get_adjustment_status(req['agreement_id'], req['request_id'])
-                detail = f" - {message}" if message else ""
-                if status in ('COMPLETED', 'VALIDATION_FAILED', 'ERROR'):
-                    counters['processed'] += 1
-                    if status == 'COMPLETED':
-                        counters['succeeded'] += 1
-                    else:
-                        counters['failed'] += 1
-                    self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
-                              f"{status}{detail}")
-                    writer.write({
-                        "phase": phase_num,
-                        "agreement_id": req['agreement_id'],
-                        "invoice_id": req['invoice_id'],
-                        "amount": req['amount'],
-                        "status": status,
-                        "billing_adjustment_request_id": req['request_id'],
-                        "message": message or "",
-                    })
-                    self.progress_cb(**counters)
-                else:
-                    still_pending.append(req)
-                    self._log(f"  invoice {req['invoice_id']} ({req['request_id']}): "
-                              f"{status or 'PENDING'}{detail} - still processing; "
-                              f"next status check in {GET_DELAY:.1f}s")
-                time.sleep(GET_DELAY)
-            pending_requests = still_pending
-            if pending_requests:
-                elapsed = int(time.time() - start)
-                remaining = max(0, max_poll_time - elapsed)
-                self._log(f"{len(pending_requests)} request(s) still pending after {elapsed}s; "
-                          f"next poll in {POLL_INTERVAL}s (about {remaining}s left before timeout).")
-                time.sleep(POLL_INTERVAL)
-
-        # Timeouts
-        for req in pending_requests:
-            counters['processed'] += 1
-            counters['failed'] += 1
-            writer.write({
-                "phase": phase_num,
-                "agreement_id": req['agreement_id'],
-                "invoice_id": req['invoice_id'],
-                "amount": req['amount'],
-                "status": "TIMEOUT",
-                "billing_adjustment_request_id": req['request_id'],
-                "message": f"Timed out after {max_poll_time}s",
-            })
-            self.progress_cb(**counters)
