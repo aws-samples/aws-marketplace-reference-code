@@ -19,7 +19,7 @@ needs-review rows surfaced in the run's records output) and as CLI scripts (`che
 > APIs. It is provided as-is for learning and prototyping — not as production-ready
 > software. Because refunds move real money, have your engineering team inspect,
 > test, and customize it for your own environment and controls before running it
-> against real invoices in the AWS (production) catalog:
+> against real invoices:
 
 - **Review the code and its behavior** — validation, idempotency, the fail-closed
   pre-check, batching, and error handling — and adapt it to your finance and
