@@ -13,6 +13,25 @@ available both in the web UI (**Check processed refunds**, **Check one request**
 needs-review rows surfaced in the run's records output) and as CLI scripts (`check_processed_refunds.py`,
 `clean_refund_file.py`, `list_adjustment_requests.py`, `get_adjustment_request.py`).
 
+## Important: read before running against real invoices
+
+> This is a sample reference application that demonstrates the billing-adjustment
+> APIs. It is provided as-is for learning and prototyping — not as production-ready
+> software. Because refunds move real money, have your engineering team inspect,
+> test, and customize it for your own environment and controls before running it
+> against real invoices:
+
+- **Review the code and its behavior** — validation, idempotency, the fail-closed
+  pre-check, batching, and error handling — and adapt it to your finance and
+  audit requirements.
+- **Use least-privilege, temporary credentials.** The hosted deployment uses an
+  attached IAM role, so no one enters credentials; for the CLI and local web app,
+  prefer IAM Identity Center (SSO) or other temporary credentials over long-term
+  access keys, and scope permissions to only the actions in the IAM policy.
+- **Put it through your normal change process.** Run a dry run on a small batch first,
+  then validate results, and treat any live run as a change to a billing system
+  (code review, testing, approvals).
+
 ## Ways to use it
 
 | Option | Best for | Where |

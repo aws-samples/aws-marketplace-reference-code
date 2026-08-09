@@ -90,6 +90,12 @@
   table.kv td { border: 1px solid var(--border); padding: 6px 10px; }
   table.kv td:first-child { background: #f7f9fa; font-weight: 600; width: 220px; }
   .hidden { display: none !important; }
+  .notice { background: #fff8e6; border: 1px solid #f0d488; color: #6b5300;
+    border-radius: 6px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px; line-height: 1.5; }
+  .notice strong { color: #5a4500; }
+  .notice summary { cursor: pointer; font-weight: 600; margin-top: 8px; }
+  .notice ul { margin: 8px 0 0; padding-left: 18px; }
+  .notice li { margin-bottom: 6px; }
 </style>
 </head>
 <body>
@@ -107,6 +113,30 @@
   </nav>
 
   <main class="content">
+
+    <!-- Sample-application notice (shown on all views) -->
+    <div class="notice">
+      <strong>&#9888; Sample reference application &mdash; not production-ready.</strong>
+      This app demonstrates the billing-adjustment APIs and is provided as-is for learning
+      and prototyping. Because refunds move real money, have your engineering team inspect,
+      test, and customize it for your own environment and controls before running it against
+      real invoices.
+      <details>
+        <summary>What to review before a live run</summary>
+        <ul>
+          <li><strong>Review the code and its behavior</strong> &mdash; validation, idempotency,
+            the fail-closed pre-check, batching, and error handling &mdash; and adapt it to your
+            finance and audit requirements.</li>
+          <li><strong>Use least-privilege, temporary credentials.</strong> The hosted deployment
+            uses an attached IAM role, so no one enters credentials; for the CLI and local web
+            app, prefer IAM Identity Center (SSO) or other temporary credentials over long-term
+            access keys, and scope permissions to only the actions in the IAM policy.</li>
+          <li><strong>Put it through your normal change process.</strong> Run a dry run on a
+            small batch first, then validate results, and treat any live run as a change to a
+            billing system (code review, testing, approvals).</li>
+        </ul>
+      </details>
+    </div>
 
     <!-- Shared AWS credentials (local mode only) -->
     {% if not managed_credentials %}
