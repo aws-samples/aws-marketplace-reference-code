@@ -12,31 +12,38 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.example.awsmarketplace.agreementapi.DescribeAgreement;
-import com.example.awsmarketplace.agreementapi.GetAgreementAutoRenewal;
-import com.example.awsmarketplace.agreementapi.GetAgreementCustomerInfo;
-import com.example.awsmarketplace.agreementapi.GetAgreementFinancialDetails;
-import com.example.awsmarketplace.agreementapi.GetAgreementProductType;
-import com.example.awsmarketplace.agreementapi.GetAgreementStatus;
-import com.example.awsmarketplace.agreementapi.GetAgreementTerms;
-import com.example.awsmarketplace.agreementapi.GetAgreementTermsDimensionInstances;
-import com.example.awsmarketplace.agreementapi.GetAgreementTermsDimensionPurchased;
-import com.example.awsmarketplace.agreementapi.GetAgreementTermsEula;
-import com.example.awsmarketplace.agreementapi.GetAgreementTermsFreeTrialDetails;
-import com.example.awsmarketplace.agreementapi.GetAgreementTermsPaymentSchedule;
-import com.example.awsmarketplace.agreementapi.GetAgreementTermsPricingEachDimension;
-import com.example.awsmarketplace.agreementapi.GetAgreementTermsSupportTerm;
-import com.example.awsmarketplace.agreementapi.GetAllAgreements;
-import com.example.awsmarketplace.agreementapi.GetAllAgreementsIds;
-import com.example.awsmarketplace.agreementapi.GetProductAndOfferDetailFromAgreement;
-import com.example.awsmarketplace.agreementapi.SearchAgreementsByEndDate;
-import com.example.awsmarketplace.agreementapi.SearchAgreementsByOneFilter;
-import com.example.awsmarketplace.agreementapi.SearchAgreementsByTwoFilters;
+import com.example.awsmarketplace.agreementapi.seller.DescribeAgreement;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementAutoRenewal;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementCustomerInfo;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementEndTimeBehavior;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementFinancialDetails;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementInitialAgreement;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementProductType;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementStatus;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementTerms;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementTermsDimensionInstances;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementTermsDimensionPurchased;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementTermsEula;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementTermsFreeTrialDetails;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementTermsPaymentSchedule;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementTermsPricingEachDimension;
+import com.example.awsmarketplace.agreementapi.seller.GetAgreementTermsSupportTerm;
+import com.example.awsmarketplace.agreementapi.seller.GetAllAgreements;
+import com.example.awsmarketplace.agreementapi.seller.GetAllAgreementsIds;
+import com.example.awsmarketplace.agreementapi.seller.GetProductAndOfferDetailFromAgreement;
+import com.example.awsmarketplace.agreementapi.seller.SearchAgreementsAcceptorOptedOut;
+import com.example.awsmarketplace.agreementapi.seller.SearchAgreementsByEndDate;
+import com.example.awsmarketplace.agreementapi.seller.SearchAgreementsByLastUpdateDate;
+import com.example.awsmarketplace.agreementapi.seller.SearchAgreementsByOneFilter;
+import com.example.awsmarketplace.agreementapi.seller.SearchAgreementsByStartDate;
+import com.example.awsmarketplace.agreementapi.seller.SearchAgreementsByTwoFilters;
+import com.example.awsmarketplace.agreementapi.seller.SearchAgreementsRenewing;
 
 import software.amazon.awssdk.services.marketplaceagreement.model.AgreementViewSummary;
 import software.amazon.awssdk.services.marketplaceagreement.model.DescribeAgreementResponse;
 import software.amazon.awssdk.services.marketplaceagreement.model.Dimension;
 import software.amazon.awssdk.services.marketplaceagreement.model.DocumentItem;
+import software.amazon.awssdk.services.marketplaceagreement.model.EndTimeBehavior;
 import software.amazon.awssdk.services.marketplaceagreement.model.FreeTrialPricingTerm;
 import software.amazon.awssdk.services.marketplaceagreement.model.GetAgreementTermsResponse;
 import software.amazon.awssdk.services.marketplaceagreement.model.SupportTerm;
@@ -210,5 +217,48 @@ public class AgreementAPITest {
 		String autoRenewal = GetAgreementAutoRenewal.getAutoRenewal(agreementId);
 		assertNotNull(autoRenewal);
 	}
-	
+
+	@Test
+	public void testSearchAgreementsRenewing() {
+		List<AgreementViewSummary> agreementSummaryList = SearchAgreementsRenewing.getAgreements();
+        assertNotNull(agreementSummaryList);
+        assertTrue(agreementSummaryList instanceof List);
+	}
+
+	@Test
+	public void testSearchAgreementsAcceptorOptedOut() {
+		List<AgreementViewSummary> agreementSummaryList = SearchAgreementsAcceptorOptedOut.getAgreements();
+        assertNotNull(agreementSummaryList);
+        assertTrue(agreementSummaryList instanceof List);
+	}
+
+	@Test
+	public void testSearchAgreementsByStartDate() {
+		List<AgreementViewSummary> agreementSummaryList = SearchAgreementsByStartDate.getAgreements();
+        assertNotNull(agreementSummaryList);
+        assertTrue(agreementSummaryList instanceof List);
+	}
+
+	@Test
+	public void testSearchAgreementsByLastUpdateDate() {
+		List<AgreementViewSummary> agreementSummaryList = SearchAgreementsByLastUpdateDate.getAgreements();
+        assertNotNull(agreementSummaryList);
+        assertTrue(agreementSummaryList instanceof List);
+	}
+
+	@Test
+	public void testGetAgreementInitialAgreement() {
+		String agreementId = Helpers.getParameterValue("/ag/initialAgreement/agreement-id");
+		String initialAgreementId = GetAgreementInitialAgreement.getInitialAgreementId(agreementId);
+		// Always populated: it is the agreement's own id when the agreement starts the chain.
+		assertNotNull(initialAgreementId);
+	}
+
+	@Test
+	public void testGetAgreementEndTimeBehavior() {
+		String agreementId = Helpers.getParameterValue("/ag/endTimeBehavior/agreement-id");
+		EndTimeBehavior endTimeBehavior = GetAgreementEndTimeBehavior.getEndTimeBehavior(agreementId);
+		assertNotNull(endTimeBehavior);
+	}
+
 }

@@ -151,7 +151,7 @@ It is important to note, in each changeset.json file there are one or more **Det
 |[Obtain the Product Type of the product the agreement was created on](./src/agreements_api/seller/get_agreement_product_type)|
 |[Retrieve the status of the agreement](./src/agreements_api/seller/get_agreement_status)|
 |[Obtain financial details, such as Total Contract Value of the agreement](./src/agreements_api/seller/get_agreement_financial_details)|
-|[Obtain the auto-renewal status of the agreement](./src/agreements_api/seller/get_agreement_terms_auto_renewal)|
+|[Obtain the auto-renewal status of the agreement](./src/agreements_api/seller/get_agreement_auto_renewal)|
 |[Obtain the pricing type of the agreement (contract, FPS, metered, free etc.)](./src/agreements_api/seller/get_agreement_pricing_type)|
 |[Obtain the payment schedule I have agreed to with the agreement, including the invoice date and invoice amount](./src/agreements_api/seller/get_agreement_terms_payment_schedule)|
 |[Obtain the EULA I have entered into with my customer via the agreement](./src/agreements_api/seller/get_agreement_terms_eula)|
@@ -160,6 +160,12 @@ It is important to note, in each changeset.json file there are one or more **Det
 |[Obtain the dimensions the buyer has purchased from me via the agreement](./src/agreements_api/seller/get_agreement_terms_dimension_purchased)|
 |[Obtain pricing per each dimension in the agreement](./src/agreements_api/seller/get_agreement_terms_pricing_each_dimension)|
 |[Obtain instances of each dimension that buyer has purchased in the agreement](./src/agreements_api/seller/get_agreement_terms_dimension_instances)|
+|[Obtain the agreements that will renew at their end date](./src/agreements_api/seller/search_agreements_renewing)|
+|[Find out whether the agreement will renew, be replaced, or expire at its end date, and why](./src/agreements_api/seller/get_agreement_end_time_behavior)|
+|[Identify the first agreement in my agreement's chain](./src/agreements_api/seller/get_agreement_initial_agreement)|
+|[Filter my agreements based on whether its start date is before or after a date I can specify](./src/agreements_api/seller/search_agreements_by_startDate)|
+|[Filter my agreements based on whether it was last updated before or after a date I can specify](./src/agreements_api/seller/search_agreements_by_lastUpdateDate)|
+|[Obtain the agreements that will not renew because the customer opted out, and not because I did](./src/agreements_api/seller/search_agreements_acceptor_opted_out)|
 
 ### Buyer use cases
 

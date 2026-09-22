@@ -54,8 +54,20 @@ public class ReferenceCodesConstants {
 	
 	public static final String OFFER_STATE_RELEASED = "Released";
 
+	public static final String END_TIME_BEHAVIOR_TYPE_FILTER_NAME = "EndTimeBehaviorType";
+
+	public static final String END_TIME_BEHAVIOR_REASON_CODE_FILTER_NAME = "EndTimeBehaviorReasonCode";
+
 	public static enum BeforeOrAfterEndTimeFilterName {
 		BeforeEndTime, AfterEndTime
+	}
+
+	public static enum BeforeOrAfterStartTimeFilterName {
+		BeforeStartTime, AfterStartTime
+	}
+
+	public static enum BeforeOrAfterLastUpdateTimeFilterName {
+		BeforeLastUpdateTime, AfterLastUpdateTime
 	}
 
 	public static String SELLER_ACCOUNT_ID = "111111111111";

@@ -5,6 +5,9 @@ Purpose
 Shows how to use the AWS SDK for Python (Boto3) to filter agreements by status
 AG-04
 
+All filter combinations we support for Proposer and Acceptor:
+https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_SearchAgreements.html
+
 Example Usage: python3 search_agreements_by_status.py
 """
 

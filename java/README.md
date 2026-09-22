@@ -138,6 +138,12 @@ mvn clean compile assembly:single
 |[Obtain the dimensions the buyer has purchased from me via the agreement](./src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsDimensionPurchased.java)|
 |[Obtain pricing per each dimension in the agreement](./src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsPricingEachDimension.java)|
 |[Obtain instances of each dimension that buyer has purchased in the agreement](./src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementTermsDimensionInstances.java)|
+|[Obtain the agreements that will renew at their end date](./src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsRenewing.java)|
+|[Find out whether the agreement will renew, be replaced, or expire at its end date, and why](./src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementEndTimeBehavior.java)|
+|[Identify the first agreement in my agreement's chain](./src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementInitialAgreement.java)|
+|[Filter my agreements based on whether its start date is before or after a date I can specify](./src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsByStartDate.java)|
+|[Filter my agreements based on whether it was last updated before or after a date I can specify](./src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsByLastUpdateDate.java)|
+|[Obtain the agreements that will not renew because the customer opted out, and not because I did](./src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsAcceptorOptedOut.java)|
 
 ### Buyer use cases
 
