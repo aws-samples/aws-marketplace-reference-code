@@ -11,7 +11,7 @@ import software.amazon.awssdk.services.marketplaceagreement.model.CreateAgreemen
 import software.amazon.awssdk.services.marketplaceagreement.model.CreateAgreementRequestResponse;
 import software.amazon.awssdk.services.marketplaceagreement.model.Intent;
 import software.amazon.awssdk.services.marketplaceagreement.model.RequestedTerm;
-import utils.AgreementApiUtils;
+import com.example.awsmarketplace.agreementapi.buyer.utils.AgreementApiUtils;
 
 /**
  * Demonstrates how to replace an existing SaaS agreement with CONTRACT pricing model with a new

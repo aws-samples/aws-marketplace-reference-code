@@ -8,6 +8,13 @@ Scenario: A buyer subscribes to a SaaS product using a public offer that support
 auto-renewal. After acceptance, the buyer decides to amend the agreement to enable
 auto-renewal via the RenewalTerm configuration.
 
+The lockoutPeriod on the renewal term is what constrains this amendment. It is the renewal decision
+deadline, measured back from the end date of the agreement, and once it passes neither party can
+change whether the agreement renews. The sample reads the term with GetAgreementTerms before
+amending so that deadline is visible. It also reads endTimeBehavior from DescribeAgreement before
+and after the amendment, because endTimeBehavior is what determines whether the agreement renews,
+not enableAutoRenew on its own.
+
 Before running this sample, replace the placeholder constants below with values from
 your AWS Marketplace offer:
   - AGREEMENT_PROPOSAL_IDENTIFIER — the agreementProposalId from the offer.
@@ -22,6 +29,8 @@ from utils.agreement_api_utils import (
     format_output,
     generate_client_token,
     poll_until_entitlements_available,
+    print_end_time_behavior,
+    print_renewal_term,
 )
 
 
@@ -58,6 +67,7 @@ class AmendSaaSContractRenewalTerm:
         1. Create a SaaS agreement with CONTRACT pricing model with auto-renewal disabled.
         2. Wait for entitlements to become active.
         3. Amend the agreement to enable auto-renewal.
+        4. Confirm the change by reading endTimeBehavior before and after the amendment.
         """
         client = boto3.client("marketplace-agreement")
         cls = AmendSaaSContractRenewalTerm
@@ -112,7 +122,12 @@ class AmendSaaSContractRenewalTerm:
         print("Entitlements are now active.")
         format_output(entitlements_response)
 
+        print_renewal_term(client, agreement_id)
+        print_end_time_behavior(client, agreement_id, "Before amendment")
+
         # --- Amend: enable auto-renewal ---
+        # The lockoutPeriod printed above is the renewal decision deadline: once it passes,
+        # enableAutoRenew can no longer be changed.
         renewal_term_amended = {
             "id": cls.RENEWAL_TERM_ID,
             "configuration": {
@@ -135,6 +150,8 @@ class AmendSaaSContractRenewalTerm:
             agreementRequestId=car_response["agreementRequestId"]
         )
         print("Amendment accepted. Auto-renewal enabled. New AgreementId: " + aar_response["agreementId"])
+
+        print_end_time_behavior(client, aar_response["agreementId"], "After amendment")
 
 
 if __name__ == "__main__":

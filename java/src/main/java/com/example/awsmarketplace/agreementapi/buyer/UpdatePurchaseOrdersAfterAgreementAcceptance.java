@@ -19,7 +19,7 @@ import software.amazon.awssdk.services.marketplaceagreement.model.PurchaseOrder;
 import software.amazon.awssdk.services.marketplaceagreement.model.RequestedTerm;
 import software.amazon.awssdk.services.marketplaceagreement.model.RequestedTermConfiguration;
 import software.amazon.awssdk.services.marketplaceagreement.model.UpdatePurchaseOrdersRequest;
-import utils.AgreementApiUtils;
+import com.example.awsmarketplace.agreementapi.buyer.utils.AgreementApiUtils;
 
 /**
  * Demonstrates how to associate a purchase order reference with a SaaS agreement with CONTRACT pricing model

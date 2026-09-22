@@ -276,7 +276,7 @@ marketplace-agreement_GetAgreementAutoRenewal:
       - excerpts:
         - description: ''
           snippet_files:
-          - python/src/agreements_api/seller/get_agreement_terms_auto_renewal/get_agreement_terms_auto_renewal.py
+          - python/src/agreements_api/seller/get_agreement_auto_renewal/get_agreement_auto_renewal.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
@@ -1241,3 +1241,165 @@ marketplace-agreement_RejectAgreementPaymentRequest:
   synopsis: reject an agreement payment request initiated by the seller.
   title: Reject an agreement payment request using an &AWS; SDK
   title_abbrev: Reject an agreement payment request
+marketplace-agreement_SearchAgreementsRenewing:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsRenewing.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/seller/search_agreements_renewing/search_agreements_renewing.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+  services:
+    marketplace-agreement: !!set
+      SearchAgreements: null
+  synopsis: search for the agreements that will renew.
+  title: Search for the agreements that will renew using an &AWS; SDK
+  title_abbrev: Search for the agreements that will renew
+marketplace-agreement_SearchAgreementsAcceptorOptedOut:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsAcceptorOptedOut.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/seller/search_agreements_acceptor_opted_out/search_agreements_acceptor_opted_out.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+  services:
+    marketplace-agreement: !!set
+      SearchAgreements: null
+  synopsis: search for the agreements the acceptor opted out of renewing.
+  title: Search for the agreements the acceptor opted out of renewing using an &AWS; SDK
+  title_abbrev: Search for the agreements the acceptor opted out of renewing
+marketplace-agreement_GetAgreementEndTimeBehavior:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementEndTimeBehavior.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/seller/get_agreement_end_time_behavior/get_agreement_end_time_behavior.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+  services:
+    marketplace-agreement: !!set
+      DescribeAgreement: null
+  synopsis: find out whether an agreement will renew, be replaced, or expire at its end date.
+  title: Get the end time behavior of an agreement using an &AWS; SDK
+  title_abbrev: Get the end time behavior of an agreement
+marketplace-agreement_GetAgreementInitialAgreement:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/GetAgreementInitialAgreement.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/seller/get_agreement_initial_agreement/get_agreement_initial_agreement.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+  services:
+    marketplace-agreement: !!set
+      DescribeAgreement: null
+  synopsis: identify the first agreement in an agreement's chain.
+  title: Get the initial agreement of an agreement using an &AWS; SDK
+  title_abbrev: Get the initial agreement of an agreement
+marketplace-agreement_SearchAgreementsByStartDate:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsByStartDate.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/seller/search_agreements_by_startDate/search_agreements_by_startDate.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+  services:
+    marketplace-agreement: !!set
+      SearchAgreements: null
+  synopsis: search for agreements by start date.
+  title: Search for agreements by start date using an &AWS; SDK
+  title_abbrev: Search for agreements by start date
+marketplace-agreement_SearchAgreementsByLastUpdateDate:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/seller/SearchAgreementsByLastUpdateDate.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/seller/search_agreements_by_lastUpdateDate/search_agreements_by_lastUpdateDate.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+  services:
+    marketplace-agreement: !!set
+      SearchAgreements: null
+  synopsis: search for agreements by the date they were last updated.
+  title: Search for agreements by last update date using an &AWS; SDK
+  title_abbrev: Search for agreements by last update date

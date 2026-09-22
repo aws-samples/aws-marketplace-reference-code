@@ -2,9 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 """
 Purpose
-Shows how to use the AWS SDK for Python (Boto3) to search for agreement information before or after end date
-AG-03
+Shows how to use the AWS SDK for Python (Boto3) to search for the agreements the acceptor opted out
+of renewing
+AG-36
 
+This filter is supported only when PartyType is Proposer, so only sellers can use it. An
+unsupported combination fails with a ValidationException whose reason is UNSUPPORTED_FILTERS.
 All filter combinations we support for Proposer and Acceptor:
 https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_SearchAgreements.html
 """
@@ -22,11 +25,9 @@ from botocore.exceptions import ClientError
 
 mp_client = boto3.client("marketplace-agreement")
 
-# change to 'AfterEndTime' if after endtime is desired
-beforeOrAfterEndtimeFilterName = "BeforeEndTime"
-
-# Make sure to use the same date format as below
-cutoffDate = "2322-11-18T00:00:00Z"
+# change to 'PROPOSER_RENEW_OPTED_OUT', 'NO_RENEWAL_TERM', or 'RENEWAL_LIMIT_EXHAUSTED' for the
+# other reasons an agreement does not renew
+endTimeBehaviorReasonCodeFilterValue = "ACCEPTOR_RENEW_OPTED_OUT"
 
 MAX_PAGE_RESULTS = 10
 
@@ -40,11 +41,15 @@ def get_agreements():
         agreement = mp_client.search_agreements(
             catalog="AWSMarketplace",
             maxResults=MAX_PAGE_RESULTS,
-            # Set PartyType filter to "Proposer" to return agreements where you are the proposer.
-            # Change to "Acceptor" to return agreements where you are the acceptor.
+            # This filter is supported only for the proposer, so leave PartyType set to
+            # "Proposer". "Acceptor" fails with a ValidationException whose reason is
+            # UNSUPPORTED_FILTERS.
             filters=[
                 {"name": "PartyType", "values": ["Proposer"]},
-                {"name": beforeOrAfterEndtimeFilterName, "values": [cutoffDate]},
+                {
+                    "name": "EndTimeBehaviorReasonCode",
+                    "values": [endTimeBehaviorReasonCodeFilterValue],
+                },
                 {"name": "AgreementType", "values": ["PurchaseAgreement"]},
             ],
         )
@@ -63,8 +68,8 @@ def get_agreements():
                 filters=[
                     {"name": "PartyType", "values": ["Proposer"]},
                     {
-                        "name": beforeOrAfterEndtimeFilterName,
-                        "values": [cutoffDate],
+                        "name": "EndTimeBehaviorReasonCode",
+                        "values": [endTimeBehaviorReasonCodeFilterValue],
                     },
                     {"name": "AgreementType", "values": ["PurchaseAgreement"]},
                 ],

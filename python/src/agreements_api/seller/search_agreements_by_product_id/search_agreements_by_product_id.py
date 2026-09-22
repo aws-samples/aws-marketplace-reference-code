@@ -4,6 +4,9 @@
 Purpose
 Shows how to use the AWS SDK for Python (Boto3) to search for agreement by product id
 AG-02
+
+All filter combinations we support for Proposer and Acceptor:
+https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-agreements_SearchAgreements.html
 """
 
 import logging

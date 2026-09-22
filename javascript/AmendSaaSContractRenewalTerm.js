@@ -5,7 +5,13 @@ const {
     CreateAgreementRequestCommand,
     AcceptAgreementRequestCommand,
 } = require("@aws-sdk/client-marketplace-agreement");
-const { generateClientToken, formatOutput, pollUntilEntitlementsAvailable } = require("./utils/AgreementApiUtils");
+const {
+    generateClientToken,
+    formatOutput,
+    pollUntilEntitlementsAvailable,
+    printRenewalTerm,
+    printEndTimeBehavior,
+} = require("./utils/AgreementApiUtils");
 
 /**
  * Demonstrates how to create a SaaS agreement with CONTRACT pricing model and then turn on
@@ -14,6 +20,13 @@ const { generateClientToken, formatOutput, pollUntilEntitlementsAvailable } = re
  * Scenario: A buyer subscribes to a SaaS product using a public offer that supports
  * auto-renewal. After acceptance, the buyer decides to amend the agreement to enable
  * auto-renewal via the RenewalTerm configuration.
+ *
+ * The lockoutPeriod on the renewal term is what constrains this amendment. It is the renewal
+ * decision deadline, measured back from the end date of the agreement, and once it passes neither
+ * party can change whether the agreement renews. The sample reads the term with GetAgreementTerms
+ * before amending so that deadline is visible. It also reads endTimeBehavior from DescribeAgreement
+ * before and after the amendment, because endTimeBehavior is what determines whether the agreement
+ * renews, not enableAutoRenew on its own.
  *
  * Before running this sample, replace the placeholder constants below with values from
  * your AWS Marketplace offer:
@@ -52,6 +65,7 @@ const SUPPORT_TERM_ID = "<your-support-term-id>";
  * 1. Create a SaaS agreement with CONTRACT pricing model with auto-renewal disabled.
  * 2. Wait for entitlements to become active.
  * 3. Amend the agreement to enable auto-renewal.
+ * 4. Confirm the change by reading endTimeBehavior before and after the amendment.
  */
 async function amendSaaSContractAgreementRenewalTerm() {
     const client = new MarketplaceAgreementClient();
@@ -105,7 +119,12 @@ async function amendSaaSContractAgreementRenewalTerm() {
     console.log("Entitlements are now active.");
     formatOutput(entitlementsResponse);
 
+    await printRenewalTerm(client, acceptAgreementRequestResponse.agreementId);
+    await printEndTimeBehavior(client, acceptAgreementRequestResponse.agreementId, "Before amendment");
+
     // --- Amend: enable auto-renewal ---
+    // The lockoutPeriod printed above is the renewal decision deadline: once it passes,
+    // enableAutoRenew can no longer be changed.
     const renewalTermAmended = {
         id: RENEWAL_TERM_ID,
         configuration: {
@@ -132,6 +151,8 @@ async function amendSaaSContractAgreementRenewalTerm() {
         })
     );
     console.log("Amendment accepted. Auto-renewal enabled. New AgreementId: " + aarResponse.agreementId);
+
+    await printEndTimeBehavior(client, aarResponse.agreementId, "After amendment");
 }
 
 amendSaaSContractAgreementRenewalTerm();

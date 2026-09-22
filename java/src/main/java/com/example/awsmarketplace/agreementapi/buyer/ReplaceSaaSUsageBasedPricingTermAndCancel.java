@@ -13,7 +13,7 @@ import software.amazon.awssdk.services.marketplaceagreement.model.CancelAgreemen
 import software.amazon.awssdk.services.marketplaceagreement.model.GetAgreementEntitlementsResponse;
 import software.amazon.awssdk.services.marketplaceagreement.model.Intent;
 import software.amazon.awssdk.services.marketplaceagreement.model.RequestedTerm;
-import utils.AgreementApiUtils;
+import com.example.awsmarketplace.agreementapi.buyer.utils.AgreementApiUtils;
 
 /**
  * Demonstrates how to create a SaaS agreement with usageBasedPricingTerm (UBPT) and then replace it
