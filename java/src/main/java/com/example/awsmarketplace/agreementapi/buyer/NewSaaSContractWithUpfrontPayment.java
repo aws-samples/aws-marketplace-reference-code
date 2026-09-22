@@ -15,7 +15,7 @@ import software.amazon.awssdk.services.marketplaceagreement.model.Intent;
 import software.amazon.awssdk.services.marketplaceagreement.model.RequestedTerm;
 import software.amazon.awssdk.services.marketplaceagreement.model.RequestedTermConfiguration;
 import software.amazon.awssdk.services.marketplaceagreement.model.TaxConfiguration;
-import utils.AgreementApiUtils;
+import com.example.awsmarketplace.agreementapi.buyer.utils.AgreementApiUtils;
 
 /**
  * Demonstrates how to create a SaaS agreement with CONTRACT pricing model with upfront payment

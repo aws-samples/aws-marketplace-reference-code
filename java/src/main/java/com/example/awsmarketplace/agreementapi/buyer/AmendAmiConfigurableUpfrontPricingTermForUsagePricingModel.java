@@ -15,7 +15,7 @@ import software.amazon.awssdk.services.marketplaceagreement.model.GetAgreementEn
 import software.amazon.awssdk.services.marketplaceagreement.model.Intent;
 import software.amazon.awssdk.services.marketplaceagreement.model.RequestedTerm;
 import software.amazon.awssdk.services.marketplaceagreement.model.RequestedTermConfiguration;
-import utils.AgreementApiUtils;
+import com.example.awsmarketplace.agreementapi.buyer.utils.AgreementApiUtils;
 
 /**
  * Demonstrates how to create an AMI agreement with ConfigurableUpfrontPricingTerm and then amend the dimension quantity

@@ -12,7 +12,7 @@ import software.amazon.awssdk.services.marketplaceagreement.model.CreateAgreemen
 import software.amazon.awssdk.services.marketplaceagreement.model.GetAgreementEntitlementsResponse;
 import software.amazon.awssdk.services.marketplaceagreement.model.Intent;
 import software.amazon.awssdk.services.marketplaceagreement.model.RequestedTerm;
-import utils.AgreementApiUtils;
+import com.example.awsmarketplace.agreementapi.buyer.utils.AgreementApiUtils;
 
 /**
  * Demonstrates how to create a SaaS free trial agreement and then replace it with a
