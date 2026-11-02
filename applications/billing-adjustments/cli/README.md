@@ -150,6 +150,13 @@ Optional columns (preserved for reference but not used in API calls):
 - `product_code`
 - `month_id`
 
+Optional column that **is** sent to the API:
+- `description` — free-text memo (max 500 chars) sent as the adjustment's `description`
+  (the **"Additional details"** field in the Partner Central console). AWS includes it in
+  the **notification email sent to the buyer** when the adjustment is confirmed. Omit or
+  leave blank for no memo. The `--description "TEXT"` flag applies a memo to every row that
+  has no `description` value of its own.
+
 > **Currency (USD only) and the fixed `OTHER` reason code** are documented in the
 > [main README → Currency](../README.md#currency) and
 > [Adjustment reason code](../README.md#adjustment-reason-code). There is no currency

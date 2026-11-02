@@ -27,7 +27,7 @@ from datetime import datetime
 import _cli_common  # noqa: F401  (adds repo root to sys.path for `core`)
 from core import (
     classify_input_rows, generate_client_token, CredentialsCancelled,
-    CURRENCY_CODE, REVIEW_REASON_COL,
+    CURRENCY_CODE, REVIEW_REASON_COL, MAX_DESCRIPTION_LENGTH,
 )
 
 CSV_FILE = "adjustmentFiles/sample_company.csv"
@@ -82,18 +82,39 @@ def parse_args():
     dry_run = False
     precheck = True
     csv_file = CSV_FILE
-    for arg in sys.argv[1:]:
+    description = ""
+    usage = ("Usage: python billing_adjustment_bulk_sdk_creds.py "
+             "[--dry-run] [--no-precheck] [--description TEXT] [csv_file]")
+    args = sys.argv[1:]
+    i = 0
+    while i < len(args):
+        arg = args[i]
         if arg == '--dry-run':
             dry_run = True
         elif arg == '--no-precheck':
             precheck = False
+        elif arg == '--description':
+            i += 1
+            if i >= len(args):
+                print("Error: --description requires a value.")
+                print(usage)
+                sys.exit(1)
+            description = args[i]
+        elif arg.startswith('--description='):
+            description = arg[len('--description='):]
         elif arg.startswith('-'):
             print(f"Unknown option: {arg}")
-            print("Usage: python billing_adjustment_bulk_sdk_creds.py [--dry-run] [--no-precheck] [csv_file]")
+            print(usage)
             sys.exit(1)
         else:
             csv_file = arg
-    return dry_run, csv_file, precheck
+        i += 1
+    description = description.strip()
+    if len(description) > MAX_DESCRIPTION_LENGTH:
+        print(f"Error: --description exceeds {MAX_DESCRIPTION_LENGTH} characters "
+              f"(got {len(description)}).")
+        sys.exit(1)
+    return dry_run, csv_file, precheck, description
 
 
 def _amount(record):
@@ -115,6 +136,7 @@ def build_row_results(records):
             'request_id': r.get('billing_adjustment_request_id') or None,
             'client_token': generate_client_token(r.get('agreement_id', ''), r.get('invoice_id', '')),
             'status': r.get('status'),
+            'description': r.get('description') or None,
             'error': r.get('message') or None,
         })
     return out
@@ -149,7 +171,7 @@ def build_summary(records, dry_run):
 
 
 def main():
-    dry_run, csv_file, precheck = parse_args()
+    dry_run, csv_file, precheck, default_description = parse_args()
 
     print(f"Mode: {'DRY-RUN (validation only)' if dry_run else 'LIVE'}")
     if not dry_run:
@@ -176,6 +198,17 @@ def main():
     if not valid_records:
         print("\nNo valid rows to process after cleaning. Exiting.")
         return
+
+    # A --description value is a default memo applied to every row that does not carry
+    # its own `description` column value. Rows with their own description keep it.
+    if default_description:
+        applied = 0
+        for rec in valid_records:
+            if not rec.get('description'):
+                rec['description'] = default_description
+                applied += 1
+        print(f"\nApplying description to {applied} row(s) without their own memo: "
+              f"\"{default_description}\"")
 
     processor = _cli_common.make_processor(log_cb=print)
     collector = _Collector()
