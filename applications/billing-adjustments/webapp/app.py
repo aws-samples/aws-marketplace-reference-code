@@ -46,6 +46,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core import (
     validate_file_format, AdjustmentProcessor, CredentialsCancelled,
     COL_AGREEMENT_ID, COL_INVOICE_ID, classify_input_rows, REVIEW_REASON_COL,
+    build_header_map, DESCRIPTION_COLUMN, MAX_DESCRIPTION_LENGTH,
 )
 from job_manager import JobManager, read_status, list_jobs, _job_dir
 
@@ -182,6 +183,15 @@ def api_submit():
     dry_run = request.form.get("dry_run", "false").lower() == "true"
     precheck_processed = request.form.get("precheck", "true").lower() == "true"
 
+    # Optional free-text memo entered in the UI. Applied as the adjustment's
+    # `description` to every row that does not already carry its own description
+    # column value. The service caps it at MAX_DESCRIPTION_LENGTH characters.
+    default_description = (request.form.get("description") or "").strip()
+    if len(default_description) > MAX_DESCRIPTION_LENGTH:
+        return jsonify({
+            "error": f"Description is too long (max {MAX_DESCRIPTION_LENGTH} characters)."
+        }), 400
+
     credentials = None
     if not MANAGED_CREDENTIALS:
         access_key = (request.form.get("access_key") or "").strip()
@@ -221,13 +231,25 @@ def api_submit():
         }), 400
 
     # Write a cleaned CSV containing only the valid rows (original columns intact);
-    # the job runs against this file.
+    # the job runs against this file. If the user typed a memo, carry it through the
+    # file as the `description` column (adding the column when the upload lacks one),
+    # filling only rows that do not already have their own description value.
+    fieldnames = list(columns)
+    desc_header = build_header_map(fieldnames).get(DESCRIPTION_COLUMN)
+    if default_description and desc_header is None:
+        desc_header = DESCRIPTION_COLUMN
+        fieldnames.append(desc_header)
+
     clean_path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4().hex[:8]}_clean_{original}")
     with open(clean_path, "w", newline="", encoding="utf-8") as cf:
-        writer = csv.DictWriter(cf, fieldnames=columns, extrasaction="ignore")
+        writer = csv.DictWriter(cf, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         for rec in valid_records:
-            writer.writerow(rec["original"])
+            row = dict(rec["original"])
+            if default_description and desc_header is not None:
+                if not (row.get(desc_header) or "").strip():
+                    row[desc_header] = default_description
+            writer.writerow(row)
 
     # Original upload no longer needed (valid rows are in clean_path; review rows
     # are passed to the job manager).

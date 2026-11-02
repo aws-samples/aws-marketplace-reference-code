@@ -288,6 +288,7 @@ class JobManager:
                         "status": "NEED_REVIEW",
                         "billing_adjustment_request_id": "",
                         "message": rr.get(REVIEW_REASON_COL, ""),
+                        "description": (get_field(rr, _hmap, "description") or "").strip(),
                     })
 
             processor = AdjustmentProcessor(

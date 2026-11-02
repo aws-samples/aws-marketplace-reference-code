@@ -109,6 +109,7 @@ you may leave them blank or **omit them from the file entirely**.
 | `aws_account_id` | Optional | Text | Buyer (acceptor) account ID. Reference only. **Keep as text** — 12-digit IDs can have leading zeros. | `013579169436` |
 | `product_code` | Optional | Text | Product code. Reference only. | `2brlrrc75ciw9evgh9mbpygbn` |
 | `month_id` | Optional | Text | Billing month label. Reference only, free-form — stored but never parsed. | `2026-01` |
+| `description` | Optional | Text | Free-text memo sent to the service as the adjustment's `description` — the **"Additional details"** field in the Partner Central console. AWS includes it in the **notification email sent to the buyer** when the adjustment is confirmed. Max 500 characters. Unlike the other optional columns it **is** sent to the API, but it never affects the refund's identity (the idempotency token is `agreement_id` + `invoice_id` only). Leave blank/omit for no memo; in the web app and CLI a single memo can be applied to every row that lacks its own value. | `Q3 FY26 overage credit` |
 
 "Optional" means the column may be omitted from the file entirely, or included with
 blank values, without failing validation.

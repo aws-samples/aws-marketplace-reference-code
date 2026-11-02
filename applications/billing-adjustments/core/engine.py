@@ -83,15 +83,30 @@ REQUIRED_COLUMNS = [
 ]
 # Optional "reference" columns. If present they are carried through to the output
 # for the operator's convenience, but the tool never reads them to drive a refund,
-# so they may be omitted entirely from the file.
+# so they may be omitted entirely from the file. The `description` column is the one
+# exception: when a row carries a value it is sent to the billing-adjustment API as
+# that adjustment's description (a free-text "memo" on the credit). It still never
+# affects the refund's identity — the idempotency client token is derived from
+# agreement_id + invoice_id only — so adding or changing a description does not change
+# which refund is created.
 REFERENCE_COLUMNS = [
     "seller_id",
     "aws_account_id",
     "product_code",
     "month_id",
+    "description",
 ]
 # Amount column may use either of these names
 AMOUNT_COLUMN_OPTIONS = ["refund_amount", "SUM of Calculated Refund (T-Y)"]
+
+# Column carrying the optional free-text memo, and the length the service allows.
+# This is the adjustment's `description` — the "Additional details" field in the Partner
+# Central console — which AWS includes in the notification email sent to the buyer when
+# the adjustment is confirmed. BatchCreateBillingAdjustmentRequest rejects a description
+# longer than this (and requires at least 1 char when the field is present), so the tool
+# validates length up front rather than letting the submission fail server-side.
+DESCRIPTION_COLUMN = "description"
+MAX_DESCRIPTION_LENGTH = 500
 
 # Maximum number of digits allowed after the decimal point in a refund amount.
 # The billing-adjustment backend rejects amounts with more precision than this
@@ -284,6 +299,12 @@ def validate_file_format(filepath):
                         )
                 except ValueError:
                     issues.append(f"invalid amount '{row.get(amount_col)}'")
+                desc = (get_field(row, header_map, DESCRIPTION_COLUMN) or '').strip()
+                if len(desc) > MAX_DESCRIPTION_LENGTH:
+                    issues.append(
+                        f"description exceeds {MAX_DESCRIPTION_LENGTH} characters "
+                        f"(got {len(desc)})"
+                    )
                 if issues:
                     details["row_issues"].append({"line": i, "issues": issues})
 
@@ -325,6 +346,7 @@ def load_csv(filepath):
                 'seller_id': (get_field(row, header_map, 'seller_id') or '').strip(),
                 'month': (get_field(row, header_map, 'month_id') or '').strip(),
                 'product_code': (get_field(row, header_map, 'product_code') or '').strip(),
+                'description': (get_field(row, header_map, DESCRIPTION_COLUMN) or '').strip(),
             })
     return rows
 
@@ -373,6 +395,7 @@ def classify_input_rows(filepath):
             invoice_id = (get_field(row, header_map, COL_INVOICE_ID) or '').strip()
             raw_amount = row.get(amount_col, '')
             amount = format_amount(raw_amount)
+            description = (get_field(row, header_map, DESCRIPTION_COLUMN) or '').strip()
 
             reasons = []
             if _is_missing_value(agreement_id):
@@ -389,6 +412,11 @@ def classify_input_rows(filepath):
                     )
             except (ValueError, TypeError):
                 reasons.append(f"invalid amount '{raw_amount}'")
+            if len(description) > MAX_DESCRIPTION_LENGTH:
+                reasons.append(
+                    f"description exceeds {MAX_DESCRIPTION_LENGTH} characters "
+                    f"(got {len(description)})"
+                )
 
             if not reasons:
                 combo = (agreement_id, invoice_id)
@@ -410,6 +438,7 @@ def classify_input_rows(filepath):
                     'seller_id': (get_field(row, header_map, 'seller_id') or '').strip(),
                     'month': (get_field(row, header_map, 'month_id') or '').strip(),
                     'product_code': (get_field(row, header_map, 'product_code') or '').strip(),
+                    'description': description,
                     'original': dict(row),
                 })
     return valid_records, review_rows, columns, amount_col
@@ -502,7 +531,7 @@ class RecordWriter:
 
     CSV_FIELDS = [
         "timestamp", "phase", "agreement_id", "invoice_id", "amount",
-        "status", "billing_adjustment_request_id", "message"
+        "status", "billing_adjustment_request_id", "message", "description"
     ]
 
     def __init__(self, jsonl_path, csv_path):
@@ -753,8 +782,9 @@ class AdjustmentProcessor:
         return results
 
     def _create_batch_entries(self, entries):
-        return [
-            {
+        batch = []
+        for e in entries:
+            entry = {
                 'agreementId': e['agreement_id'],
                 'originalInvoiceId': e['invoice_id'],
                 'adjustmentAmount': e['amount'],
@@ -762,8 +792,14 @@ class AdjustmentProcessor:
                 'adjustmentReasonCode': ADJUSTMENT_REASON,
                 'clientToken': generate_client_token(e['agreement_id'], e['invoice_id']),
             }
-            for e in entries
-        ]
+            # Optional free-text memo. The API requires 1..MAX_DESCRIPTION_LENGTH chars
+            # when the field is present, so only include it when non-empty. Inputs are
+            # pre-validated to <= MAX_DESCRIPTION_LENGTH; the slice is a defensive cap.
+            description = (e.get('description') or '').strip()
+            if description:
+                entry['description'] = description[:MAX_DESCRIPTION_LENGTH]
+            batch.append(entry)
+        return batch
 
     def get_adjustment_status(self, agreement_id, request_id):
         """Return (status, statusMessage) for a request.
@@ -1076,6 +1112,13 @@ class AdjustmentProcessor:
         """
         counters = counters if counters is not None else {}
         valid_rows = [r for r in rows if r['agreement_id']]
+        # Per-row memo keyed by <agreement, invoice>, so every emitted record can carry
+        # the description that was (or would be) sent to the API for that refund — making
+        # the output log a complete audit of what memo accompanied each adjustment.
+        description_by_key = {
+            (r['agreement_id'], r['invoice_id']): (r.get('description') or '')
+            for r in valid_rows
+        }
         counters['total'] = len(valid_rows)
         counters.setdefault('processed', 0)
         counters.setdefault('succeeded', 0)
@@ -1158,6 +1201,7 @@ class AdjustmentProcessor:
                 "status": status,
                 "billing_adjustment_request_id": req_id,
                 "message": message,
+                "description": description_by_key.get((agreement_id, invoice_id), ""),
             })
             self.progress_cb(**counters)
 
