@@ -6,6 +6,8 @@ import src.catalog_api.offers.create_private_offer_with_contract_pricing_for_con
 import src.catalog_api.offers.create_private_offer_with_contract_pricing_with_flexible_payment_schedule_for_saas_product.start_changeset as capi_39
 import src.catalog_api.offers.create_replacement_private_offer_with_contract_pricing.start_changeset as capi_95
 import src.catalog_api.channel_partner_offers.create_resale_authorization_replacement_offer.start_changeset as capi_96
+import src.catalog_api.offers.add_free_trial_with_auto_conversion_to_public_offer_for_saas_product.start_changeset as capi_113
+import src.catalog_api.offers.enable_free_trial_auto_conversion_for_saas_product.start_changeset as capi_114
 
 
 # this test needs to be run in primary seller account
@@ -74,6 +76,42 @@ def test_capi_96():
     changeset_stringified = sd.stringify_details_sections(patched_changeset_json)
 
     response = capi_96.main(
+        changeset_stringified,
+    )
+
+    assert response["ResponseMetadata"]["HTTPStatusCode"] == 200
+
+
+# this test needs to be run in primary seller account
+def test_capi_113():
+    unpatched_changeset_json = sd.open_json_file(
+        "src/catalog_api/offers/add_free_trial_with_auto_conversion_to_public_offer_for_saas_product/changeset.json"
+    )
+
+    patched_changeset_json = test_helpers.patch_json_params(
+        unpatched_changeset_json, "/capi-113"
+    )
+    changeset_stringified = sd.stringify_details_sections(patched_changeset_json)
+
+    response = capi_113.main(
+        changeset_stringified,
+    )
+
+    assert response["ResponseMetadata"]["HTTPStatusCode"] == 200
+
+
+# this test needs to be run in primary seller account
+def test_capi_114():
+    unpatched_changeset_json = sd.open_json_file(
+        "src/catalog_api/offers/enable_free_trial_auto_conversion_for_saas_product/changeset.json"
+    )
+
+    patched_changeset_json = test_helpers.patch_json_params(
+        unpatched_changeset_json, "/capi-114"
+    )
+    changeset_stringified = sd.stringify_details_sections(patched_changeset_json)
+
+    response = capi_114.main(
         changeset_stringified,
     )
 
