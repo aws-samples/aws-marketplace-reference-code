@@ -2,7 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """
 Purpose
-Shows how to use the AWS SDK for Python (Boto3) to change free trial duration for my SaaS product by modifying my free trial public offer
+Shows how to use the AWS SDK for Python (Boto3) to change the free trial duration of the public offer of my SaaS product.
+The change set includes the UsageBasedPricingTerm, because UpdatePricingTerms replaces all pricing terms
 CAPI-14
 """
 
