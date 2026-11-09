@@ -105,6 +105,21 @@ def poll_changeset_status(changeset_id):
     return product_response
 
 
+def wait_for_changeset(changeset_id, timeout_seconds=1800, interval_seconds=15):
+    """Poll a change set until it finishes and return its final status."""
+    deadline = time.time() + timeout_seconds
+
+    while time.time() < deadline:
+        status = describe_changeset(changeset_id)["Status"]
+
+        if status in ("SUCCEEDED", "FAILED", "CANCELLED"):
+            return status
+
+        time.sleep(interval_seconds)
+
+    return "TIMED_OUT"
+
+
 def get_all_parameters(path):
     response = ssm_client.get_parameters_by_path(Path=path, Recursive=True)
 

@@ -357,10 +357,10 @@ marketplace-catalog_CreatePublicFreeTrialOfferWithSubscriptionPricingForSaasProd
   services:
     marketplace-catalog: !!set
       StartChangeSet: null
-  synopsis: create a public free trial offer with subscription pricing for a SaaS product.
-  title: Create a public free trial offer with subscription pricing for a SaaS product
+  synopsis: create a public free trial offer with subscription pricing for a SaaS product. This example is deprecated, because standalone free trial offers for SaaS subscription products can no longer be created. Use <emphasis>Add a free trial that converts to a paid subscription to the public offer of a SaaS subscription product</emphasis> instead.
+  title: (Deprecated) Create a public free trial offer with subscription pricing for a SaaS product
     using an &AWS; SDK
-  title_abbrev: Create a public free trial offer with subscription pricing for a SaaS product
+  title_abbrev: (Deprecated) Create a public free trial offer with subscription pricing for a SaaS product
 marketplace-catalog_UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaasProduct:
   category: Offers
   languages:
@@ -370,7 +370,7 @@ marketplace-catalog_UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaasProduct:
       - excerpts:
         - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
           snippet_files:
-          - java/resources/changeSets/offers/UpdateFreeTrialDurationOfPublicFreeTrialOfferForSass.json
+          - java/resources/changeSets/offers/UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaas.json
         sdk_version: 2
         github_name: "&MKTlong; API Reference Code Library"
         github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
@@ -390,10 +390,74 @@ marketplace-catalog_UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaasProduct:
   services:
     marketplace-catalog: !!set
       StartChangeSet: null
-  synopsis: update the free trial duration of a public free trial offer for a SaaS product.
-  title: Update the free trial duration of a public free trial offer for a SaaS product using
+  synopsis: update the free trial duration of a public free trial offer for a SaaS subscription product. Use this change set on the public offer that has the free trial. A standalone free trial offer takes only the <code>FreeTrialPricingTerm</code>. <code>UpdatePricingTerms</code> replaces all pricing terms, so copy your offer's current <code>UsageBasedPricingTerm</code> from <code>DescribeEntity</code> instead of using the example rates, and grant every dimension in the free trial.
+  title: Update the free trial duration of a public free trial offer for a SaaS subscription product using
     an &AWS; SDK
-  title_abbrev: Update the free trial duration of a public free trial offer for a SaaS product
+  title_abbrev: Update the free trial duration of a public free trial offer for a SaaS subscription product
+marketplace-catalog_AddFreeTrialWithAutoConversionToPublicOfferForSaasProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/AddFreeTrialWithAutoConversionToPublicOfferForSaas.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/add_free_trial_with_auto_conversion_to_public_offer_for_saas_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/add_free_trial_with_auto_conversion_to_public_offer_for_saas_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: add a free trial to the public offer of a SaaS subscription product. When the free trial ends, it converts to a paid subscription at the rates in the offer. <code>UpdatePricingTerms</code> replaces all pricing terms, so copy your offer's current <code>UsageBasedPricingTerm</code> from <code>DescribeEntity</code> instead of using the example rates, and grant every dimension in the free trial.
+  title: Add a free trial that converts to a paid subscription to the public offer of a SaaS subscription product using an &AWS; SDK
+  title_abbrev: Add a free trial that converts to a paid subscription to the public offer of a SaaS subscription product
+marketplace-catalog_EnableFreeTrialAutoConversionForSaasProduct:
+  category: Offers
+  languages:
+    Java:
+      name: java
+      versions:
+      - excerpts:
+        - description: To run this example, pass the following JSON changeset to <code>RunChangesets</code> in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section. 
+          snippet_files:
+          - java/resources/changeSets/offers/EnableFreeTrialAutoConversionForSaas.json
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#catalog-api-reference-code
+    Python:
+      name: python
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/catalog_api/offers/enable_free_trial_auto_conversion_for_saas_product/changeset.json
+        - description: Run this script to start the changeset. Helper functions are defined in <emphasis>Utilities to start a changeset</emphasis> from the <emphasis role="bold">Utilities</emphasis> section.
+          snippet_files:
+          - python/src/catalog_api/offers/enable_free_trial_auto_conversion_for_saas_product/start_changeset.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
+  services:
+    marketplace-catalog: !!set
+      StartChangeSet: null
+  synopsis: replace the standalone free trial offer of a SaaS subscription product with a free trial on its public offer. The change set sets the expiration date of the standalone free trial offer (<code>offer-2222222222222</code>) to a date in the past so that buyers no longer see that offer, and adds the free trial to the public offer (<code>offer-1111111111111</code>). Existing free trial agreements aren't changed. <code>UpdateAvailability</code> is supported on free trial offers, and the standalone free trial offer can't be made available again after it expires. <code>UpdatePricingTerms</code> replaces all pricing terms, so copy your offer's current <code>UsageBasedPricingTerm</code> from <code>DescribeEntity</code> instead of using the example rates, and grant every dimension in the free trial.
+  title: Enable free trial auto-conversion for a SaaS subscription product using an &AWS; SDK
+  title_abbrev: Enable free trial auto-conversion for a SaaS subscription product
 marketplace-catalog_CreateLimitedContainerProductPublicOffer:
   category: Container products
   languages:
