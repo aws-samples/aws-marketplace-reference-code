@@ -1,0 +1,47 @@
+{
+    "Catalog": "AWSMarketplace",
+    "ChangeSet": [
+        {
+            "ChangeType": "UpdatePricingTerms",
+            "Entity": {
+                "Type": "Offer@1.0",
+                "Identifier": "offer-1111111111111"
+            },
+            "DetailsDocument": {
+                "PricingModel": "Usage",
+                "Terms": [
+                    {
+                        "Type": "UsageBasedPricingTerm",
+                        "CurrencyCode": "USD",
+                        "RateCards": [
+                            {
+                                "RateCard": [
+                                    {
+                                        "DimensionKey": "WorkloadSmall",
+                                        "Price": "0.15"
+                                    },
+                                    {
+                                        "DimensionKey": "WorkloadMedium",
+                                        "Price": "0.25"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "Type": "FreeTrialPricingTerm",
+                        "Duration": "P20D",
+                        "Grants": [
+                            {
+                                "DimensionKey": "WorkloadSmall"
+                            },
+                            {
+                                "DimensionKey": "WorkloadMedium"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

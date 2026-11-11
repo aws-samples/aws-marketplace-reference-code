@@ -3,6 +3,9 @@
 """
 Purpose
 Shows how to use the AWS SDK for Python (Boto3) to change free trial duration for my SaaS product by modifying my free trial public offer
+Use it on the public offer that has the free trial. A standalone free trial offer takes only the FreeTrialPricingTerm.
+UpdatePricingTerms replaces all pricing terms, so copy your offer's current UsageBasedPricingTerm from
+DescribeEntity instead of using the example rates, and grant every dimension in the free trial.
 CAPI-14
 """
 

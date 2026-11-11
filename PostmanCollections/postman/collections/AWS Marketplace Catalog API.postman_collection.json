@@ -5962,7 +5962,7 @@
               ]
             },
             {
-              "name": "UpdateFreeTrialDurationOfPublicFreeTrialOfferForSass",
+              "name": "UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaas",
               "event": [
                 {
                   "listen": "test",
@@ -5992,7 +5992,7 @@
                 ],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1111111111111\"\n            },\n            \"DetailsDocument\": {\n                \"PricingModel\": \"Usage\",\n                \"Terms\": [\n                    {\n                        \"Type\": \"FreeTrialPricingTerm\",\n                        \"Duration\": \"P21D\",\n                        \"Grants\": [\n                            {\n                                \"DimensionKey\": \"WorkloadSmall\"\n                            },\n                            {\n                                \"DimensionKey\": \"WorkloadMedium\"\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}",
+                  "raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1111111111111\"\n            },\n            \"DetailsDocument\": {\n                \"PricingModel\": \"Usage\",\n                \"Terms\": [\n                    {\n                        \"Type\": \"UsageBasedPricingTerm\",\n                        \"CurrencyCode\": \"USD\",\n                        \"RateCards\": [\n                            {\n                                \"RateCard\": [\n                                    {\n                                        \"DimensionKey\": \"WorkloadSmall\",\n                                        \"Price\": \"0.15\"\n                                    },\n                                    {\n                                        \"DimensionKey\": \"WorkloadMedium\",\n                                        \"Price\": \"0.25\"\n                                    }\n                                ]\n                            }\n                        ]\n                    },\n                    {\n                        \"Type\": \"FreeTrialPricingTerm\",\n                        \"Duration\": \"P21D\",\n                        \"Grants\": [\n                            {\n                                \"DimensionKey\": \"WorkloadSmall\"\n                            },\n                            {\n                                \"DimensionKey\": \"WorkloadMedium\"\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -6013,7 +6013,7 @@
               "response": [
                 {
                   "id": "2ea16086-8624-4b70-84b9-a0b6dec4a60b",
-                  "name": "UpdateFreeTrialDurationOfPublicFreeTrialOfferForSass",
+                  "name": "UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaas",
                   "originalRequest": {
                     "method": "POST",
                     "header": [
@@ -6024,7 +6024,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1111111111111\"\n            },\n            \"DetailsDocument\": {\n                \"PricingModel\": \"Usage\",\n                \"Terms\": [\n                    {\n                        \"Type\": \"FreeTrialPricingTerm\",\n                        \"Duration\": \"P21D\",\n                        \"Grants\": [\n                            {\n                                \"DimensionKey\": \"WorkloadSmall\"\n                            },\n                            {\n                                \"DimensionKey\": \"WorkloadMedium\"\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}",
+                      "raw": "{\n    \"Catalog\": \"AWSMarketplace\",\n    \"ChangeSet\": [\n        {\n            \"ChangeType\": \"UpdatePricingTerms\",\n            \"Entity\": {\n                \"Type\": \"Offer@1.0\",\n                \"Identifier\": \"offer-1111111111111\"\n            },\n            \"DetailsDocument\": {\n                \"PricingModel\": \"Usage\",\n                \"Terms\": [\n                    {\n                        \"Type\": \"UsageBasedPricingTerm\",\n                        \"CurrencyCode\": \"USD\",\n                        \"RateCards\": [\n                            {\n                                \"RateCard\": [\n                                    {\n                                        \"DimensionKey\": \"WorkloadSmall\",\n                                        \"Price\": \"0.15\"\n                                    },\n                                    {\n                                        \"DimensionKey\": \"WorkloadMedium\",\n                                        \"Price\": \"0.25\"\n                                    }\n                                ]\n                            }\n                        ]\n                    },\n                    {\n                        \"Type\": \"FreeTrialPricingTerm\",\n                        \"Duration\": \"P21D\",\n                        \"Grants\": [\n                            {\n                                \"DimensionKey\": \"WorkloadSmall\"\n                            },\n                            {\n                                \"DimensionKey\": \"WorkloadMedium\"\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -6529,7 +6529,7 @@
               ]
             },
             {
-              "name": "CreatePublicFreeTrialOfferWithSubscriptionPricingForSaas",
+              "name": "(Deprecated) CreatePublicFreeTrialOfferWithSubscriptionPricingForSaas",
               "event": [
                 {
                   "listen": "test",

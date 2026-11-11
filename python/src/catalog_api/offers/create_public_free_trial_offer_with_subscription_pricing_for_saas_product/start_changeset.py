@@ -3,6 +3,8 @@
 """
 Purpose
 Shows how to use the AWS SDK for Python (Boto3) to create a public free trial offer with subscription pricing for SaaS product
+Deprecated: standalone free trial offers for SaaS subscription products can no longer be created.
+Use add_free_trial_with_auto_conversion_to_public_offer_for_saas_product instead.
 CAPI-13
 """
 
