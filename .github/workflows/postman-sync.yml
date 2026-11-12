@@ -1,0 +1,53 @@
+name: Postman sync
+
+# Updates the published Postman collections from the JSON files in
+# PostmanCollections/postman/collections/ after changes are merged to main.
+#
+# Before updating, the workflow checks the published collection for changes
+# made in Postman since the last sync. If it finds any, it stops without
+# overwriting them. To keep them, run `python3 .github/scripts/postman_sync.py pull`
+# locally, commit the result in a pull request, and merge it.
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "PostmanCollections/postman/collections/**"
+      - ".github/postman-sync.json"
+      - ".github/scripts/postman_sync.py"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Check only, don't update Postman"
+        type: boolean
+        default: true
+      allow_overwrite:
+        description: "Overwrite changes made in Postman since the last sync"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: postman-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'aws-samples/aws-marketplace-reference-code' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: postman-publish
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Update Postman collections
+        env:
+          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+          # Push: compare Postman with main before this push. Manual run: compare with main now.
+          BASE_SHA: ${{ github.event_name == 'push' && github.event.before || github.sha }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+          ALLOW_OVERWRITE: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_overwrite || 'false' }}
+        run: python3 .github/scripts/postman_sync.py sync
