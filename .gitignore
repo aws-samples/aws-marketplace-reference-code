@@ -26,3 +26,7 @@ java/.settings
 
 # Node
 node_modules/
+
+# Internal Postman release guide (kept locally, not published)
+PostmanCollections/API_RELEASE_GUIDE.md
+PostmanCollections/images/
