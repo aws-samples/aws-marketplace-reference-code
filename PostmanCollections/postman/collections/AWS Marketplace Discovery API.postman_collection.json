@@ -1,0 +1,2114 @@
+{
+  "info": {
+    "_postman_id": "97604c3a-286b-473e-a707-6563022b0158",
+    "name": "AWS Marketplace Discovery API",
+    "description": "# AWS Marketplace Discovery API\n\nThe AWS Marketplace Discovery API provides programmatic access to the AWS Marketplace catalog. Use these APIs to search and browse listings, retrieve product details and fulfillment options, and access public and private offer pricing and terms. All operations use POST with JSON request bodies and require AWS Signature Version 4 (SigV4) authentication.\n\nThis collection uses AWS Marketplace Discovery APIs, which require AWS Signature Version 4 (SigV4) authentication and are intended for server-to-server use. The Postman web (Cloud Agent) environment may not reliably support these requests due to agent connectivity, CORS, and signing constraints. **For best results, use the Postman Desktop App or Desktop Agent with properly configured AWS credentials. Do not expose AWS credentials in client-side or browser-based applications.**\n\nFor official documentation, refer to [Using the AWS Marketplace Discovery API](https://docs.aws.amazon.com/marketplace/latest/APIReference/discovery-apis.html).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "All Actions",
+      "item": [
+        {
+          "name": "GetListing",
+          "id": "5b6c41b4-01bc-45e1-a85a-2e9b67035c87",
+          "protocolProfileBehavior": {
+            "followRedirects": true,
+            "disableUrlEncoding": false,
+            "disableCookies": false,
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Encoding",
+                "value": "amz-1.0"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetListing"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"listingId\": \"prodview-iqqrhoktopf36\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}",
+              "host": [
+                "{{base_url}}"
+              ]
+            },
+            "description": "# [GetListing](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetListing.html)\n\nRetrieve full details for a listing, including descriptions, highlights, categories, badges, pricing models, pricing units, reviews, promotional media, seller engagements, and associated products and offers. Use the listingId from SearchListings results."
+          },
+          "response": [
+            {
+              "id": "d8f8bd93-7260-46e7-982b-357e0cf9e5d6",
+              "name": "GetListing",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetListing"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"listingId\": \"prodview-iqqrhoktopf36\",\n  \"requestContext\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "x-amzn-RequestId",
+                  "value": "f6db6cfe-1528-4c5b-90c6-b76cd6400bd8"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1497"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 07 Apr 2026 22:49:13 GMT"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n    \"associatedEntities\": [\n        {\n            \"offer\": {\n                \"offerId\": \"offer-di2ese23wmbeu\",\n                \"offerName\": \"Offer created on 2024-10-30T18:55:30.336Z\",\n                \"sellerOfRecord\": {\n                    \"displayName\": \"SELLER_NAME_1\",\n                    \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n                }\n            },\n            \"product\": {\n                \"manufacturer\": {\n                    \"displayName\": \"SELLER_NAME_1\",\n                    \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n                },\n                \"productId\": \"prod-2ljcnxnbnjnvc\",\n                \"productName\": \"SaaSify Cloud GTM Platform (PAYG with 30-Day Free Trial)\"\n            }\n        }\n    ],\n    \"badges\": [\n        {\n            \"badgeType\": \"DEPLOYED_ON_AWS\",\n            \"displayName\": \"Deployed on AWS\"\n        }\n    ],\n    \"catalog\": \"AWSMarketplace\",\n    \"categories\": [\n        {\n            \"categoryId\": \"1885b4a4-02a4-46d1-93d1-d0dcebe41208\",\n            \"displayName\": \"Collaboration & Productivity\"\n        },\n        {\n            \"categoryId\": \"8449bda0-8265-4fca-8910-497b806742fa\",\n            \"displayName\": \"Business Applications\"\n        },\n        {\n            \"categoryId\": \"2a29b1bc-488a-4b36-a1c0-f90380d91692\",\n            \"displayName\": \"eCommerce\"\n        },\n        {\n            \"categoryId\": \"44bf32d0-edc0-4357-b679-c608ac1227f9\",\n            \"displayName\": \"IT Business Management\"\n        }\n    ],\n    \"fulfillmentOptionSummaries\": [\n        {\n            \"displayName\": \"SaaS\",\n            \"fulfillmentOptionType\": \"SAAS\"\n        }\n    ],\n    \"highlights\": [\n        \"End-to-end lifecycle management of offers and transactions.\",\n        \"Integration with Salesforce, Slack, Microsoft Teams, etc.\",\n        \"Learn more from COMPANY_WEBSITE\"\n    ],\n    \"listingId\": \"prodview-iqqrhoktopf36\",\n    \"listingName\": \"SaaSify Cloud GTM Platform (PAYG with 30-Day Free Trial)\",\n    \"logoThumbnailUrl\": \"https://d7umqicpi7263.cloudfront.net/img/product/020a451d-ca45-4f0f-bc43-c69f2891b319.com/dd1194ad0552edeb2caa8fdc9780bb1c\",\n    \"longDescription\": \"Manage your AWS marketplace product offers with a single integrated solution\\n\\nSaaSify solution helps to manage the full lifecycle of your transact-able offers in AWS marketplace. Combined with the signature white-glove support from SELLER_NAME_1, you can go live with your offer within a week or two (adhering to the SLA set by AWS).\\n\\nThis includes:\\n\\n1. Unlimited listing.\\n2. Unlimited public purchases / pay-as-you-go subscriptions.\\n3. One Private Offer per month, carry forwarded for 12 months if unused.\\n4. Additional Private offer at 249 USD per month.\\n5. A private offer transaction is only considered for quota if it is purchased and has a Total Contract Value of at least 10 USD.\\n6. Free migration of your existing listings and private offer transactions.\",\n    \"pricingModels\": [\n        {\n            \"displayName\": \"Usage\",\n            \"pricingModelType\": \"USAGE\"\n        }\n    ],\n    \"pricingUnits\": [\n        {\n            \"displayName\": \"Units\",\n            \"pricingUnitType\": \"UNITS\"\n        }\n    ],\n    \"promotionalMedia\": [],\n    \"publisher\": {\n        \"displayName\": \"SELLER_NAME_1\",\n        \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n    },\n    \"resources\": [\n        {\n            \"contentType\": \"LINK\",\n            \"displayName\": \"See product video\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"VIDEO_URL\"\n        },\n        {\n            \"contentType\": \"LINK\",\n            \"displayName\": \"SaaSify\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"COMPANY_WEBSITE\"\n        },\n        {\n            \"contentType\": \"LINK\",\n            \"displayName\": \"AWS Marketplace GTM with SaaSify\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"COMPANY_WEBSITEcloud-gtm-solutions-aws/\"\n        },\n        {\n            \"contentType\": \"OTHER\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"Please contact SUPPORT_EMAIL for any product support and SALES_EMAIL\\nfor any sales or private offer enquiry.\"\n        }\n    ],\n    \"sellerEngagements\": [],\n    \"shortDescription\": \"Single integrated platform enabling you to list and manage complete lifecycle of your SaaS solutions on AWS Marketplace.\",\n    \"useCases\": []\n}",
+              "createdAt": "2026-04-09T17:44:22.000Z",
+              "updatedAt": "2026-04-09T17:44:22.000Z"
+            }
+          ],
+          "createdAt": "2026-04-09T17:44:21.000Z",
+          "updatedAt": "2026-04-09T17:44:22.000Z"
+        },
+        {
+          "name": "GetOffer",
+          "id": "70b7df58-cd5e-411d-bc58-a9391edd802f",
+          "protocolProfileBehavior": {
+            "followRedirects": true,
+            "disableUrlEncoding": false,
+            "disableCookies": false,
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Encoding",
+                "value": "amz-1.0"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOffer"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"offerId\": \"offer-tzzpgdyj52fcy\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}",
+              "host": [
+                "{{base_url}}"
+              ]
+            },
+            "description": "# [GetOffer](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOffer.html)\n\nRetrieve details for a specific offer, including the pricing model, seller of record, availability dates, badges (private pricing, future dated, replacement offer), and associated products and offer sets. Use the offerId from ListPurchaseOptions results."
+          },
+          "response": [
+            {
+              "id": "a3422849-4ede-4f80-aadd-bc274d8677e4",
+              "name": "GetOffer",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOffer"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerId\": \"offer-tzzpgdyj52fcy\",\n  \"requestContext\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "x-amzn-RequestId",
+                  "value": "34973a2b-6842-4bbd-be48-345bbf1567c1"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "375"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 07 Apr 2026 22:49:19 GMT"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n    \"agreementProposalId\": \"at-1mqqxe95xqm6nf68b8eyzk7xd\",\n    \"associatedEntities\": [\n        {\n            \"product\": {\n                \"manufacturer\": {\n                    \"displayName\": \"SELLER_NAME_2\",\n                    \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n                },\n                \"productId\": \"prod-ogxnnwxhqbqto\",\n                \"productName\": \"My SaaS Product - Contract with Consumption pricing model\"\n            }\n        }\n    ],\n    \"availableFromTime\": 1714759891,\n    \"badges\": [],\n    \"catalog\": \"AWSMarketplace\",\n    \"offerId\": \"offer-tzzpgdyj52fcy\",\n    \"offerName\": \"Offer created on 2024-05-03T18:10:26.020Z\",\n    \"pricingModel\": {\n        \"displayName\": \"Contract\",\n        \"pricingModelType\": \"CONTRACT\"\n    },\n    \"sellerOfRecord\": {\n        \"displayName\": \"SELLER_NAME_2\",\n        \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n    }\n}",
+              "createdAt": "2026-04-09T17:44:22.000Z",
+              "updatedAt": "2026-04-09T17:44:22.000Z"
+            }
+          ],
+          "createdAt": "2026-04-09T17:44:21.000Z",
+          "updatedAt": "2026-04-09T17:44:22.000Z"
+        },
+        {
+          "name": "GetOfferSet",
+          "id": "bf024f32-55ce-495d-b68e-baa5c36e55aa",
+          "protocolProfileBehavior": {
+            "followRedirects": true,
+            "disableUrlEncoding": false,
+            "disableCookies": false,
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Encoding",
+                "value": "amz-1.0"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOfferSet"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"offerSetId\": \"offerset-zv2ea6au3d35a\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}",
+              "host": [
+                "{{base_url}}"
+              ]
+            },
+            "description": "# [GetOfferSet](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOfferSet.html)\n\nRetrieve details for an offer set — a grouped collection of private offers for a multi-product solution. Returns the associated products and offers, seller of record, availability dates, and buyer notes. Use the offerSetId from ListPurchaseOptions results where purchaseOptionType is OFFERSET."
+          },
+          "response": [
+            {
+              "id": "b82dad86-f51e-42da-b83a-f59a357cbfca",
+              "name": "GetOfferSet",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOfferSet"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerSetId\": \"offerset-zv2ea6au3d35a\",\n  \"requestContext\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "x-amzn-RequestId",
+                  "value": "f4ea9399-334e-4303-8521-9be9f4076f3f"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "465"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 07 Apr 2026 22:49:24 GMT"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n    \"associatedEntities\": [\n        {\n            \"offer\": {\n                \"offerId\": \"offer-tnirjggpf4nvw\",\n                \"offerName\": \"Test Offer set\",\n                \"sellerOfRecord\": {\n                    \"displayName\": \"SELLER_NAME_3\",\n                    \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n                }\n            },\n            \"product\": {\n                \"manufacturer\": {\n                    \"displayName\": \"SELLER_NAME_3\",\n                    \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n                },\n                \"productId\": \"prod-eqnaj6kxiviuu\",\n                \"productName\": \"Sample Product 3264\"\n            }\n        },\n        {\n            \"offer\": {\n                \"offerId\": \"offer-tteihntmppcdy\",\n                \"offerName\": \"test offerset 2\",\n                \"sellerOfRecord\": {\n                    \"displayName\": \"SELLER_NAME_3\",\n                    \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n                }\n            },\n            \"product\": {\n                \"manufacturer\": {\n                    \"displayName\": \"SELLER_NAME_3\",\n                    \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n                },\n                \"productId\": \"prod-gr4qmpiz4wtmq\",\n                \"productName\": \"Sample Product 3264\"\n            }\n        }\n    ],\n    \"availableFromTime\": 1774386009,\n    \"badges\": [\n        {\n            \"badgeType\": \"PRIVATE_PRICING\",\n            \"displayName\": \"Private Pricing\"\n        }\n    ],\n    \"buyerNotes\": \"Please follow the instructions on the landing page to proceed.\",\n    \"catalog\": \"AWSMarketplace\",\n    \"expirationTime\": 1777593599.999,\n    \"offerSetId\": \"offerset-zv2ea6au3d35a\",\n    \"offerSetName\": \"My OfferSet Name\",\n    \"sellerOfRecord\": {\n        \"displayName\": \"SELLER_NAME_3\",\n        \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n    }\n}",
+              "createdAt": "2026-04-09T17:44:22.000Z",
+              "updatedAt": "2026-04-09T17:44:22.000Z"
+            }
+          ],
+          "createdAt": "2026-04-09T17:44:21.000Z",
+          "updatedAt": "2026-04-09T17:44:22.000Z"
+        },
+        {
+          "name": "GetOfferTerms",
+          "id": "a18305a3-66dd-44af-8348-cb6bf0748a6c",
+          "protocolProfileBehavior": {
+            "followRedirects": true,
+            "disableUrlEncoding": false,
+            "disableCookies": false,
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Encoding",
+                "value": "amz-1.0"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOfferTerms"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"offerId\": \"offer-tzzpgdyj52fcy\",\n  \"requestContext\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}",
+              "host": [
+                "{{base_url}}"
+              ]
+            },
+            "description": "# [GetOfferTerms](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOfferTerms.html) \n\nRetrieve the commercial terms for an offer, including usage-based pricing, fixed upfront pricing, configurable upfront pricing, free trial periods, BYOL, legal documents, payment schedules, renewal terms, support terms, and validity terms. Each term includes rate cards, grants, or schedules as applicable. Use the offerId from GetOffer or ListPurchaseOptions."
+          },
+          "response": [
+            {
+              "id": "0473b4a0-092d-45b5-aa26-a649efafaf57",
+              "name": "GetOfferTerms",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOfferTerms"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerId\": \"offer-tzzpgdyj52fcy\",\n   \"maxResults\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "x-amzn-RequestId",
+                  "value": "c3007b3c-c752-40c0-a1ba-2f6477142359"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1282"
+                },
+                {
+                  "key": "Date",
+                  "value": "Wed, 08 Apr 2026 03:34:05 GMT"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n    \"nextToken\": \"eyJ2ZXJzaW9uIjoiMi4wIiwibWF0ZXJpYWxTZXRTZXJpYWxOdW1iZXIiOm51bGwsImNpcGhlclRleHQiOiJBZ1Y0WUNaTzRTbTdvSnlDQnNTUUVDZ2VnWjZNZldPWlJiVm9PWDhpWms3aGJXOEFYd0FCQUJWaGQzTXRZM0o1Y0hSdkxYQjFZbXhwWXkxclpYa0FSRUZ2WmtGT1NWRm9PVVl5V2tkQ1ZVRTJPVVo2T1VKQk5reDNVMVpyUzJORE1GRkhkRmRyTlZVMmJFVk9iM1kwTjNaTWIyMTJUWFJvVkRkcVpVVlRkRWx3WnowOUFBRUFFV0YzY3kxcmJYTXRhR2xsY21GeVkyaDVBQkpFYVhOamIzWmxjbmxCVUVsTGJYTkxaWGtBWEdRZ2VWVUlieUJDeTRvU2JVN3BwNXVkcVVZTEgwZEhEeEZTd1k0UmdlcExvME5NeTZqemlyQ3pZamg4Tks0YUdHbzdxX2N5MzJmOTFoZDZlcTdjUWhQNVdkaU1PazcxakVxNmxSZmJBemVGd2QtV3JWX1EteC1lVWpBNEFnQUFFQUE5SksyOWxWTGN1VEFWdVlQYjlfSWgxT3B2QUNXczg4S2FEQmxzRHRXQjFoU3MyNXpNTWNXTFRYOGRJVGM5UGFuX19fX19BQUFBQVFBQUFBQUFBQUFBQUFBQUFRQUFBT0JSRU0yR0lUcW1HQVoxanlvd0kxbTV0dzdmQUlqajM1cEh2eHBLMVRDVWdRSEZTdjlfbVBQOGhNTVljOHN4cmNzRTc2SG9LbmdzWEEwODVNQ2ZtQUsyME9zaS1mVGxjcXo2VFlULUo3b083SFozTV9TeFgxdXhiS2oyZWp4cENlU25lUnlXTHdqMzhBUzZQNTdsMWhNVUhCQ2ZIQy0zTnpyZHlVeGY3Yi0wenJXVDZIYWQ4Uk1XRG9kdFE0bFdrdDNEVFBCQ3VVcTBDUm5nUVU4bFFPZ0lWMXF4bFpPM0lpZjRhRlZYbnBmVG92YnljQkhlSlhYaWQtc3Z0TGFHQmltNFUtSGZiSHN4VHl0d0w1VkhwaktkdVN2RnFSUDVlWDFPcDRvWi1KdWxKZEY0ZDh5U3NJdmlYazNvaFBnc3piY0FaekJsQWpFQXpGNFA1akhNekluY2x6U3BJa2VMcXVxZmxodER6a1pHamROSmFsNFBUemdnci0ySjNXSTJ2YXcwa0ZFeFFwb1BBakFoSm01ZTlHOFdkbkxEcGhXS012TmM0THJqX2ppVWx1WUgxRGRDRVRzN2x3dnc2cFZnRkN4cVd1ekd0SG9US2tVIn0=\",\n    \"offerTerms\": [\n        {\n            \"usageBasedPricingTerm\": {\n                \"currencyCode\": \"USD\",\n                \"id\": \"term-cd9c4358549034ab1e2907c3eaa9e50216f3a0759e681b079d5b17be7087a2ed\",\n                \"rateCards\": [\n                    {\n                        \"rateCard\": [\n                            {\n                                \"description\": \"Metered dimension 1 desc goes here\",\n                                \"dimensionKey\": \"metered_1_id\",\n                                \"dimensionLabels\": [],\n                                \"displayName\": \"Metered 1\",\n                                \"price\": \"0.001\",\n                                \"unit\": \"Units\"\n                            },\n                            {\n                                \"description\": \"Metered dimension 2 desc goes here\",\n                                \"dimensionKey\": \"metered_2_id\",\n                                \"dimensionLabels\": [],\n                                \"displayName\": \"Metered 2\",\n                                \"price\": \"0.001\",\n                                \"unit\": \"Units\"\n                            },\n                            {\n                                \"description\": \"Metered dimension 3 desc goes here\",\n                                \"dimensionKey\": \"metered_3_id\",\n                                \"dimensionLabels\": [],\n                                \"displayName\": \"Metered 3\",\n                                \"price\": \"0.001\",\n                                \"unit\": \"Units\"\n                            }\n                        ]\n                    }\n                ],\n                \"type\": \"UsageBasedPricingTerm\"\n            }\n        }\n    ]\n}",
+              "createdAt": "2026-04-09T17:44:22.000Z",
+              "updatedAt": "2026-04-09T17:44:22.000Z"
+            }
+          ],
+          "createdAt": "2026-04-09T17:44:21.000Z",
+          "updatedAt": "2026-04-09T17:44:22.000Z"
+        },
+        {
+          "name": "GetProduct",
+          "id": "be0c6456-64b3-475c-be55-34db6164f9d6",
+          "protocolProfileBehavior": {
+            "followRedirects": true,
+            "disableUrlEncoding": false,
+            "disableCookies": false,
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Encoding",
+                "value": "amz-1.0"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetProduct"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"prod-ogxnnwxhqbqto\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}",
+              "host": [
+                "{{base_url}}"
+              ]
+            },
+            "description": "# [GetProduct](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetProduct.html) \n\nRetrieve detailed product information including descriptions, highlights, categories, promotional media, seller engagements, manufacturer details, and fulfillment option summaries. Use the productId from GetListing's associatedEntities or SearchListings results."
+          },
+          "response": [
+            {
+              "id": "af8a2b16-5801-47fc-b038-1f728214f98d",
+              "name": "GetProduct",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetProduct"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prod-ogxnnwxhqbqto\",\n  \"requestContext\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "x-amzn-RequestId",
+                  "value": "ae044b25-c60a-4b20-9f4d-4284f1cce7d6"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "703"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 07 Apr 2026 22:49:58 GMT"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n    \"catalog\": \"AWSMarketplace\",\n    \"categories\": [\n        {\n            \"categoryId\": \"388e0eec-370f-4c12-9f92-1bb2193509d3\",\n            \"displayName\": \"Backup & Recovery\"\n        },\n        {\n            \"categoryId\": \"579164ab-a400-4924-9c9c-590e45580b7d\",\n            \"displayName\": \"Infrastructure Software\"\n        }\n    ],\n    \"deployedOnAws\": \"NOT_DEPLOYED\",\n    \"fulfillmentOptionSummaries\": [\n        {\n            \"displayName\": \"SaaS\",\n            \"fulfillmentOptionType\": \"SAAS\"\n        }\n    ],\n    \"highlights\": [\n        \"https://amazon.awsapps.com/workdocs-preview/index.html#/document/20efcf760dd46a96f8f86940b107080f42bfe09eee3d55ade56a6f849af194a9\"\n    ],\n    \"logoThumbnailUrl\": \"https://d7umqicpi7263.cloudfront.net/img/product/3fa09476-8904-44e9-a965-2d6aa981ad22.com/ca60b754fe05a24257176cdbf31c4e0d\",\n    \"longDescription\": \"Description goes here.\",\n    \"manufacturer\": {\n        \"displayName\": \"SELLER_NAME_2\",\n        \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n    },\n    \"productId\": \"prod-ogxnnwxhqbqto\",\n    \"productName\": \"My SaaS Product - Contract with Consumption pricing model\",\n    \"promotionalMedia\": [],\n    \"resources\": [\n        {\n            \"contentType\": \"LINK\",\n            \"displayName\": \"See product video\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"https://amazon.awsapps.com/workdocs-preview/index.html#/document/20efcf760dd46a96f8f86940b107080f42bfe09eee3d55ade56a6f849af194a9\"\n        },\n        {\n            \"contentType\": \"OTHER\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"https://amazon.awsapps.com/workdocs-preview/index.html#/document/20efcf760dd46a96f8f86940b107080f42bfe09eee3d55ade56a6f849af194a9\"\n        }\n    ],\n    \"sellerEngagements\": [],\n    \"shortDescription\": \"Short description goes here.\"\n}",
+              "createdAt": "2026-04-09T17:44:22.000Z",
+              "updatedAt": "2026-04-09T17:44:22.000Z"
+            }
+          ],
+          "createdAt": "2026-04-09T17:44:21.000Z",
+          "updatedAt": "2026-04-09T17:44:22.000Z"
+        },
+        {
+          "name": "ListFulfillmentOptions",
+          "id": "2ff6b971-dc5b-415e-a935-dc20ce56a7c9",
+          "protocolProfileBehavior": {
+            "followRedirects": true,
+            "disableUrlEncoding": false,
+            "disableCookies": false,
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Encoding",
+                "value": "amz-1.0"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.ListFulfillmentOptions"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"prod-ogxnnwxhqbqto\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}",
+              "host": [
+                "{{base_url}}"
+              ]
+            },
+            "description": "# [ListFulfillmentOptions](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_ListFulfillmentOptions.html)\n\nList the fulfillment options available for a product, including deployment details such as version information, operating systems, usage instructions, and release notes. Supports 12 fulfillment types: AMI, SaaS, Container, Helm, EKS Add-on, CloudFormation, API, EC2 Image Builder, Data Exchange, Professional Services, SageMaker Algorithm, and SageMaker Model. Requires a productId.\n"
+          },
+          "response": [
+            {
+              "id": "e932c833-5de0-4797-835b-977799025b9f",
+              "name": "ListFulfillmentOptions",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.ListFulfillmentOptions"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prod-ogxnnwxhqbqto\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "x-amzn-RequestId",
+                  "value": "d0bcfef8-265a-4772-b359-d717c3dda0ff"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "221"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 07 Apr 2026 22:50:06 GMT"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n    \"fulfillmentOptions\": [\n        {\n            \"saasFulfillmentOption\": {\n                \"fulfillmentOptionDisplayName\": \"SaaS\",\n                \"fulfillmentOptionId\": \"fo-napwocfyg2cti\",\n                \"fulfillmentOptionType\": \"SAAS\",\n                \"fulfillmentUrl\": \"https://amazon.awsapps.com/workdocs-preview/index.html#/document/20efcf760dd46a96f8f86940b107080f42bfe09eee3d55ade56a6f849af194a9\"\n            }\n        }\n    ]\n}",
+              "createdAt": "2026-04-09T17:44:22.000Z",
+              "updatedAt": "2026-04-09T17:44:22.000Z"
+            }
+          ],
+          "createdAt": "2026-04-09T17:44:22.000Z",
+          "updatedAt": "2026-04-09T17:44:22.000Z"
+        },
+        {
+          "name": "ListPurchaseOptions",
+          "id": "6b3538b2-3e2e-433b-b9d7-bab9dfe7b4d3",
+          "protocolProfileBehavior": {
+            "followRedirects": true,
+            "disableUrlEncoding": false,
+            "disableCookies": false,
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Encoding",
+                "value": "amz-1.0"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.ListPurchaseOptions"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filters\": [\n    {\n      \"filterType\": \"PRODUCT_ID\",\n      \"filterValues\": [\"prod-ogxnnwxhqbqto\"]\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}",
+              "host": [
+                "{{base_url}}"
+              ]
+            },
+            "description": "# [ListPurchaseOptions]([https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_ListPurchaseOptions.html)\n\nList the purchase options (offers and offer sets) available for a product. Filter by product ID, seller, purchase option type (OFFER or OFFERSET), visibility scope (PRIVATE), and availability status (AVAILABLE, EXPIRED). You must include at least a PRODUCT_ID or VISIBILITY_SCOPE filter. Returns offer summaries with seller, badges, availability dates, and associated entities."
+          },
+          "response": [
+            {
+              "id": "c59ce327-279f-419e-bff8-ce5b7308eccd",
+              "name": "ListPurchaseOptions",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.ListPurchaseOptions"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filters\": [\n    {\n      \"filterType\": \"PRODUCT_ID\",\n      \"filterValues\": [\"prod-ogxnnwxhqbqto\"]\n    }\n  ],\n  \"requestContext\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "x-amzn-RequestId",
+                  "value": "bd5675da-3af2-4c5d-b73b-4134c8bcf0fa"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "342"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 07 Apr 2026 22:50:14 GMT"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n    \"purchaseOptions\": [\n        {\n            \"associatedEntities\": [\n                {\n                    \"offer\": {\n                        \"offerId\": \"offer-tzzpgdyj52fcy\",\n                        \"offerName\": \"Offer created on 2024-05-03T18:10:26.020Z\",\n                        \"sellerOfRecord\": {\n                            \"displayName\": \"SELLER_NAME_2\",\n                            \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n                        }\n                    },\n                    \"product\": {\n                        \"manufacturer\": {\n                            \"displayName\": \"SELLER_NAME_2\",\n                            \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n                        },\n                        \"productId\": \"prod-ogxnnwxhqbqto\",\n                        \"productName\": \"My SaaS Product - Contract with Consumption pricing model\"\n                    }\n                }\n            ],\n            \"availableFromTime\": 1714759891,\n            \"catalog\": \"AWSMarketplace\",\n            \"purchaseOptionId\": \"offer-tzzpgdyj52fcy\",\n            \"purchaseOptionName\": \"Offer created on 2024-05-03T18:10:26.020Z\",\n            \"purchaseOptionType\": \"OFFER\",\n            \"sellerOfRecord\": {\n                \"displayName\": \"SELLER_NAME_2\",\n                \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n            }\n        }\n    ]\n}",
+              "createdAt": "2026-04-09T17:44:22.000Z",
+              "updatedAt": "2026-04-09T17:44:22.000Z"
+            }
+          ],
+          "createdAt": "2026-04-09T17:44:22.000Z",
+          "updatedAt": "2026-04-09T17:44:22.000Z"
+        },
+        {
+          "name": "SearchListings",
+          "id": "6e862cea-5f3b-4623-8303-7560668a393b",
+          "protocolProfileBehavior": {
+            "followRedirects": true,
+            "disableUrlEncoding": false,
+            "disableCookies": false,
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Encoding",
+                "value": "amz-1.0"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.SearchListings"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"searchText\": \"My SaaS Product\",\n  \"filters\": \n  [\n    {\"filterType\": \"MIN_AVERAGE_CUSTOMER_RATING\",\n     \"filterValues\": \n      [\"2\"]\n    }\n  ],\n \"maxResults\": 1,\n \"sortBy\": \"RELEVANCE\",\n \"sortOrder\": \"DESCENDING\"\n }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}",
+              "host": [
+                "{{base_url}}"
+              ]
+            },
+            "description": "# [SearchListings](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_SearchListings.html)\n\nSearch for listings by keyword, category, pricing model, fulfillment type, and other attributes. Returns listing summaries including name, description, publisher, badges, pricing models, and review ratings. Supports sorting by relevance or average customer rating. Use filters from SearchFacets to narrow results."
+          },
+          "response": [
+            {
+              "id": "3c179c3e-52e7-4e59-adaa-02dcc55ddb0e",
+              "name": "SearchListings",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.SearchListings"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"searchText\": \"My SaaS Product\",\n  \"filters\": \n  [\n    {\"filterType\": \"MIN_AVERAGE_CUSTOMER_RATING\",\n     \"filterValues\": \n      [\"2\"]\n    }\n  ],\n \"maxResults\": 1,\n \"sortBy\": \"RELEVANCE\",\n \"sortOrder\": \"DESCENDING\"\n }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "x-amzn-RequestId",
+                  "value": "dd375e7e-9e47-4835-b527-66044644f95a"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "1956"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 07 Apr 2026 22:50:30 GMT"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n    \"listingSummaries\": [\n        {\n            \"associatedEntities\": [\n                {\n                    \"product\": {\n                        \"manufacturer\": {\n                            \"displayName\": \"SELLER_NAME_1\",\n                            \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n                        },\n                        \"productId\": \"720ed1f2-8270-4189-9566-27fad9c978c5\",\n                        \"productName\": \"SaaSify Cloud GTM Platform\"\n                    }\n                }\n            ],\n            \"badges\": [\n                {\n                    \"badgeType\": \"AWS_SPECIALIZATIONS\",\n                    \"displayName\": \"AWS Specializations\"\n                },\n                {\n                    \"badgeType\": \"DEPLOYED_ON_AWS\",\n                    \"displayName\": \"Deployed on AWS\"\n                },\n                {\n                    \"badgeType\": \"STANDARD_CONTRACT\",\n                    \"displayName\": \"Standard Contract\"\n                }\n            ],\n            \"catalog\": \"AWSMarketplace\",\n            \"categories\": [\n                {\n                    \"categoryId\": \"1885b4a4-02a4-46d1-93d1-d0dcebe41208\",\n                    \"displayName\": \"Collaboration & Productivity\"\n                },\n                {\n                    \"categoryId\": \"8449bda0-8265-4fca-8910-497b806742fa\",\n                    \"displayName\": \"Business Applications\"\n                },\n                {\n                    \"categoryId\": \"44bf32d0-edc0-4357-b679-c608ac1227f9\",\n                    \"displayName\": \"IT Business Management\"\n                },\n                {\n                    \"categoryId\": \"2a29b1bc-488a-4b36-a1c0-f90380d91692\",\n                    \"displayName\": \"eCommerce\"\n                }\n            ],\n            \"fulfillmentOptionSummaries\": [\n                {\n                    \"displayName\": \"SaaS\",\n                    \"fulfillmentOptionType\": \"SAAS\"\n                }\n            ],\n            \"listingId\": \"prodview-v426xmqo6renu\",\n            \"listingName\": \"SaaSify Cloud GTM Platform\",\n            \"logoThumbnailUrl\": \"https://d7umqicpi7263.cloudfront.net/img/product/fa4fe58f-513a-4bff-9d4a-07584d51b39f.com/dd1194ad0552edeb2caa8fdc9780bb1c\",\n            \"pricingModels\": [\n                {\n                    \"displayName\": \"Contract\",\n                    \"pricingModelType\": \"CONTRACT\"\n                }\n            ],\n            \"pricingUnits\": [\n                {\n                    \"displayName\": \"Units\",\n                    \"pricingUnitType\": \"UNITS\"\n                }\n            ],\n            \"publisher\": {\n                \"displayName\": \"SELLER_NAME_1\",\n                \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n            },\n            \"reviewSummary\": {\n                \"reviewSourceSummaries\": [\n                    {\n                        \"averageRating\": \"5\",\n                        \"sourceId\": \"AWS_MARKETPLACE\",\n                        \"sourceName\": \"AWS Marketplace\",\n                        \"sourceUrl\": \"https://aws.amazon.com/marketplace/reviews/reviews-list/B09FFZ43WP\",\n                        \"totalReviews\": 2\n                    }\n                ]\n            },\n            \"shortDescription\": \"Single integrated platform enabling you to list and manage complete lifecycle of your SaaS solutions on AWS Marketplace.\"\n        }\n    ],\n    \"nextToken\": \"eyJ2ZXJzaW9uIjoiMi4wIiwibWF0ZXJpYWxTZXRTZXJpYWxOdW1iZXIiOm51bGwsImNpcGhlclRleHQiOiJBZ1Y0T2R2SzUwakZIZExWSWFVOHVZaXM5MTJ3RWM3TkpnQVpNVkM0Q0Nza1A4NEFYd0FCQUJWaGQzTXRZM0o1Y0hSdkxYQjFZbXhwWXkxclpYa0FSRUZzYW01R2JsVnhMM001YjFSak5reEpRVWxPUVdReWFDOTVjRXRHUWtVd1FUSkdLMHgxYjFCMFpHOVNjemwwWWtaWVluY3dXakIxT1ZSQmJVRlFhR2RSUVQwOUFBRUFFV0YzY3kxcmJYTXRhR2xsY21GeVkyaDVBQkpFYVhOamIzWmxjbmxCVUVsTGJYTkxaWGtBWFBDeE1ROXdrVm9zMWt5T250dFNsdElSc2c5ZmVfOVA0c3lSMGNBUmdlcExvME5NeTZqemlyQ3pZamg4am5oRklYREU5S0w0VnAxS0tWVmZjaF9ZaGVfandDaFlGdVM0M3pDS2pxMFBQVnRrVU92VnJRei1ENnRGZWNkNUFnQUFFQUNsZlZLa3BUQmVxZlU4SjB5SVQ5YTNQTmNMRUZzME8zUDRZNlZPQ25oZ0JfWElTT2o0ekZCM29yZTlQbWtvaUVfX19fX19BQUFBQVFBQUFBQUFBQUFBQUFBQUFRQUFBT0xVM0xlNzJWNUJHZEo3ZkZaVERQam5QVU1YN2IzVGhieUV3MkhQVk0xVmo1SVByS0hHY2MyeEpHcmZMeFpxRjN1akNhM0luMzBSLUpIWlpfNDVoTjlmaWhXYzI5XzZKc2syM0RKYnZwTF9OTHd2NUZrOGtfNHljcC1kcXN6U05XdEtCOExCUjhvaDZORFNZQ3Blb25IdWdJUFFlVFBsU0NhZkgxaGpWcXg2QUhKa3JlWkxJNkx2VjdkbmJ4dnV1cEg4ZVlqSUVXUnBfeVJlVW5ad3oxYmUzLXJqSkdKOGxUNmN1M295Z01mX1RYalpjOWZya2hkOGd4ZFdEVjVnZndVRXgtcWpVNVJuYUg0dWJpVy1BTFc0WjVyLWZrQkJKUjlJaE9zOWd4cWdiVnVSQnliN0w2LXZsZUNST3ZnNi1tSzZ0Z0JuTUdVQ01RQ1dBRWRuZE1pQ09NcGxtejF3dlZNV2tLRTgxc2l5RU1kS1RsTnV4dHp6dFAzaWpnLWNGQjJ4TnFvaUt5OGpqVzBDTUVrVkhnX3ZNMWZTZWl3TFdIZ1JpVFdobFMybTBmbXhvam00QTZnbFhqNnV5R1BiZE9OaHJpb2pTcUd2bHo1SmVRIn0=\",\n    \"totalResults\": 81\n}",
+              "createdAt": "2026-04-09T17:44:22.000Z",
+              "updatedAt": "2026-04-09T17:44:22.000Z"
+            }
+          ],
+          "createdAt": "2026-04-09T17:44:22.000Z",
+          "updatedAt": "2026-04-09T17:44:22.000Z"
+        },
+        {
+          "name": "SearchFacets",
+          "id": "1dbcc670-3e43-4516-8b5d-223a632f1f0d",
+          "protocolProfileBehavior": {
+            "followRedirects": true,
+            "disableUrlEncoding": false,
+            "disableCookies": false,
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Encoding",
+                "value": "amz-1.0"
+              },
+              {
+                "key": "X-Amz-Target",
+                "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.SearchFacets"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"facetTypes\": [ \"PRICING_MODEL\" ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}",
+              "host": [
+                "{{base_url}}"
+              ]
+            },
+            "description": "# [SearchFacets](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_SearchFacets.html)\n\nRetrieve available filter values and their counts for building browse and filter UIs. Returns facets for categories, pricing models, fulfillment option types, publishers, customer ratings, and more. Pass the same searchText and filters as SearchListings to get facet counts that reflect the current search context."
+          },
+          "response": [
+            {
+              "id": "49b4aba0-6502-4772-a903-1c81ce63aa79",
+              "name": "SearchFacets",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.SearchFacets"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"facetTypes\": [ \"PRICING_MODEL\" ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "Text",
+              "header": [
+                {
+                  "key": "x-amzn-RequestId",
+                  "value": "e9e9468b-dfb6-4746-bcdb-31c951d21824"
+                },
+                {
+                  "key": "Content-Encoding",
+                  "value": "gzip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "195"
+                },
+                {
+                  "key": "Date",
+                  "value": "Tue, 07 Apr 2026 22:50:18 GMT"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n    \"listingFacets\": {\n        \"PRICING_MODEL\": [\n            {\n                \"count\": 8384,\n                \"displayName\": \"Contract\",\n                \"value\": \"CONTRACT\"\n            },\n            {\n                \"count\": 7440,\n                \"displayName\": \"Usage\",\n                \"value\": \"USAGE\"\n            },\n            {\n                \"count\": 5283,\n                \"displayName\": \"Free\",\n                \"value\": \"FREE\"\n            },\n            {\n                \"count\": 896,\n                \"displayName\": \"Bring Your Own License\",\n                \"value\": \"BYOL\"\n            }\n        ]\n    },\n    \"totalResults\": 10000\n}",
+              "createdAt": "2026-04-09T17:44:22.000Z",
+              "updatedAt": "2026-04-09T17:44:22.000Z"
+            }
+          ],
+          "createdAt": "2026-04-09T17:44:22.000Z",
+          "updatedAt": "2026-04-09T17:44:22.000Z"
+        }
+      ],
+      "id": "8f10db0a-e3b5-4a38-9918-9c0df98207dc",
+      "description": "All 9 Discovery API operations listed alphabetically. Each operation is a POST request that returns JSON. Use the \"Use Cases\" folder below for workflow-oriented groupings.",
+      "createdAt": "2026-04-09T17:44:21.000Z",
+      "updatedAt": "2026-04-09T17:44:22.000Z"
+    },
+    {
+      "name": "Use Cases",
+      "item": [
+        {
+          "name": "Browse and Search",
+          "item": [
+            {
+              "name": "SearchListings",
+              "id": "6d8b53be-36db-42e9-af7e-7bec0608a7d0",
+              "protocolProfileBehavior": {
+                "followRedirects": true,
+                "disableUrlEncoding": false,
+                "disableCookies": false,
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.SearchListings"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"searchText\": \"My SaaS Product\",\n  \"filters\": \n  [\n    {\"filterType\": \"MIN_AVERAGE_CUSTOMER_RATING\",\n     \"filterValues\": \n      [\"2\"]\n    }\n  ],\n \"maxResults\": 1,\n \"sortBy\": \"RELEVANCE\",\n \"sortOrder\": \"DESCENDING\"\n }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                },
+                "description": "# [SearchListings](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_SearchListings.html)\n\nSearch for listings by keyword, category, pricing model, fulfillment type, and other attributes. Returns listing summaries including name, description, publisher, badges, pricing models, and review ratings. Supports sorting by relevance or average customer rating. Use filters from SearchFacets to narrow results."
+              },
+              "response": [
+                {
+                  "id": "b50ab96b-5bb1-452a-b5be-b1377d97c01e",
+                  "name": "SearchListings",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Encoding",
+                        "value": "amz-1.0"
+                      },
+                      {
+                        "key": "X-Amz-Target",
+                        "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.SearchListings"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"searchText\": \"My SaaS Product\",\n  \"filters\": \n  [\n    {\"filterType\": \"MIN_AVERAGE_CUSTOMER_RATING\",\n     \"filterValues\": \n      [\"2\"]\n    }\n  ],\n \"maxResults\": 1,\n \"sortBy\": \"RELEVANCE\",\n \"sortOrder\": \"DESCENDING\"\n }",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}",
+                      "host": [
+                        "{{base_url}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "x-amzn-RequestId",
+                      "value": "dd375e7e-9e47-4835-b527-66044644f95a"
+                    },
+                    {
+                      "key": "Content-Encoding",
+                      "value": "gzip"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "1956"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 07 Apr 2026 22:50:30 GMT"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n    \"listingSummaries\": [\n        {\n            \"associatedEntities\": [\n                {\n                    \"product\": {\n                        \"manufacturer\": {\n                            \"displayName\": \"SELLER_NAME_1\",\n                            \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n                        },\n                        \"productId\": \"720ed1f2-8270-4189-9566-27fad9c978c5\",\n                        \"productName\": \"SaaSify Cloud GTM Platform\"\n                    }\n                }\n            ],\n            \"badges\": [\n                {\n                    \"badgeType\": \"AWS_SPECIALIZATIONS\",\n                    \"displayName\": \"AWS Specializations\"\n                },\n                {\n                    \"badgeType\": \"DEPLOYED_ON_AWS\",\n                    \"displayName\": \"Deployed on AWS\"\n                },\n                {\n                    \"badgeType\": \"STANDARD_CONTRACT\",\n                    \"displayName\": \"Standard Contract\"\n                }\n            ],\n            \"catalog\": \"AWSMarketplace\",\n            \"categories\": [\n                {\n                    \"categoryId\": \"1885b4a4-02a4-46d1-93d1-d0dcebe41208\",\n                    \"displayName\": \"Collaboration & Productivity\"\n                },\n                {\n                    \"categoryId\": \"8449bda0-8265-4fca-8910-497b806742fa\",\n                    \"displayName\": \"Business Applications\"\n                },\n                {\n                    \"categoryId\": \"44bf32d0-edc0-4357-b679-c608ac1227f9\",\n                    \"displayName\": \"IT Business Management\"\n                },\n                {\n                    \"categoryId\": \"2a29b1bc-488a-4b36-a1c0-f90380d91692\",\n                    \"displayName\": \"eCommerce\"\n                }\n            ],\n            \"fulfillmentOptionSummaries\": [\n                {\n                    \"displayName\": \"SaaS\",\n                    \"fulfillmentOptionType\": \"SAAS\"\n                }\n            ],\n            \"listingId\": \"prodview-v426xmqo6renu\",\n            \"listingName\": \"SaaSify Cloud GTM Platform\",\n            \"logoThumbnailUrl\": \"https://d7umqicpi7263.cloudfront.net/img/product/fa4fe58f-513a-4bff-9d4a-07584d51b39f.com/dd1194ad0552edeb2caa8fdc9780bb1c\",\n            \"pricingModels\": [\n                {\n                    \"displayName\": \"Contract\",\n                    \"pricingModelType\": \"CONTRACT\"\n                }\n            ],\n            \"pricingUnits\": [\n                {\n                    \"displayName\": \"Units\",\n                    \"pricingUnitType\": \"UNITS\"\n                }\n            ],\n            \"publisher\": {\n                \"displayName\": \"SELLER_NAME_1\",\n                \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n            },\n            \"reviewSummary\": {\n                \"reviewSourceSummaries\": [\n                    {\n                        \"averageRating\": \"5\",\n                        \"sourceId\": \"AWS_MARKETPLACE\",\n                        \"sourceName\": \"AWS Marketplace\",\n                        \"sourceUrl\": \"https://aws.amazon.com/marketplace/reviews/reviews-list/B09FFZ43WP\",\n                        \"totalReviews\": 2\n                    }\n                ]\n            },\n            \"shortDescription\": \"Single integrated platform enabling you to list and manage complete lifecycle of your SaaS solutions on AWS Marketplace.\"\n        }\n    ],\n    \"nextToken\": \"eyJ2ZXJzaW9uIjoiMi4wIiwibWF0ZXJpYWxTZXRTZXJpYWxOdW1iZXIiOm51bGwsImNpcGhlclRleHQiOiJBZ1Y0T2R2SzUwakZIZExWSWFVOHVZaXM5MTJ3RWM3TkpnQVpNVkM0Q0Nza1A4NEFYd0FCQUJWaGQzTXRZM0o1Y0hSdkxYQjFZbXhwWXkxclpYa0FSRUZzYW01R2JsVnhMM001YjFSak5reEpRVWxPUVdReWFDOTVjRXRHUWtVd1FUSkdLMHgxYjFCMFpHOVNjemwwWWtaWVluY3dXakIxT1ZSQmJVRlFhR2RSUVQwOUFBRUFFV0YzY3kxcmJYTXRhR2xsY21GeVkyaDVBQkpFYVhOamIzWmxjbmxCVUVsTGJYTkxaWGtBWFBDeE1ROXdrVm9zMWt5T250dFNsdElSc2c5ZmVfOVA0c3lSMGNBUmdlcExvME5NeTZqemlyQ3pZamg4am5oRklYREU5S0w0VnAxS0tWVmZjaF9ZaGVfandDaFlGdVM0M3pDS2pxMFBQVnRrVU92VnJRei1ENnRGZWNkNUFnQUFFQUNsZlZLa3BUQmVxZlU4SjB5SVQ5YTNQTmNMRUZzME8zUDRZNlZPQ25oZ0JfWElTT2o0ekZCM29yZTlQbWtvaUVfX19fX19BQUFBQVFBQUFBQUFBQUFBQUFBQUFRQUFBT0xVM0xlNzJWNUJHZEo3ZkZaVERQam5QVU1YN2IzVGhieUV3MkhQVk0xVmo1SVByS0hHY2MyeEpHcmZMeFpxRjN1akNhM0luMzBSLUpIWlpfNDVoTjlmaWhXYzI5XzZKc2syM0RKYnZwTF9OTHd2NUZrOGtfNHljcC1kcXN6U05XdEtCOExCUjhvaDZORFNZQ3Blb25IdWdJUFFlVFBsU0NhZkgxaGpWcXg2QUhKa3JlWkxJNkx2VjdkbmJ4dnV1cEg4ZVlqSUVXUnBfeVJlVW5ad3oxYmUzLXJqSkdKOGxUNmN1M295Z01mX1RYalpjOWZya2hkOGd4ZFdEVjVnZndVRXgtcWpVNVJuYUg0dWJpVy1BTFc0WjVyLWZrQkJKUjlJaE9zOWd4cWdiVnVSQnliN0w2LXZsZUNST3ZnNi1tSzZ0Z0JuTUdVQ01RQ1dBRWRuZE1pQ09NcGxtejF3dlZNV2tLRTgxc2l5RU1kS1RsTnV4dHp6dFAzaWpnLWNGQjJ4TnFvaUt5OGpqVzBDTUVrVkhnX3ZNMWZTZWl3TFdIZ1JpVFdobFMybTBmbXhvam00QTZnbFhqNnV5R1BiZE9OaHJpb2pTcUd2bHo1SmVRIn0=\",\n    \"totalResults\": 81\n}",
+                  "createdAt": "2026-04-09T17:44:23.000Z",
+                  "updatedAt": "2026-04-09T17:44:23.000Z"
+                }
+              ],
+              "createdAt": "2026-04-09T17:44:23.000Z",
+              "updatedAt": "2026-04-09T17:44:23.000Z"
+            },
+            {
+              "name": "SearchFacets",
+              "id": "b3cb9d28-2193-4179-892a-eb7b429a72d0",
+              "protocolProfileBehavior": {
+                "followRedirects": true,
+                "disableUrlEncoding": false,
+                "disableCookies": false,
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.SearchFacets"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"facetTypes\": [ \"PRICING_MODEL\" ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                },
+                "description": "# [SearchFacets](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_SearchFacets.html)\n\nRetrieve available filter values and their counts for building browse and filter UIs. Returns facets for categories, pricing models, fulfillment option types, publishers, customer ratings, and more. Pass the same searchText and filters as SearchListings to get facet counts that reflect the current search context."
+              },
+              "response": [
+                {
+                  "id": "baf9af59-87be-4a79-ad30-79b560417d97",
+                  "name": "SearchFacets",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Encoding",
+                        "value": "amz-1.0"
+                      },
+                      {
+                        "key": "X-Amz-Target",
+                        "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.SearchFacets"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"facetTypes\": [ \"PRICING_MODEL\" ]\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}",
+                      "host": [
+                        "{{base_url}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "x-amzn-RequestId",
+                      "value": "e9e9468b-dfb6-4746-bcdb-31c951d21824"
+                    },
+                    {
+                      "key": "Content-Encoding",
+                      "value": "gzip"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "195"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 07 Apr 2026 22:50:18 GMT"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n    \"listingFacets\": {\n        \"PRICING_MODEL\": [\n            {\n                \"count\": 8384,\n                \"displayName\": \"Contract\",\n                \"value\": \"CONTRACT\"\n            },\n            {\n                \"count\": 7440,\n                \"displayName\": \"Usage\",\n                \"value\": \"USAGE\"\n            },\n            {\n                \"count\": 5283,\n                \"displayName\": \"Free\",\n                \"value\": \"FREE\"\n            },\n            {\n                \"count\": 896,\n                \"displayName\": \"Bring Your Own License\",\n                \"value\": \"BYOL\"\n            }\n        ]\n    },\n    \"totalResults\": 10000\n}",
+                  "createdAt": "2026-04-09T17:44:23.000Z",
+                  "updatedAt": "2026-04-09T17:44:23.000Z"
+                }
+              ],
+              "createdAt": "2026-04-09T17:44:23.000Z",
+              "updatedAt": "2026-04-09T17:44:23.000Z"
+            }
+          ],
+          "id": "1c4a7926-0986-4063-ba00-e94013408c52",
+          "description": "Find listings in the AWS Marketplace catalog. Use SearchListings to search by keyword and filters, and SearchFacets to retrieve available filter values with counts for building browse experiences.",
+          "createdAt": "2026-04-09T17:44:22.000Z",
+          "updatedAt": "2026-04-09T17:44:23.000Z"
+        },
+        {
+          "name": "Get Details",
+          "item": [
+            {
+              "name": "GetListing",
+              "id": "a147902b-803b-46ea-91cf-ac92db179de9",
+              "protocolProfileBehavior": {
+                "followRedirects": true,
+                "disableUrlEncoding": false,
+                "disableCookies": false,
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetListing"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"listingId\": \"prodview-iqqrhoktopf36\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                },
+                "description": "# [GetListing](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetListing.html)\n\nRetrieve full details for a listing, including descriptions, highlights, categories, badges, pricing models, pricing units, reviews, promotional media, seller engagements, and associated products and offers. Use the listingId from SearchListings results."
+              },
+              "response": [
+                {
+                  "id": "4c8a262b-fb52-4c83-8c08-fe9f55ac4c5b",
+                  "name": "GetListing",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Encoding",
+                        "value": "amz-1.0"
+                      },
+                      {
+                        "key": "X-Amz-Target",
+                        "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetListing"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"listingId\": \"prodview-iqqrhoktopf36\",\n  \"requestContext\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}",
+                      "host": [
+                        "{{base_url}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "x-amzn-RequestId",
+                      "value": "f6db6cfe-1528-4c5b-90c6-b76cd6400bd8"
+                    },
+                    {
+                      "key": "Content-Encoding",
+                      "value": "gzip"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "1497"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 07 Apr 2026 22:49:13 GMT"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n    \"associatedEntities\": [\n        {\n            \"offer\": {\n                \"offerId\": \"offer-di2ese23wmbeu\",\n                \"offerName\": \"Offer created on 2024-10-30T18:55:30.336Z\",\n                \"sellerOfRecord\": {\n                    \"displayName\": \"SELLER_NAME_1\",\n                    \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n                }\n            },\n            \"product\": {\n                \"manufacturer\": {\n                    \"displayName\": \"SELLER_NAME_1\",\n                    \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n                },\n                \"productId\": \"prod-2ljcnxnbnjnvc\",\n                \"productName\": \"SaaSify Cloud GTM Platform (PAYG with 30-Day Free Trial)\"\n            }\n        }\n    ],\n    \"badges\": [\n        {\n            \"badgeType\": \"DEPLOYED_ON_AWS\",\n            \"displayName\": \"Deployed on AWS\"\n        }\n    ],\n    \"catalog\": \"AWSMarketplace\",\n    \"categories\": [\n        {\n            \"categoryId\": \"1885b4a4-02a4-46d1-93d1-d0dcebe41208\",\n            \"displayName\": \"Collaboration & Productivity\"\n        },\n        {\n            \"categoryId\": \"8449bda0-8265-4fca-8910-497b806742fa\",\n            \"displayName\": \"Business Applications\"\n        },\n        {\n            \"categoryId\": \"2a29b1bc-488a-4b36-a1c0-f90380d91692\",\n            \"displayName\": \"eCommerce\"\n        },\n        {\n            \"categoryId\": \"44bf32d0-edc0-4357-b679-c608ac1227f9\",\n            \"displayName\": \"IT Business Management\"\n        }\n    ],\n    \"fulfillmentOptionSummaries\": [\n        {\n            \"displayName\": \"SaaS\",\n            \"fulfillmentOptionType\": \"SAAS\"\n        }\n    ],\n    \"highlights\": [\n        \"End-to-end lifecycle management of offers and transactions.\",\n        \"Integration with Salesforce, Slack, Microsoft Teams, etc.\",\n        \"Learn more from COMPANY_WEBSITE\"\n    ],\n    \"listingId\": \"prodview-iqqrhoktopf36\",\n    \"listingName\": \"SaaSify Cloud GTM Platform (PAYG with 30-Day Free Trial)\",\n    \"logoThumbnailUrl\": \"https://d7umqicpi7263.cloudfront.net/img/product/020a451d-ca45-4f0f-bc43-c69f2891b319.com/dd1194ad0552edeb2caa8fdc9780bb1c\",\n    \"longDescription\": \"Manage your AWS marketplace product offers with a single integrated solution\\n\\nSaaSify solution helps to manage the full lifecycle of your transact-able offers in AWS marketplace. Combined with the signature white-glove support from SELLER_NAME_1, you can go live with your offer within a week or two (adhering to the SLA set by AWS).\\n\\nThis includes:\\n\\n1. Unlimited listing.\\n2. Unlimited public purchases / pay-as-you-go subscriptions.\\n3. One Private Offer per month, carry forwarded for 12 months if unused.\\n4. Additional Private offer at 249 USD per month.\\n5. A private offer transaction is only considered for quota if it is purchased and has a Total Contract Value of at least 10 USD.\\n6. Free migration of your existing listings and private offer transactions.\",\n    \"pricingModels\": [\n        {\n            \"displayName\": \"Usage\",\n            \"pricingModelType\": \"USAGE\"\n        }\n    ],\n    \"pricingUnits\": [\n        {\n            \"displayName\": \"Units\",\n            \"pricingUnitType\": \"UNITS\"\n        }\n    ],\n    \"promotionalMedia\": [],\n    \"publisher\": {\n        \"displayName\": \"SELLER_NAME_1\",\n        \"sellerProfileId\": \"afae1e1f-010f-4da3-8943-c91e04467381\"\n    },\n    \"resources\": [\n        {\n            \"contentType\": \"LINK\",\n            \"displayName\": \"See product video\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"VIDEO_URL\"\n        },\n        {\n            \"contentType\": \"LINK\",\n            \"displayName\": \"SaaSify\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"COMPANY_WEBSITE\"\n        },\n        {\n            \"contentType\": \"LINK\",\n            \"displayName\": \"AWS Marketplace GTM with SaaSify\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"COMPANY_WEBSITEcloud-gtm-solutions-aws/\"\n        },\n        {\n            \"contentType\": \"OTHER\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"Please contact SUPPORT_EMAIL for any product support and SALES_EMAIL\\nfor any sales or private offer enquiry.\"\n        }\n    ],\n    \"sellerEngagements\": [],\n    \"shortDescription\": \"Single integrated platform enabling you to list and manage complete lifecycle of your SaaS solutions on AWS Marketplace.\",\n    \"useCases\": []\n}",
+                  "createdAt": "2026-04-09T17:44:23.000Z",
+                  "updatedAt": "2026-04-09T17:44:23.000Z"
+                }
+              ],
+              "createdAt": "2026-04-09T17:44:23.000Z",
+              "updatedAt": "2026-04-09T17:44:23.000Z"
+            },
+            {
+              "name": "GetOffer",
+              "id": "79e4d815-fd01-4fee-9f2b-cb41a59ac9a3",
+              "protocolProfileBehavior": {
+                "followRedirects": true,
+                "disableUrlEncoding": false,
+                "disableCookies": false,
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOffer"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerId\": \"offer-tzzpgdyj52fcy\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                },
+                "description": "# [GetOffer](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOffer.html) \n\nRetrieve details for a specific offer, including the pricing model, seller of record, availability dates, badges (private pricing, future dated, replacement offer), and associated products and offer sets. Use the offerId from ListPurchaseOptions results."
+              },
+              "response": [
+                {
+                  "id": "7779801c-aac6-45d5-b71b-3bbc37aa098e",
+                  "name": "GetOffer",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Encoding",
+                        "value": "amz-1.0"
+                      },
+                      {
+                        "key": "X-Amz-Target",
+                        "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOffer"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"offerId\": \"offer-tzzpgdyj52fcy\",\n  \"requestContext\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}",
+                      "host": [
+                        "{{base_url}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "x-amzn-RequestId",
+                      "value": "34973a2b-6842-4bbd-be48-345bbf1567c1"
+                    },
+                    {
+                      "key": "Content-Encoding",
+                      "value": "gzip"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "375"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 07 Apr 2026 22:49:19 GMT"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n    \"agreementProposalId\": \"at-1mqqxe95xqm6nf68b8eyzk7xd\",\n    \"associatedEntities\": [\n        {\n            \"product\": {\n                \"manufacturer\": {\n                    \"displayName\": \"SELLER_NAME_2\",\n                    \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n                },\n                \"productId\": \"prod-ogxnnwxhqbqto\",\n                \"productName\": \"My SaaS Product - Contract with Consumption pricing model\"\n            }\n        }\n    ],\n    \"availableFromTime\": 1714759891,\n    \"badges\": [],\n    \"catalog\": \"AWSMarketplace\",\n    \"offerId\": \"offer-tzzpgdyj52fcy\",\n    \"offerName\": \"Offer created on 2024-05-03T18:10:26.020Z\",\n    \"pricingModel\": {\n        \"displayName\": \"Contract\",\n        \"pricingModelType\": \"CONTRACT\"\n    },\n    \"sellerOfRecord\": {\n        \"displayName\": \"SELLER_NAME_2\",\n        \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n    }\n}",
+                  "createdAt": "2026-04-09T17:44:23.000Z",
+                  "updatedAt": "2026-04-09T17:44:23.000Z"
+                }
+              ],
+              "createdAt": "2026-04-09T17:44:23.000Z",
+              "updatedAt": "2026-04-09T17:44:23.000Z"
+            },
+            {
+              "name": "GetOfferSet",
+              "id": "508da5ec-d3fc-4a82-82a4-45f3c8e507ed",
+              "protocolProfileBehavior": {
+                "followRedirects": true,
+                "disableUrlEncoding": false,
+                "disableCookies": false,
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOfferSet"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerSetId\": \"offerset-zv2ea6au3d35a\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                },
+                "description": "# [GetOfferSet](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOfferSet.html)\n\nRetrieve details for an offer set — a grouped collection of private offers for a multi-product solution. Returns the associated products and offers, seller of record, availability dates, and buyer notes. Use the offerSetId from ListPurchaseOptions results where purchaseOptionType is OFFERSET."
+              },
+              "response": [
+                {
+                  "id": "c0f8289a-60c9-4608-bf4d-416f4e42822f",
+                  "name": "GetOfferSet",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Encoding",
+                        "value": "amz-1.0"
+                      },
+                      {
+                        "key": "X-Amz-Target",
+                        "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOfferSet"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"offerSetId\": \"offerset-zv2ea6au3d35a\",\n  \"requestContext\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}",
+                      "host": [
+                        "{{base_url}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "x-amzn-RequestId",
+                      "value": "f4ea9399-334e-4303-8521-9be9f4076f3f"
+                    },
+                    {
+                      "key": "Content-Encoding",
+                      "value": "gzip"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "465"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 07 Apr 2026 22:49:24 GMT"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n    \"associatedEntities\": [\n        {\n            \"offer\": {\n                \"offerId\": \"offer-tnirjggpf4nvw\",\n                \"offerName\": \"Test Offer set\",\n                \"sellerOfRecord\": {\n                    \"displayName\": \"SELLER_NAME_3\",\n                    \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n                }\n            },\n            \"product\": {\n                \"manufacturer\": {\n                    \"displayName\": \"SELLER_NAME_3\",\n                    \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n                },\n                \"productId\": \"prod-eqnaj6kxiviuu\",\n                \"productName\": \"Sample Product 3264\"\n            }\n        },\n        {\n            \"offer\": {\n                \"offerId\": \"offer-tteihntmppcdy\",\n                \"offerName\": \"test offerset 2\",\n                \"sellerOfRecord\": {\n                    \"displayName\": \"SELLER_NAME_3\",\n                    \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n                }\n            },\n            \"product\": {\n                \"manufacturer\": {\n                    \"displayName\": \"SELLER_NAME_3\",\n                    \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n                },\n                \"productId\": \"prod-gr4qmpiz4wtmq\",\n                \"productName\": \"Sample Product 3264\"\n            }\n        }\n    ],\n    \"availableFromTime\": 1774386009,\n    \"badges\": [\n        {\n            \"badgeType\": \"PRIVATE_PRICING\",\n            \"displayName\": \"Private Pricing\"\n        }\n    ],\n    \"buyerNotes\": \"Please follow the instructions on the landing page to proceed.\",\n    \"catalog\": \"AWSMarketplace\",\n    \"expirationTime\": 1777593599.999,\n    \"offerSetId\": \"offerset-zv2ea6au3d35a\",\n    \"offerSetName\": \"My OfferSet Name\",\n    \"sellerOfRecord\": {\n        \"displayName\": \"SELLER_NAME_3\",\n        \"sellerProfileId\": \"375f1e51-d2d6-440f-9d93-6f374c8a9d38\"\n    }\n}",
+                  "createdAt": "2026-04-09T17:44:23.000Z",
+                  "updatedAt": "2026-04-09T17:44:23.000Z"
+                }
+              ],
+              "createdAt": "2026-04-09T17:44:23.000Z",
+              "updatedAt": "2026-04-09T17:44:23.000Z"
+            },
+            {
+              "name": "GetOfferTerms",
+              "id": "6add3e2b-4b8a-4a92-aad7-5843f9bc3d7d",
+              "protocolProfileBehavior": {
+                "followRedirects": true,
+                "disableUrlEncoding": false,
+                "disableCookies": false,
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOfferTerms"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"offerId\": \"offer-tzzpgdyj52fcy\",\n  \"requestContext\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                },
+                "description": "# [GetOfferTerms](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetOfferTerms.html) \n\nRetrieve the commercial terms for an offer, including usage-based pricing, fixed upfront pricing, configurable upfront pricing, free trial periods, BYOL, legal documents, payment schedules, renewal terms, support terms, and validity terms. Each term includes rate cards, grants, or schedules as applicable. Use the offerId from GetOffer or ListPurchaseOptions."
+              },
+              "response": [
+                {
+                  "id": "6ca554f3-2a6d-4c59-83c9-f4350b189f4c",
+                  "name": "GetOfferTerms",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Encoding",
+                        "value": "amz-1.0"
+                      },
+                      {
+                        "key": "X-Amz-Target",
+                        "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetOfferTerms"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"offerId\": \"offer-tzzpgdyj52fcy\",\n   \"maxResults\": 1\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}",
+                      "host": [
+                        "{{base_url}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "x-amzn-RequestId",
+                      "value": "c3007b3c-c752-40c0-a1ba-2f6477142359"
+                    },
+                    {
+                      "key": "Content-Encoding",
+                      "value": "gzip"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "1282"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Wed, 08 Apr 2026 03:34:05 GMT"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n    \"nextToken\": \"eyJ2ZXJzaW9uIjoiMi4wIiwibWF0ZXJpYWxTZXRTZXJpYWxOdW1iZXIiOm51bGwsImNpcGhlclRleHQiOiJBZ1Y0WUNaTzRTbTdvSnlDQnNTUUVDZ2VnWjZNZldPWlJiVm9PWDhpWms3aGJXOEFYd0FCQUJWaGQzTXRZM0o1Y0hSdkxYQjFZbXhwWXkxclpYa0FSRUZ2WmtGT1NWRm9PVVl5V2tkQ1ZVRTJPVVo2T1VKQk5reDNVMVpyUzJORE1GRkhkRmRyTlZVMmJFVk9iM1kwTjNaTWIyMTJUWFJvVkRkcVpVVlRkRWx3WnowOUFBRUFFV0YzY3kxcmJYTXRhR2xsY21GeVkyaDVBQkpFYVhOamIzWmxjbmxCVUVsTGJYTkxaWGtBWEdRZ2VWVUlieUJDeTRvU2JVN3BwNXVkcVVZTEgwZEhEeEZTd1k0UmdlcExvME5NeTZqemlyQ3pZamg4Tks0YUdHbzdxX2N5MzJmOTFoZDZlcTdjUWhQNVdkaU1PazcxakVxNmxSZmJBemVGd2QtV3JWX1EteC1lVWpBNEFnQUFFQUE5SksyOWxWTGN1VEFWdVlQYjlfSWgxT3B2QUNXczg4S2FEQmxzRHRXQjFoU3MyNXpNTWNXTFRYOGRJVGM5UGFuX19fX19BQUFBQVFBQUFBQUFBQUFBQUFBQUFRQUFBT0JSRU0yR0lUcW1HQVoxanlvd0kxbTV0dzdmQUlqajM1cEh2eHBLMVRDVWdRSEZTdjlfbVBQOGhNTVljOHN4cmNzRTc2SG9LbmdzWEEwODVNQ2ZtQUsyME9zaS1mVGxjcXo2VFlULUo3b083SFozTV9TeFgxdXhiS2oyZWp4cENlU25lUnlXTHdqMzhBUzZQNTdsMWhNVUhCQ2ZIQy0zTnpyZHlVeGY3Yi0wenJXVDZIYWQ4Uk1XRG9kdFE0bFdrdDNEVFBCQ3VVcTBDUm5nUVU4bFFPZ0lWMXF4bFpPM0lpZjRhRlZYbnBmVG92YnljQkhlSlhYaWQtc3Z0TGFHQmltNFUtSGZiSHN4VHl0d0w1VkhwaktkdVN2RnFSUDVlWDFPcDRvWi1KdWxKZEY0ZDh5U3NJdmlYazNvaFBnc3piY0FaekJsQWpFQXpGNFA1akhNekluY2x6U3BJa2VMcXVxZmxodER6a1pHamROSmFsNFBUemdnci0ySjNXSTJ2YXcwa0ZFeFFwb1BBakFoSm01ZTlHOFdkbkxEcGhXS012TmM0THJqX2ppVWx1WUgxRGRDRVRzN2x3dnc2cFZnRkN4cVd1ekd0SG9US2tVIn0=\",\n    \"offerTerms\": [\n        {\n            \"usageBasedPricingTerm\": {\n                \"currencyCode\": \"USD\",\n                \"id\": \"term-cd9c4358549034ab1e2907c3eaa9e50216f3a0759e681b079d5b17be7087a2ed\",\n                \"rateCards\": [\n                    {\n                        \"rateCard\": [\n                            {\n                                \"description\": \"Metered dimension 1 desc goes here\",\n                                \"dimensionKey\": \"metered_1_id\",\n                                \"dimensionLabels\": [],\n                                \"displayName\": \"Metered 1\",\n                                \"price\": \"0.001\",\n                                \"unit\": \"Units\"\n                            },\n                            {\n                                \"description\": \"Metered dimension 2 desc goes here\",\n                                \"dimensionKey\": \"metered_2_id\",\n                                \"dimensionLabels\": [],\n                                \"displayName\": \"Metered 2\",\n                                \"price\": \"0.001\",\n                                \"unit\": \"Units\"\n                            },\n                            {\n                                \"description\": \"Metered dimension 3 desc goes here\",\n                                \"dimensionKey\": \"metered_3_id\",\n                                \"dimensionLabels\": [],\n                                \"displayName\": \"Metered 3\",\n                                \"price\": \"0.001\",\n                                \"unit\": \"Units\"\n                            }\n                        ]\n                    }\n                ],\n                \"type\": \"UsageBasedPricingTerm\"\n            }\n        }\n    ]\n}",
+                  "createdAt": "2026-04-09T17:44:23.000Z",
+                  "updatedAt": "2026-04-09T17:44:23.000Z"
+                }
+              ],
+              "createdAt": "2026-04-09T17:44:23.000Z",
+              "updatedAt": "2026-04-09T17:44:23.000Z"
+            },
+            {
+              "name": "GetProduct",
+              "id": "c2297fe8-b4c2-40a7-a2d5-5fd235a8a4c1",
+              "protocolProfileBehavior": {
+                "followRedirects": true,
+                "disableUrlEncoding": false,
+                "disableCookies": false,
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetProduct"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prod-ogxnnwxhqbqto\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                },
+                "description": "# [GetProduct](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_GetProduct.html) \n\nRetrieve detailed product information including descriptions, highlights, categories, promotional media, seller engagements, manufacturer details, and fulfillment option summaries. Use the productId from GetListing's associatedEntities or SearchListings results."
+              },
+              "response": [
+                {
+                  "id": "45d4b377-d451-4b51-beb8-277474b1f93e",
+                  "name": "GetProduct",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Encoding",
+                        "value": "amz-1.0"
+                      },
+                      {
+                        "key": "X-Amz-Target",
+                        "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.GetProduct"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"productId\": \"prod-ogxnnwxhqbqto\",\n  \"requestContext\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}",
+                      "host": [
+                        "{{base_url}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "x-amzn-RequestId",
+                      "value": "ae044b25-c60a-4b20-9f4d-4284f1cce7d6"
+                    },
+                    {
+                      "key": "Content-Encoding",
+                      "value": "gzip"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "703"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 07 Apr 2026 22:49:58 GMT"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n    \"catalog\": \"AWSMarketplace\",\n    \"categories\": [\n        {\n            \"categoryId\": \"388e0eec-370f-4c12-9f92-1bb2193509d3\",\n            \"displayName\": \"Backup & Recovery\"\n        },\n        {\n            \"categoryId\": \"579164ab-a400-4924-9c9c-590e45580b7d\",\n            \"displayName\": \"Infrastructure Software\"\n        }\n    ],\n    \"deployedOnAws\": \"NOT_DEPLOYED\",\n    \"fulfillmentOptionSummaries\": [\n        {\n            \"displayName\": \"SaaS\",\n            \"fulfillmentOptionType\": \"SAAS\"\n        }\n    ],\n    \"highlights\": [\n        \"https://amazon.awsapps.com/workdocs-preview/index.html#/document/20efcf760dd46a96f8f86940b107080f42bfe09eee3d55ade56a6f849af194a9\"\n    ],\n    \"logoThumbnailUrl\": \"https://d7umqicpi7263.cloudfront.net/img/product/3fa09476-8904-44e9-a965-2d6aa981ad22.com/ca60b754fe05a24257176cdbf31c4e0d\",\n    \"longDescription\": \"Description goes here.\",\n    \"manufacturer\": {\n        \"displayName\": \"SELLER_NAME_2\",\n        \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n    },\n    \"productId\": \"prod-ogxnnwxhqbqto\",\n    \"productName\": \"My SaaS Product - Contract with Consumption pricing model\",\n    \"promotionalMedia\": [],\n    \"resources\": [\n        {\n            \"contentType\": \"LINK\",\n            \"displayName\": \"See product video\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"https://amazon.awsapps.com/workdocs-preview/index.html#/document/20efcf760dd46a96f8f86940b107080f42bfe09eee3d55ade56a6f849af194a9\"\n        },\n        {\n            \"contentType\": \"OTHER\",\n            \"resourceType\": \"MANUFACTURER_SUPPORT\",\n            \"value\": \"https://amazon.awsapps.com/workdocs-preview/index.html#/document/20efcf760dd46a96f8f86940b107080f42bfe09eee3d55ade56a6f849af194a9\"\n        }\n    ],\n    \"sellerEngagements\": [],\n    \"shortDescription\": \"Short description goes here.\"\n}",
+                  "createdAt": "2026-04-09T17:44:24.000Z",
+                  "updatedAt": "2026-04-09T17:44:24.000Z"
+                }
+              ],
+              "createdAt": "2026-04-09T17:44:23.000Z",
+              "updatedAt": "2026-04-09T17:44:24.000Z"
+            }
+          ],
+          "id": "18413927-42a2-4ad8-ae86-d7d53a6ee20a",
+          "description": "Retrieve full details for a specific listing, product, offer, offer set, or offer terms. Use identifiers obtained from SearchListings or ListPurchaseOptions responses.",
+          "createdAt": "2026-04-09T17:44:22.000Z",
+          "updatedAt": "2026-04-09T17:44:23.000Z"
+        },
+        {
+          "name": "List Options",
+          "item": [
+            {
+              "name": "ListFulfillmentOptions",
+              "id": "9811fcac-3622-4d50-8eef-5236a9f8c999",
+              "protocolProfileBehavior": {
+                "followRedirects": true,
+                "disableUrlEncoding": false,
+                "disableCookies": false,
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.ListFulfillmentOptions"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prod-ogxnnwxhqbqto\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                },
+                "description": "# [ListFulfillmentOptions](https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_ListFulfillmentOptions.html)\n\nList the fulfillment options available for a product, including deployment details such as version information, operating systems, usage instructions, and release notes. Supports 12 fulfillment types: AMI, SaaS, Container, Helm, EKS Add-on, CloudFormation, API, EC2 Image Builder, Data Exchange, Professional Services, SageMaker Algorithm, and SageMaker Model. Requires a productId.\n"
+              },
+              "response": [
+                {
+                  "id": "db3d6981-905e-44dd-bbe5-02ae98b03054",
+                  "name": "ListFulfillmentOptions",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Encoding",
+                        "value": "amz-1.0"
+                      },
+                      {
+                        "key": "X-Amz-Target",
+                        "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.ListFulfillmentOptions"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"productId\": \"prod-ogxnnwxhqbqto\"\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}",
+                      "host": [
+                        "{{base_url}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "x-amzn-RequestId",
+                      "value": "d0bcfef8-265a-4772-b359-d717c3dda0ff"
+                    },
+                    {
+                      "key": "Content-Encoding",
+                      "value": "gzip"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "221"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 07 Apr 2026 22:50:06 GMT"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n    \"fulfillmentOptions\": [\n        {\n            \"saasFulfillmentOption\": {\n                \"fulfillmentOptionDisplayName\": \"SaaS\",\n                \"fulfillmentOptionId\": \"fo-napwocfyg2cti\",\n                \"fulfillmentOptionType\": \"SAAS\",\n                \"fulfillmentUrl\": \"https://amazon.awsapps.com/workdocs-preview/index.html#/document/20efcf760dd46a96f8f86940b107080f42bfe09eee3d55ade56a6f849af194a9\"\n            }\n        }\n    ]\n}",
+                  "createdAt": "2026-04-09T17:44:24.000Z",
+                  "updatedAt": "2026-04-09T17:44:24.000Z"
+                }
+              ],
+              "createdAt": "2026-04-09T17:44:23.000Z",
+              "updatedAt": "2026-04-09T17:44:24.000Z"
+            },
+            {
+              "name": "ListPurchaseOptions",
+              "id": "81733484-d681-4160-8370-ae15f8fd2d33",
+              "protocolProfileBehavior": {
+                "followRedirects": true,
+                "disableUrlEncoding": false,
+                "disableCookies": false,
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Encoding",
+                    "value": "amz-1.0"
+                  },
+                  {
+                    "key": "X-Amz-Target",
+                    "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.ListPurchaseOptions"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"filters\": [\n    {\n      \"filterType\": \"PRODUCT_ID\",\n      \"filterValues\": [\"prod-ogxnnwxhqbqto\"]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}",
+                  "host": [
+                    "{{base_url}}"
+                  ]
+                },
+                "description": "# [ListPurchaseOptions]([https://docs.aws.amazon.com/marketplace/latest/APIReference/API_marketplace-discovery_ListPurchaseOptions.html)\n\nList the purchase options (offers and offer sets) available for a product. Filter by product ID, seller, purchase option type (OFFER or OFFERSET), visibility scope (PRIVATE), and availability status (AVAILABLE, EXPIRED). You must include at least a PRODUCT_ID or VISIBILITY_SCOPE filter. Returns offer summaries with seller, badges, availability dates, and associated entities."
+              },
+              "response": [
+                {
+                  "id": "d4317bc2-bc09-48fc-9e67-8cb117acf315",
+                  "name": "ListPurchaseOptions",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Content-Encoding",
+                        "value": "amz-1.0"
+                      },
+                      {
+                        "key": "X-Amz-Target",
+                        "value": "com.amazonaws.marketplace.discovery.api.v20260205.AWSMarketplaceDiscovery.ListPurchaseOptions"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"filters\": [\n    {\n      \"filterType\": \"PRODUCT_ID\",\n      \"filterValues\": [\"prod-ogxnnwxhqbqto\"]\n    }\n  ],\n  \"requestContext\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{base_url}}",
+                      "host": [
+                        "{{base_url}}"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "x-amzn-RequestId",
+                      "value": "bd5675da-3af2-4c5d-b73b-4134c8bcf0fa"
+                    },
+                    {
+                      "key": "Content-Encoding",
+                      "value": "gzip"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "342"
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Tue, 07 Apr 2026 22:50:14 GMT"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n    \"purchaseOptions\": [\n        {\n            \"associatedEntities\": [\n                {\n                    \"offer\": {\n                        \"offerId\": \"offer-tzzpgdyj52fcy\",\n                        \"offerName\": \"Offer created on 2024-05-03T18:10:26.020Z\",\n                        \"sellerOfRecord\": {\n                            \"displayName\": \"SELLER_NAME_2\",\n                            \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n                        }\n                    },\n                    \"product\": {\n                        \"manufacturer\": {\n                            \"displayName\": \"SELLER_NAME_2\",\n                            \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n                        },\n                        \"productId\": \"prod-ogxnnwxhqbqto\",\n                        \"productName\": \"My SaaS Product - Contract with Consumption pricing model\"\n                    }\n                }\n            ],\n            \"availableFromTime\": 1714759891,\n            \"catalog\": \"AWSMarketplace\",\n            \"purchaseOptionId\": \"offer-tzzpgdyj52fcy\",\n            \"purchaseOptionName\": \"Offer created on 2024-05-03T18:10:26.020Z\",\n            \"purchaseOptionType\": \"OFFER\",\n            \"sellerOfRecord\": {\n                \"displayName\": \"SELLER_NAME_2\",\n                \"sellerProfileId\": \"seller-z6ra67gyfpxss\"\n            }\n        }\n    ]\n}",
+                  "createdAt": "2026-04-09T17:44:24.000Z",
+                  "updatedAt": "2026-04-09T17:44:24.000Z"
+                }
+              ],
+              "createdAt": "2026-04-09T17:44:23.000Z",
+              "updatedAt": "2026-04-09T17:44:24.000Z"
+            }
+          ],
+          "id": "feef769f-722d-4e86-a123-d1b40c4f0ab2",
+          "description": "Discover available fulfillment and purchase options for a product. Use these to understand how a product can be deployed and what offers are available.",
+          "createdAt": "2026-04-09T17:44:22.000Z",
+          "updatedAt": "2026-04-09T17:44:23.000Z"
+        }
+      ],
+      "id": "a729f073-e439-4fdc-91f2-09f06e21c9c4",
+      "description": "Common workflows organized by task. Start with \"Browse and Search\" to find listings, then \"Get Details\" to retrieve full information, and \"List Options\" to explore fulfillment and purchase options.",
+      "createdAt": "2026-04-09T17:44:21.000Z",
+      "updatedAt": "2026-04-09T17:44:22.000Z"
+    }
+  ],
+  "auth": {
+    "type": "awsv4",
+    "awsv4": [
+      {
+        "key": "accessKey",
+        "value": "{{vault:aws.access-key}}",
+        "type": "string"
+      },
+      {
+        "key": "service",
+        "value": "{{service}}",
+        "type": "string"
+      },
+      {
+        "key": "region",
+        "value": "{{region}}",
+        "type": "string"
+      },
+      {
+        "key": "secretKey",
+        "value": "{{vault:aws.secret-key}}",
+        "type": "string"
+      }
+    ]
+  }
+}

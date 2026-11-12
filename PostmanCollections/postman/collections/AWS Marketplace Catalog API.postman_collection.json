@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "56eb754b-6aeb-49b5-83b8-e89eacd27d4a",
+    "_postman_id": "0dfb2230-2832-483b-9257-64b6847ec091",
     "name": "AWS Marketplace Catalog API",
     "description": "The [AWS Marketplace Catalog API ](https://docs.aws.amazon.com/marketplace-catalog/latest/api-reference/welcome.html) provides an API interface to manage AWS Marketplace for your AWS organization or AWS account. For approved sellers, you can manage your products programmatically, including the self-service publishing capabilities on the [AWS Marketplace Management Portal](https://aws.amazon.com/marketplace/management). For private marketplace administrators, you can manage your private marketplace programmatically.\n\nThe Catalog API Collection contains requests to interact with the AWS Marketplace Catalog API. Before running Catalog API Collection, we need to set up a few additional environmental variables. Make sure to add the variables under your Catalog API Environment.\n\nWe will walk through one API operation in this collection. You can try out the rest on your own.  \nExample: Listing Entities  \nRequest: ListEntities\n\n1. Navigate to the ListEntities request.\n    \n2. Ensure the method is POST and the URL is {{_.CAPI_PROD}}/ListEntities\n    \n3. In the Body tab, select raw and JSON format.\n    \n4. Provide the following JSON payload. This payload will list 10 SaaS Products in your seller account.  \n    {  \n    \"Catalog\": \"AWSMarketplace\",  \n    \"EntityType\": \"SaaSProduct\",  \n    \"MaxResults\": 10  \n    }\n    \n5. Click Send to submit the request.\n    \n6. In the response, you'll see a list of entities.\n    \n\n```\n{\n    \"EntitySummaryList\": [\n        {\n            \"AmiProductSummary\": null,\n            \"ContainerProductSummary\": null,\n            \"DataProductSummary\": null,\n            \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/SaaSProduct/prod-1234567890\",\n            \"EntityId\": \"prod-1234567890\",\n            \"EntityType\": \"SaaSProduct\",\n            \"LastModifiedDate\": \"2023-10-10T17:34:56Z\",\n            \"Name\": \"Untitled - prod-1234567890\",\n            \"OfferSummary\": null,\n            \"ResaleAuthorizationSummary\": null,\n            \"SaaSProductSummary\": {\n                \"ProductTitle\": null,\n                \"Visibility\": \"Draft\"\n            },\n……\n],\n\"NextToken\": \"Test_Token_rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJzcgAOamF2YS5sYW5nLkxvbmc7i\"\n}\n\n ```\n\n7\\. If you want to list more products, you can use Pagination. To use pagination in Postman, you need to add the following script in the Post-response area for the request. and add NextToken in the request json payload.\n\n```\nvar jsonData = pm.response. json();\nif (jsonData.NextToken) {\n    pm.collectionVariables.set (\"nextToken\", jsonData .NextToken);\n} else {\n    pm.collectionVariables.set (\"nextToken\", null);\n}\nif ( pm.collectionVariables.get (\"nextToken\")) {\n    pm. execution.setNextRequest(pm. info.requestName);\n}\n\n ```\n\nAdd NextToken in the request json body payload.\n\n```\n{\n\"Catalog\": \"AWSMarketplace\",\n\"EntityType\": \"SaaSProduct\" ,\n\"MaxResults\": 10,\n\"NextToken\"：｛{nextToken}}\n}\n\n ```",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -27,8 +27,9 @@
                   }
                 }
               ],
-              "id": "d9246186-3707-4562-a22b-d3a8f4d82a1c",
+              "id": "c1543a63-da4b-445b-8c58-f4b48a826b29",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -68,7 +69,7 @@
               },
               "response": [
                 {
-                  "id": "7195784b-e668-47cd-bf38-f9fe05d5436b",
+                  "id": "737b1dc9-d2c4-4515-9f54-4b069dee9e05",
                   "name": "ListEntities",
                   "originalRequest": {
                     "method": "POST",
@@ -132,9 +133,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"EntitySummaryList\": [\n        {\n            \"AmiProductSummary\": null,\n            \"ContainerProductSummary\": null,\n            \"DataProductSummary\": null,\n            \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:11111111111:AWSMarketplace/SaaSProduct/prod-1234567890\",\n            \"EntityId\": \"prod-1234567890\",\n            \"EntityType\": \"SaaSProduct\",\n            \"LastModifiedDate\": \"2024-09-26T23:49:30Z\",\n            \"Name\": \"Untitled - prod-1234567890\",\n            \"OfferSummary\": null,\n            \"ResaleAuthorizationSummary\": null,\n            \"SaaSProductSummary\": {\n                \"ProductTitle\": null,\n                \"Visibility\": \"Draft\"\n            },\n            \"TypeAttributes\": null,\n            \"Visibility\": \"Draft\"\n        },\n        {\n            \"AmiProductSummary\": null,\n            \"ContainerProductSummary\": null,\n            \"DataProductSummary\": null,\n            \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/SaaSProduct/prod-1234567890\",\n            \"EntityId\": \"prod-1234567890\",\n            \"EntityType\": \"SaaSProduct\",\n            \"LastModifiedDate\": \"2024-09-26T23:41:09Z\",\n            \"Name\": \"test@ Test Product\",\n            \"OfferSummary\": null,\n            \"ResaleAuthorizationSummary\": null,\n            \"SaaSProductSummary\": {\n                \"ProductTitle\": \"test@ Test Product\",\n                \"Visibility\": \"Limited\"\n            },\n            \"TypeAttributes\": null,\n            \"Visibility\": \"Limited\"\n        }\n    ],\n    \"NextToken\": \"Test_Token_rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJzcgAOamF2YS5=\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"EntitySummaryList\": [\n        {\n            \"AmiProductSummary\": null,\n            \"ContainerProductSummary\": null,\n            \"DataProductSummary\": null,\n            \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:11111111111:AWSMarketplace/SaaSProduct/prod-1234567890\",\n            \"EntityId\": \"prod-1234567890\",\n            \"EntityType\": \"SaaSProduct\",\n            \"LastModifiedDate\": \"2024-09-26T23:49:30Z\",\n            \"Name\": \"Untitled - prod-1234567890\",\n            \"OfferSummary\": null,\n            \"ResaleAuthorizationSummary\": null,\n            \"SaaSProductSummary\": {\n                \"ProductTitle\": null,\n                \"Visibility\": \"Draft\"\n            },\n            \"TypeAttributes\": null,\n            \"Visibility\": \"Draft\"\n        },\n        {\n            \"AmiProductSummary\": null,\n            \"ContainerProductSummary\": null,\n            \"DataProductSummary\": null,\n            \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/SaaSProduct/prod-1234567890\",\n            \"EntityId\": \"prod-1234567890\",\n            \"EntityType\": \"SaaSProduct\",\n            \"LastModifiedDate\": \"2024-09-26T23:41:09Z\",\n            \"Name\": \"test@ Test Product\",\n            \"OfferSummary\": null,\n            \"ResaleAuthorizationSummary\": null,\n            \"SaaSProductSummary\": {\n                \"ProductTitle\": \"test@ Test Product\",\n                \"Visibility\": \"Limited\"\n            },\n            \"TypeAttributes\": null,\n            \"Visibility\": \"Limited\"\n        }\n    ],\n    \"NextToken\": \"Test_Token_rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJzcgAOamF2YS5=\"\n}",
+                  "createdAt": "2024-10-01T00:44:33.000Z",
+                  "updatedAt": "2024-10-01T00:55:07.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T17:59:17.000Z"
             },
             {
               "name": "DescribeEntity",
@@ -151,8 +157,9 @@
                   }
                 }
               ],
-              "id": "4a893b14-fd2d-423c-8f5f-a6ad1d3c3138",
+              "id": "a0a35b40-7c9a-457e-8c21-64057e735a81",
               "protocolProfileBehavior": {
+                "disableBodyPruning": false,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -183,7 +190,7 @@
               },
               "response": [
                 {
-                  "id": "b895e037-d14e-4aa2-8cb1-4e51ab68ac91",
+                  "id": "b083f07a-5938-47be-8fb8-03d8630724a5",
                   "name": "DescribeEntity",
                   "originalRequest": {
                     "method": "GET",
@@ -226,12 +233,19 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"Details\": \"{\\\"Description\\\":{\\\"ProductTitle\\\":null,\\\"ProductCode\\\":\\\"1111111111111111111111\\\",\\\"ShortDescription\\\":null,\\\"Manufacturer\\\":null,\\\"LongDescription\\\":null,\\\"Sku\\\":null,\\\"Highlights\\\":null,\\\"Categories\\\":null,\\\"AssociatedProducts\\\":null,\\\"SearchKeywords\\\":null,\\\"Visibility\\\":\\\"Draft\\\",\\\"ProductState\\\":\\\"Draft\\\"},\\\"Targeting\\\":{\\\"PositiveTargeting\\\":{\\\"BuyerAccounts\\\":[]}}}\",\n    \"DetailsDocument\": {\n        \"Description\": {\n            \"ProductTitle\": null,\n            \"ProductCode\": \"1111111111111111111111\",\n            \"ShortDescription\": null,\n            \"Manufacturer\": null,\n            \"LongDescription\": null,\n            \"Sku\": null,\n            \"Highlights\": null,\n            \"Categories\": null,\n            \"AssociatedProducts\": null,\n            \"SearchKeywords\": null,\n            \"Visibility\": \"Draft\",\n            \"ProductState\": \"Draft\"\n        },\n        \"Targeting\": {\n            \"PositiveTargeting\": {\n                \"BuyerAccounts\": []\n            }\n        }\n    },\n    \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/SaaSProduct/prod-1234567890\",\n    \"EntityIdentifier\": \"prod-1234567890@1\",\n    \"EntityType\": \"SaaSProduct@1.0\",\n    \"LastModifiedDate\": \"2024-09-26T23:49:30Z\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"Details\": \"{\\\"Description\\\":{\\\"ProductTitle\\\":null,\\\"ProductCode\\\":\\\"1111111111111111111111\\\",\\\"ShortDescription\\\":null,\\\"Manufacturer\\\":null,\\\"LongDescription\\\":null,\\\"Sku\\\":null,\\\"Highlights\\\":null,\\\"Categories\\\":null,\\\"AssociatedProducts\\\":null,\\\"SearchKeywords\\\":null,\\\"Visibility\\\":\\\"Draft\\\",\\\"ProductState\\\":\\\"Draft\\\"},\\\"Targeting\\\":{\\\"PositiveTargeting\\\":{\\\"BuyerAccounts\\\":[]}}}\",\n    \"DetailsDocument\": {\n        \"Description\": {\n            \"ProductTitle\": null,\n            \"ProductCode\": \"1111111111111111111111\",\n            \"ShortDescription\": null,\n            \"Manufacturer\": null,\n            \"LongDescription\": null,\n            \"Sku\": null,\n            \"Highlights\": null,\n            \"Categories\": null,\n            \"AssociatedProducts\": null,\n            \"SearchKeywords\": null,\n            \"Visibility\": \"Draft\",\n            \"ProductState\": \"Draft\"\n        },\n        \"Targeting\": {\n            \"PositiveTargeting\": {\n                \"BuyerAccounts\": []\n            }\n        }\n    },\n    \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/SaaSProduct/prod-1234567890\",\n    \"EntityIdentifier\": \"prod-1234567890@1\",\n    \"EntityType\": \"SaaSProduct@1.0\",\n    \"LastModifiedDate\": \"2024-09-26T23:49:30Z\"\n}",
+                  "createdAt": "2024-10-01T00:54:52.000Z",
+                  "updatedAt": "2024-10-01T00:58:24.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T19:03:05.000Z"
             }
           ],
-          "id": "bcc59ec3-5e90-4f84-a7e6-708ee7000076"
+          "id": "a35d8bc0-2120-439f-b16a-cf127f679f84",
+          "createdAt": "2024-09-05T19:43:47.000Z",
+          "updatedAt": "2024-09-13T23:48:26.000Z"
         },
         {
           "name": "Product",
@@ -254,8 +268,9 @@
                       }
                     }
                   ],
-                  "id": "d3ca2899-801b-4e29-9d41-45b6e625e3a3",
+                  "id": "4f252d8f-bf66-49eb-84d5-0c81a7355604",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -290,7 +305,7 @@
                   },
                   "response": [
                     {
-                      "id": "153b21fd-e7ac-47a6-9f7d-4bb36fb61966",
+                      "id": "3948f0fd-f9ce-42ed-83ad-76c1ddc66726",
                       "name": "CreateDraftContainerProductWithDraftPublicOffer",
                       "originalRequest": {
                         "method": "POST",
@@ -349,9 +364,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T01:01:49.000Z",
+                      "updatedAt": "2024-10-01T15:43:24.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T19:26:43.000Z"
                 },
                 {
                   "name": "CreateLimitedContainerProductPublicOffer",
@@ -368,8 +388,9 @@
                       }
                     }
                   ],
-                  "id": "c9b50444-a245-42f5-8ce2-e75284359e60",
+                  "id": "6995b581-225e-499b-8d3e-e929b3a16d38",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -404,7 +425,7 @@
                   },
                   "response": [
                     {
-                      "id": "d74b31e1-fcce-40e2-bd7d-bf809f867958",
+                      "id": "59cc6b59-9188-48b5-b1fc-b5c8440589e3",
                       "name": "CreateLimitedContainerProductPublicOffer",
                       "originalRequest": {
                         "method": "POST",
@@ -463,12 +484,19 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T15:45:04.000Z",
+                      "updatedAt": "2024-10-01T15:45:16.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T19:29:33.000Z"
                 }
               ],
-              "id": "dd6f5c37-920b-401b-b5f6-fb1a4830b7fc"
+              "id": "78c7f7cf-9eed-40ea-9a40-47142305b551",
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-09-05T19:43:47.000Z"
             },
             {
               "name": "AMI Product",
@@ -488,8 +516,9 @@
                       }
                     }
                   ],
-                  "id": "42e7f62e-6f2a-4e16-a13f-bc674e051383",
+                  "id": "d2fe9e29-237d-42ea-b6c1-7cb9bfb3e2d9",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -524,7 +553,7 @@
                   },
                   "response": [
                     {
-                      "id": "11f951be-fdd7-4726-9de8-35a64ad39d9d",
+                      "id": "9e7ac35f-f0e4-4777-bedc-020863bdbc4a",
                       "name": "CreateDraftAmiProductWithDraftPublicOffer",
                       "originalRequest": {
                         "method": "POST",
@@ -583,9 +612,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T15:49:55.000Z",
+                      "updatedAt": "2024-10-01T15:50:06.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T19:30:04.000Z"
                 },
                 {
                   "name": "AddRegionExistingAmiProduct",
@@ -602,8 +636,9 @@
                       }
                     }
                   ],
-                  "id": "4f0e34e1-1589-4e7a-990e-44dc431c1b1d",
+                  "id": "fc90c44b-c5f6-48eb-b2df-185149421d5b",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -638,7 +673,7 @@
                   },
                   "response": [
                     {
-                      "id": "66cc56f0-ab26-41cb-8103-9325056de102",
+                      "id": "625b23b4-7ff6-4fb6-8713-ac4f1f9f3f97",
                       "name": "AddRegionExistingAmiProduct",
                       "originalRequest": {
                         "method": "POST",
@@ -697,9 +732,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T15:50:16.000Z",
+                      "updatedAt": "2024-10-01T15:50:26.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-04T19:36:51.000Z"
                 },
                 {
                   "name": "UpdateFutureRegionSupport",
@@ -716,8 +756,9 @@
                       }
                     }
                   ],
-                  "id": "ad71e2a7-d932-450e-8f26-ffb4d881d3f5",
+                  "id": "a873993a-e0f7-4636-a716-89de4cd2f699",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -760,7 +801,7 @@
                   },
                   "response": [
                     {
-                      "id": "973a991a-9abc-4e4b-8fed-318944ec1519",
+                      "id": "a2be4587-e69d-4bcc-aa61-9def62821298",
                       "name": "UpdateFutureRegionSupport",
                       "originalRequest": {
                         "method": "POST",
@@ -827,9 +868,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T15:51:00.000Z",
+                      "updatedAt": "2024-10-01T15:51:14.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-04T19:37:09.000Z"
                 },
                 {
                   "name": "RestrictRegionExistingAmiProduct",
@@ -846,8 +892,9 @@
                       }
                     }
                   ],
-                  "id": "1010a922-fd21-4b0b-9b46-a086165fade0",
+                  "id": "b488935c-971f-4aa9-b525-0690f44852bf",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -882,7 +929,7 @@
                   },
                   "response": [
                     {
-                      "id": "3a5fb4cf-9d19-4f04-8bf9-31cfbfbac754",
+                      "id": "7d543076-6101-4938-8dfb-e9e714350fb9",
                       "name": "RestrictRegionExistingAmiProduct",
                       "originalRequest": {
                         "method": "POST",
@@ -941,9 +988,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T15:52:17.000Z",
+                      "updatedAt": "2024-10-01T18:39:19.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-04T19:37:23.000Z"
                 },
                 {
                   "name": "RestrictExistingAmi",
@@ -960,8 +1012,9 @@
                       }
                     }
                   ],
-                  "id": "ea0ef471-c90e-416d-ad33-aae4951e7aac",
+                  "id": "999c0b63-7c07-4cff-825c-322d440462b4",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -996,7 +1049,7 @@
                   },
                   "response": [
                     {
-                      "id": "8c6756ec-1b91-43a6-9108-b07bc9d60c6b",
+                      "id": "0179d72d-31c3-4b74-a300-49582b2531f2",
                       "name": "RestrictExistingAmi",
                       "originalRequest": {
                         "method": "POST",
@@ -1055,9 +1108,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T17:45:56.000Z",
+                      "updatedAt": "2024-10-01T17:50:32.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-04T19:37:43.000Z"
                 },
                 {
                   "name": "CreateLimitedAmiProductAndPublicOfferWithHourlyPricing",
@@ -1074,8 +1132,9 @@
                       }
                     }
                   ],
-                  "id": "c05bad6c-8cd0-4fe4-ac1b-04a57c8fe1c1",
+                  "id": "a808758f-5900-4ef4-abea-24b930d0fa60",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -1110,7 +1169,7 @@
                   },
                   "response": [
                     {
-                      "id": "55d7685e-67f0-46ba-bc0d-4780568c34e1",
+                      "id": "31315471-8795-4658-a0e3-1c6ac3fa22ba",
                       "name": "CreateLimitedAmiProductAndPublicOfferWithHourlyPricing",
                       "originalRequest": {
                         "method": "POST",
@@ -1169,9 +1228,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:00:19.000Z",
+                      "updatedAt": "2024-10-01T18:00:32.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T19:32:54.000Z"
                 },
                 {
                   "name": "CreateLimitedAmiProductAndPublicOfferWithHourlyMonthlyPricing",
@@ -1188,8 +1252,9 @@
                       }
                     }
                   ],
-                  "id": "2ccbb49a-9d6d-4fbb-b996-85fd518af2e7",
+                  "id": "79afd9b7-5c6b-41fa-8feb-a831e88ce480",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -1224,7 +1289,7 @@
                   },
                   "response": [
                     {
-                      "id": "044bf69f-4189-4963-a520-9ccffaf7051f",
+                      "id": "50564fb8-0525-47b0-bd23-857854825bae",
                       "name": "CreateLimitedAmiProductAndPublicOfferWithHourlyMonthlyPricing",
                       "originalRequest": {
                         "method": "POST",
@@ -1283,9 +1348,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:00:40.000Z",
+                      "updatedAt": "2024-10-01T18:39:12.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T19:33:17.000Z"
                 },
                 {
                   "name": "CreateLimitedAmiProductAndPublicOfferWithHourlyAnnualPricing",
@@ -1302,8 +1372,9 @@
                       }
                     }
                   ],
-                  "id": "0dbb9128-6677-4634-a0a8-e3b1527db05e",
+                  "id": "dac3882e-bb2b-42e7-8cdb-2e20a38e4de6",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -1338,7 +1409,7 @@
                   },
                   "response": [
                     {
-                      "id": "ff827399-600f-48b1-8340-d2082a35d6ba",
+                      "id": "5d5699bd-f034-4841-a7cf-a2c168dafdfe",
                       "name": "CreateLimitedAmiProductAndPublicOfferWithHourlyAnnualPricing",
                       "originalRequest": {
                         "method": "POST",
@@ -1397,9 +1468,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:00:59.000Z",
+                      "updatedAt": "2024-10-01T18:01:06.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T19:33:26.000Z"
                 },
                 {
                   "name": "AddDimensionToAmiProductAndSetPriceInPublicOffer",
@@ -1416,8 +1492,9 @@
                       }
                     }
                   ],
-                  "id": "d491dd37-f773-4564-b89e-b395af62c298",
+                  "id": "f86fe821-8f68-4770-b820-f5e62e0e84e9",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -1452,7 +1529,7 @@
                   },
                   "response": [
                     {
-                      "id": "ed0d67aa-8608-4147-a38a-cbfaebf05f1f",
+                      "id": "3bfd642a-d388-4f7f-a40e-03dfaef6bac8",
                       "name": "AddDimensionToAmiProductAndSetPriceInPublicOffer",
                       "originalRequest": {
                         "method": "POST",
@@ -1511,12 +1588,19 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:01:15.000Z",
+                      "updatedAt": "2024-10-01T18:39:07.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-04T19:38:27.000Z"
                 }
               ],
-              "id": "26ccb8be-9980-44ea-bc0e-19795bc6c8cb"
+              "id": "a44abe2b-b804-4a77-89c4-fbce207e82f0",
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-09-05T19:43:47.000Z"
             },
             {
               "name": "SaaS Product",
@@ -1536,8 +1620,9 @@
                       }
                     }
                   ],
-                  "id": "d0c1315b-6a5f-4f5a-b8c3-54df620cca34",
+                  "id": "b5b330e3-2e28-4241-b96b-a06881a8f5ac",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -1572,7 +1657,7 @@
                   },
                   "response": [
                     {
-                      "id": "e001a2a9-e996-478b-9e2d-38a98225d806",
+                      "id": "b2f28d4c-c792-4616-8c6d-2d6f30526420",
                       "name": "CreateLimitedSaasAndPublicOfferWithContractPricing",
                       "originalRequest": {
                         "method": "POST",
@@ -1631,9 +1716,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:02:16.000Z",
+                      "updatedAt": "2024-10-01T18:02:32.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T23:53:25.000Z"
                 },
                 {
                   "name": "CreateLimitedSaasAndPublicOfferWithContractWithPayAsYouGoPricing",
@@ -1650,8 +1740,9 @@
                       }
                     }
                   ],
-                  "id": "a83a183d-33a0-4fab-a183-983079e9e5ed",
+                  "id": "83231477-f05f-46da-9a4c-91575638efe1",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -1686,7 +1777,7 @@
                   },
                   "response": [
                     {
-                      "id": "c65a05eb-0beb-4042-b181-8367fb42a875",
+                      "id": "f0cb136e-8f92-4690-96dd-2a3a0ccea495",
                       "name": "CreateLimitedSaasAndPublicOfferWithContractWithPayAsYouGoPricing",
                       "originalRequest": {
                         "method": "POST",
@@ -1745,9 +1836,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:02:36.000Z",
+                      "updatedAt": "2024-10-01T18:39:00.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T19:34:27.000Z"
                 },
                 {
                   "name": "CreateLimitedSaasAndPublicOfferWithSubscriptionPricing",
@@ -1764,8 +1860,9 @@
                       }
                     }
                   ],
-                  "id": "8e61bf6a-02d3-49df-b21f-8281c29e5d48",
+                  "id": "a19921b8-79e0-44cc-9f41-024a8b975503",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -1800,7 +1897,7 @@
                   },
                   "response": [
                     {
-                      "id": "bb71fa18-e9d9-41a2-9a65-b5b4d7349209",
+                      "id": "33643afe-c157-4830-84ff-376e1155c222",
                       "name": "CreateLimitedSaasAndPublicOfferWithSubscriptionPricing",
                       "originalRequest": {
                         "method": "POST",
@@ -1859,9 +1956,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:16:55.000Z",
+                      "updatedAt": "2024-10-01T18:38:57.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T19:34:38.000Z"
                 },
                 {
                   "name": "CreateSaasProductWithPublicOffer",
@@ -1878,8 +1980,9 @@
                       }
                     }
                   ],
-                  "id": "a2fc31cd-ecaf-48f8-90b9-f5ce9891ac94",
+                  "id": "c77e340f-a314-4203-ba5a-12257d6e0a3a",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -1913,7 +2016,7 @@
                   },
                   "response": [
                     {
-                      "id": "e2194076-51d2-4836-abfb-c18d9890ecf1",
+                      "id": "8d2ab758-111a-493e-80ba-eb41d7066fa8",
                       "name": "CreateSaasProductWithPublicOffer",
                       "originalRequest": {
                         "method": "POST",
@@ -1972,9 +2075,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:17:10.000Z",
+                      "updatedAt": "2024-10-01T18:38:54.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-01T18:17:20.000Z"
                 },
                 {
                   "name": "PublishExistingSaas",
@@ -1991,8 +2099,9 @@
                       }
                     }
                   ],
-                  "id": "3a170489-1d01-4317-a3fc-d0c03b8144c4",
+                  "id": "92aae06c-4d1b-4328-b94e-22339cd10b11",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -2027,7 +2136,7 @@
                   },
                   "response": [
                     {
-                      "id": "f661a01b-896d-4772-b23d-3799df0d7fdd",
+                      "id": "03c448f4-9eb5-4107-8828-eb48675c83e1",
                       "name": "PublishExistingSaas",
                       "originalRequest": {
                         "method": "POST",
@@ -2086,9 +2195,14 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:17:27.000Z",
+                      "updatedAt": "2024-10-01T18:38:51.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-04T19:39:10.000Z"
                 },
                 {
                   "name": "UpdateNameDimensionSaasProduct",
@@ -2105,8 +2219,9 @@
                       }
                     }
                   ],
-                  "id": "a7c42b53-236e-428d-9350-c746224b9df2",
+                  "id": "c18b5cde-368a-4075-8f97-0b1b05680e15",
                   "protocolProfileBehavior": {
+                    "disableBodyPruning": true,
                     "followRedirects": true,
                     "disableUrlEncoding": false,
                     "disableCookies": false
@@ -2141,7 +2256,7 @@
                   },
                   "response": [
                     {
-                      "id": "2ba4b9b6-be5c-4cf7-a896-bf588b347cfa",
+                      "id": "a471f60a-a01c-4c75-a152-f943192c997b",
                       "name": "UpdateNameDimensionSaasProduct",
                       "originalRequest": {
                         "method": "POST",
@@ -2200,12 +2315,19 @@
                         }
                       ],
                       "cookie": [],
-                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                      "responseTime": null,
+                      "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                      "createdAt": "2024-10-01T18:18:03.000Z",
+                      "updatedAt": "2024-10-01T18:18:11.000Z"
                     }
-                  ]
+                  ],
+                  "createdAt": "2024-09-05T19:43:47.000Z",
+                  "updatedAt": "2024-10-04T19:39:23.000Z"
                 }
               ],
-              "id": "c0485b01-ecdc-474c-af9f-401f8c6e6215"
+              "id": "8734d367-548b-4bbf-a53d-a8e0a01fce16",
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-09-05T19:43:47.000Z"
             },
             {
               "name": "DescribeProduct",
@@ -2222,8 +2344,9 @@
                   }
                 }
               ],
-              "id": "7e2752ae-cb0b-4af6-8f06-bedd364b5c3a",
+              "id": "b9562453-9138-4423-8e1c-aae32ef7e93a",
               "protocolProfileBehavior": {
+                "disableBodyPruning": false,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -2254,7 +2377,7 @@
               },
               "response": [
                 {
-                  "id": "5ce58e3a-0d5a-42aa-9baa-fd7511d540d4",
+                  "id": "6c4b4e97-ac18-4819-94b6-e224b39df905",
                   "name": "DescribeProduct",
                   "originalRequest": {
                     "method": "GET",
@@ -2303,13 +2426,20 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"Details\":\"{\\\"Description\\\":{\\\"ProductTitle\\\":\\\"Ming SaaS Product 1 - Contract with Consumption pricing model\\\",\\\"ProductCode\\\":\\\"12345678amcdefgh\\\",\\\"ShortDescription\\\":\\\"Short description goes here.\\\",\\\"Manufacturer\\\":null,\\\"LongDescription\\\":\\\"Long Description goes here.\\\",\\\"Sku\\\":null,\\\"Highlights\\\":[\\\"Highlight 1 goes here.\\\"],\\\"AssociatedProducts\\\":null,\\\"SearchKeywords\\\":[\\\"my first keyword\\\",\\\"my second keyword\\\"],\\\"Visibility\\\":\\\"Limited\\\",\\\"ProductState\\\":\\\"Active\\\",\\\"Categories\\\":[\\\"Backup \\& Recovery\\\"]},\\\"PromotionalResources\\\":{\\\"LogoUrl\\\":\\\"https://awsmp-logos.s3.amazonaws.com/ca60b754fe05a24257176cdbf31c4e0d\\\",\\\"Videos\\\":[],\\\"AdditionalResources\\\":[],\\\"PromotionalMedia\\\":null},\\\"SupportInformation\\\":{\\\"Description\\\":\\\"Support details goes here.\\\",\\\"Resources\\\":[]},\\\"Dimensions\\\":[{\\\"Name\\\":\\\"Dimension 1\\\",\\\"Description\\\":\\\"Dimension 1 description goes here\\\",\\\"Key\\\":\\\"dimension_1_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"Entitled\\\"]},{\\\"Name\\\":\\\"Dimension 2\\\",\\\"Description\\\":\\\"Dimension 2 description goes here\\\",\\\"Key\\\":\\\"dimension_2_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"Entitled\\\"]},{\\\"Name\\\":\\\"Dimension 3\\\",\\\"Description\\\":\\\"Dimension 3 description goes here\\\",\\\"Key\\\":\\\"dimension_3_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"Entitled\\\"]},{\\\"Name\\\":\\\"metered 1\\\",\\\"Description\\\":\\\"Metered dimension 1 desc goes here\\\",\\\"Key\\\":\\\"metered_1_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"ExternallyMetered\\\"]},{\\\"Name\\\":\\\"metered 2\\\",\\\"Description\\\":\\\"Metered dimension 2 desc goes here\\\",\\\"Key\\\":\\\"metered_2_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"ExternallyMetered\\\"]},{\\\"Name\\\":\\\"metered 3\\\",\\\"Description\\\":\\\"Metered dimension 3 desc goes here\\\",\\\"Key\\\":\\\"metered_3_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"ExternallyMetered\\\"]}],\\\"Versions\\\":[{\\\"Id\\\":\\\"version-hnerk6luiqvqy\\\",\\\"DeliveryOptions\\\":[{\\\"Id\\\":\\\"do-qwiatgs7lfifw\\\",\\\"Type\\\":\\\"SoftwareRegistration\\\",\\\"FulfillmentUrl\\\":\\\"https://d1xui7l3aj8fxc.cloudfront.net/\\\"}]}],\\\"Targeting\\\":{\\\"PositiveTargeting\\\":{\\\"BuyerAccounts\\\":[\\\"111111111111\\\",\\\"222222222222\\\",\\\"333333333333\\\"]}}}\",\n    \"DetailsDocument\": {\n        \"Description\": {\n            \"ProductTitle\": \"Ming SaaS Product 1 - Contract with Consumption pricing model\",\n            \"ProductCode\": \"12345678amcdefgh\",\n            \"ShortDescription\": \"Short description goes here.\",\n            \"Manufacturer\": null,\n            \"LongDescription\": \"Long Description goes here.\",\n            \"Sku\": null,\n            \"Highlights\": [\n                \"Highlight 1 goes here.\"\n            ],\n            \"AssociatedProducts\": null,\n            \"SearchKeywords\": [\n                \"my first keyword\",\n                \"my second keyword\"\n            ],\n            \"Visibility\": \"Limited\",\n            \"ProductState\": \"Active\",\n            \"Categories\": [\n                \"Backup & Recovery\"\n            ]\n        },\n        \"PromotionalResources\": {\n            \"LogoUrl\": \"https://awsmp-logos.s3.amazonaws.com/ca60b754fe05a24257176cdbf31c4e0d\",\n            \"Videos\": [],\n            \"AdditionalResources\": [],\n            \"PromotionalMedia\": null\n        },\n        \"SupportInformation\": {\n            \"Description\": \"Support details goes here.\",\n            \"Resources\": []\n        },\n        \"Dimensions\": [\n            {\n                \"Name\": \"Dimension 1\",\n                \"Description\": \"Dimension 1 description goes here\",\n                \"Key\": \"dimension_1_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"Entitled\"\n                ]\n            },\n            {\n                \"Name\": \"Dimension 2\",\n                \"Description\": \"Dimension 2 description goes here\",\n                \"Key\": \"dimension_2_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"Entitled\"\n                ]\n            },\n            {\n                \"Name\": \"Dimension 3\",\n                \"Description\": \"Dimension 3 description goes here\",\n                \"Key\": \"dimension_3_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"Entitled\"\n                ]\n            },\n            {\n                \"Name\": \"metered 1\",\n                \"Description\": \"Metered dimension 1 desc goes here\",\n                \"Key\": \"metered_1_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"ExternallyMetered\"\n                ]\n            },\n            {\n                \"Name\": \"metered 2\",\n                \"Description\": \"Metered dimension 2 desc goes here\",\n                \"Key\": \"metered_2_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"ExternallyMetered\"\n                ]\n            },\n            {\n                \"Name\": \"metered 3\",\n                \"Description\": \"Metered dimension 3 desc goes here\",\n                \"Key\": \"metered_3_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"ExternallyMetered\"\n                ]\n            }\n        ],\n        \"Versions\": [\n            {\n                \"Id\": \"version-hnerk6luiqvqy\",\n                \"DeliveryOptions\": [\n                    {\n                        \"Id\": \"do-qwiatgs7lfifw\",\n                        \"Type\": \"SoftwareRegistration\",\n                        \"FulfillmentUrl\": \"https://d1xui7l3aj8fxc.cloudfront.net/\"\n                    }\n                ]\n            }\n        ],\n        \"Targeting\": {\n            \"PositiveTargeting\": {\n                \"BuyerAccounts\": [\n                    \"111111111111\",\n                    \"222222222222\",\n                    \"333333333333\"\n                ]\n            }\n        }\n    },\n    \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:11111111111:AWSMarketplace/SaaSProduct/prod-abcdefgh\",\n    \"EntityIdentifier\": \"prod-abcdefgh\",\n    \"EntityType\": \"SaaSProduct@1.0\",\n    \"LastModifiedDate\": \"2024-11-04T20:13:21Z\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"Details\":\"{\\\"Description\\\":{\\\"ProductTitle\\\":\\\"Ming SaaS Product 1 - Contract with Consumption pricing model\\\",\\\"ProductCode\\\":\\\"12345678amcdefgh\\\",\\\"ShortDescription\\\":\\\"Short description goes here.\\\",\\\"Manufacturer\\\":null,\\\"LongDescription\\\":\\\"Long Description goes here.\\\",\\\"Sku\\\":null,\\\"Highlights\\\":[\\\"Highlight 1 goes here.\\\"],\\\"AssociatedProducts\\\":null,\\\"SearchKeywords\\\":[\\\"my first keyword\\\",\\\"my second keyword\\\"],\\\"Visibility\\\":\\\"Limited\\\",\\\"ProductState\\\":\\\"Active\\\",\\\"Categories\\\":[\\\"Backup \\& Recovery\\\"]},\\\"PromotionalResources\\\":{\\\"LogoUrl\\\":\\\"https://awsmp-logos.s3.amazonaws.com/ca60b754fe05a24257176cdbf31c4e0d\\\",\\\"Videos\\\":[],\\\"AdditionalResources\\\":[],\\\"PromotionalMedia\\\":null},\\\"SupportInformation\\\":{\\\"Description\\\":\\\"Support details goes here.\\\",\\\"Resources\\\":[]},\\\"Dimensions\\\":[{\\\"Name\\\":\\\"Dimension 1\\\",\\\"Description\\\":\\\"Dimension 1 description goes here\\\",\\\"Key\\\":\\\"dimension_1_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"Entitled\\\"]},{\\\"Name\\\":\\\"Dimension 2\\\",\\\"Description\\\":\\\"Dimension 2 description goes here\\\",\\\"Key\\\":\\\"dimension_2_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"Entitled\\\"]},{\\\"Name\\\":\\\"Dimension 3\\\",\\\"Description\\\":\\\"Dimension 3 description goes here\\\",\\\"Key\\\":\\\"dimension_3_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"Entitled\\\"]},{\\\"Name\\\":\\\"metered 1\\\",\\\"Description\\\":\\\"Metered dimension 1 desc goes here\\\",\\\"Key\\\":\\\"metered_1_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"ExternallyMetered\\\"]},{\\\"Name\\\":\\\"metered 2\\\",\\\"Description\\\":\\\"Metered dimension 2 desc goes here\\\",\\\"Key\\\":\\\"metered_2_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"ExternallyMetered\\\"]},{\\\"Name\\\":\\\"metered 3\\\",\\\"Description\\\":\\\"Metered dimension 3 desc goes here\\\",\\\"Key\\\":\\\"metered_3_id\\\",\\\"Unit\\\":\\\"Units\\\",\\\"Types\\\":[\\\"ExternallyMetered\\\"]}],\\\"Versions\\\":[{\\\"Id\\\":\\\"version-hnerk6luiqvqy\\\",\\\"DeliveryOptions\\\":[{\\\"Id\\\":\\\"do-qwiatgs7lfifw\\\",\\\"Type\\\":\\\"SoftwareRegistration\\\",\\\"FulfillmentUrl\\\":\\\"https://d1xui7l3aj8fxc.cloudfront.net/\\\"}]}],\\\"Targeting\\\":{\\\"PositiveTargeting\\\":{\\\"BuyerAccounts\\\":[\\\"111111111111\\\",\\\"222222222222\\\",\\\"333333333333\\\"]}}}\",\n    \"DetailsDocument\": {\n        \"Description\": {\n            \"ProductTitle\": \"Ming SaaS Product 1 - Contract with Consumption pricing model\",\n            \"ProductCode\": \"12345678amcdefgh\",\n            \"ShortDescription\": \"Short description goes here.\",\n            \"Manufacturer\": null,\n            \"LongDescription\": \"Long Description goes here.\",\n            \"Sku\": null,\n            \"Highlights\": [\n                \"Highlight 1 goes here.\"\n            ],\n            \"AssociatedProducts\": null,\n            \"SearchKeywords\": [\n                \"my first keyword\",\n                \"my second keyword\"\n            ],\n            \"Visibility\": \"Limited\",\n            \"ProductState\": \"Active\",\n            \"Categories\": [\n                \"Backup & Recovery\"\n            ]\n        },\n        \"PromotionalResources\": {\n            \"LogoUrl\": \"https://awsmp-logos.s3.amazonaws.com/ca60b754fe05a24257176cdbf31c4e0d\",\n            \"Videos\": [],\n            \"AdditionalResources\": [],\n            \"PromotionalMedia\": null\n        },\n        \"SupportInformation\": {\n            \"Description\": \"Support details goes here.\",\n            \"Resources\": []\n        },\n        \"Dimensions\": [\n            {\n                \"Name\": \"Dimension 1\",\n                \"Description\": \"Dimension 1 description goes here\",\n                \"Key\": \"dimension_1_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"Entitled\"\n                ]\n            },\n            {\n                \"Name\": \"Dimension 2\",\n                \"Description\": \"Dimension 2 description goes here\",\n                \"Key\": \"dimension_2_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"Entitled\"\n                ]\n            },\n            {\n                \"Name\": \"Dimension 3\",\n                \"Description\": \"Dimension 3 description goes here\",\n                \"Key\": \"dimension_3_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"Entitled\"\n                ]\n            },\n            {\n                \"Name\": \"metered 1\",\n                \"Description\": \"Metered dimension 1 desc goes here\",\n                \"Key\": \"metered_1_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"ExternallyMetered\"\n                ]\n            },\n            {\n                \"Name\": \"metered 2\",\n                \"Description\": \"Metered dimension 2 desc goes here\",\n                \"Key\": \"metered_2_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"ExternallyMetered\"\n                ]\n            },\n            {\n                \"Name\": \"metered 3\",\n                \"Description\": \"Metered dimension 3 desc goes here\",\n                \"Key\": \"metered_3_id\",\n                \"Unit\": \"Units\",\n                \"Types\": [\n                    \"ExternallyMetered\"\n                ]\n            }\n        ],\n        \"Versions\": [\n            {\n                \"Id\": \"version-hnerk6luiqvqy\",\n                \"DeliveryOptions\": [\n                    {\n                        \"Id\": \"do-qwiatgs7lfifw\",\n                        \"Type\": \"SoftwareRegistration\",\n                        \"FulfillmentUrl\": \"https://d1xui7l3aj8fxc.cloudfront.net/\"\n                    }\n                ]\n            }\n        ],\n        \"Targeting\": {\n            \"PositiveTargeting\": {\n                \"BuyerAccounts\": [\n                    \"111111111111\",\n                    \"222222222222\",\n                    \"333333333333\"\n                ]\n            }\n        }\n    },\n    \"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:11111111111:AWSMarketplace/SaaSProduct/prod-abcdefgh\",\n    \"EntityIdentifier\": \"prod-abcdefgh\",\n    \"EntityType\": \"SaaSProduct@1.0\",\n    \"LastModifiedDate\": \"2024-11-04T20:13:21Z\"\n}",
+                  "createdAt": "2025-01-31T22:52:12.000Z",
+                  "updatedAt": "2025-01-31T22:56:03.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2025-01-31T22:52:21.000Z"
             }
           ],
-          "id": "616fc00b-6b9a-404f-b255-1b37abe0b2f7",
-          "description": "AWS Marketplace Products related API Actions"
+          "id": "c7457f39-251b-4761-9f6b-c0ef016f8d4f",
+          "description": "AWS Marketplace Products related API Actions",
+          "createdAt": "2024-09-05T19:43:47.000Z",
+          "updatedAt": "2025-08-18T15:44:12.000Z"
         },
         {
           "name": "ChangeSet",
@@ -2329,8 +2459,9 @@
                   }
                 }
               ],
-              "id": "1223441e-d0eb-4e32-b5ba-1aebe829f4c7",
+              "id": "0306558a-a82a-491d-8664-f3fa9b49badf",
               "protocolProfileBehavior": {
+                "disableBodyPruning": false,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -2366,7 +2497,7 @@
               },
               "response": [
                 {
-                  "id": "334b03d2-9a01-4ef6-87bb-7e12ad360e60",
+                  "id": "89379357-8943-432e-aa14-c680f5fd8f6c",
                   "name": "DescribeChangeSet",
                   "originalRequest": {
                     "method": "GET",
@@ -2426,9 +2557,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n\t\"ChangeSet\": [\n\t\t{\n\t\t\t\"ChangeName\": \"CreateProductChange\",\n\t\t\t\"ChangeType\": \"CreateProduct\",\n\t\t\t\"Details\": \"{\\\"ProductTitle\\\":\\\"Sample product\\\"}\",\n\t\t\t\"DetailsDocument\": {\n\t\t\t\t\"ProductTitle\": \"Sample product\"\n\t\t\t},\n\t\t\t\"Entity\": {\n\t\t\t\t\"Identifier\": \"prod-1234567890@1\",\n\t\t\t\t\"Type\": \"ContainerProduct@1.0\"\n\t\t\t},\n\t\t\t\"ErrorDetailList\": []\n\t\t},\n\t\t{\n\t\t\t\"ChangeName\": \"CreateOfferChange\",\n\t\t\t\"ChangeType\": \"CreateOffer\",\n\t\t\t\"Details\": \"{\\\"ProductId\\\":\\\"prod-1234567890\\\",\\\"Name\\\":\\\"Test Offer\\\"}\",\n\t\t\t\"DetailsDocument\": {\n\t\t\t\t\"ProductId\": \"prod-1234567890\",\n\t\t\t\t\"Name\": \"Test Offer\"\n\t\t\t},\n\t\t\t\"Entity\": {\n\t\t\t\t\"Identifier\": \"offer-1234567890@1\",\n\t\t\t\t\"Type\": \"Offer@1.0\"\n\t\t\t},\n\t\t\t\"ErrorDetailList\": []\n\t\t}\n\t],\n\t\"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n\t\"ChangeSetId\": \"test_ChangeSetId\",\n\t\"ChangeSetName\": \"Submitted by 111111111111\",\n\t\"EndTime\": null,\n\t\"FailureCode\": null,\n\t\"FailureDescription\": null,\n\t\"Intent\": \"APPLY\",\n\t\"StartTime\": \"2024-10-01T18:25:36Z\",\n\t\"Status\": \"SUCCEEDED\"\n}"
+                  "responseTime": null,
+                  "body": "{\n\t\"ChangeSet\": [\n\t\t{\n\t\t\t\"ChangeName\": \"CreateProductChange\",\n\t\t\t\"ChangeType\": \"CreateProduct\",\n\t\t\t\"Details\": \"{\\\"ProductTitle\\\":\\\"Sample product\\\"}\",\n\t\t\t\"DetailsDocument\": {\n\t\t\t\t\"ProductTitle\": \"Sample product\"\n\t\t\t},\n\t\t\t\"Entity\": {\n\t\t\t\t\"Identifier\": \"prod-1234567890@1\",\n\t\t\t\t\"Type\": \"ContainerProduct@1.0\"\n\t\t\t},\n\t\t\t\"ErrorDetailList\": []\n\t\t},\n\t\t{\n\t\t\t\"ChangeName\": \"CreateOfferChange\",\n\t\t\t\"ChangeType\": \"CreateOffer\",\n\t\t\t\"Details\": \"{\\\"ProductId\\\":\\\"prod-1234567890\\\",\\\"Name\\\":\\\"Test Offer\\\"}\",\n\t\t\t\"DetailsDocument\": {\n\t\t\t\t\"ProductId\": \"prod-1234567890\",\n\t\t\t\t\"Name\": \"Test Offer\"\n\t\t\t},\n\t\t\t\"Entity\": {\n\t\t\t\t\"Identifier\": \"offer-1234567890@1\",\n\t\t\t\t\"Type\": \"Offer@1.0\"\n\t\t\t},\n\t\t\t\"ErrorDetailList\": []\n\t\t}\n\t],\n\t\"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n\t\"ChangeSetId\": \"test_ChangeSetId\",\n\t\"ChangeSetName\": \"Submitted by 111111111111\",\n\t\"EndTime\": null,\n\t\"FailureCode\": null,\n\t\"FailureDescription\": null,\n\t\"Intent\": \"APPLY\",\n\t\"StartTime\": \"2024-10-01T18:25:36Z\",\n\t\"Status\": \"SUCCEEDED\"\n}",
+                  "createdAt": "2024-10-01T18:26:00.000Z",
+                  "updatedAt": "2024-10-01T18:27:32.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T20:13:11.000Z"
             },
             {
               "name": "ListChangeSets",
@@ -2445,8 +2581,9 @@
                   }
                 }
               ],
-              "id": "cadd405f-1092-41f4-ad1d-87d66c36c123",
+              "id": "b7387ee8-66d8-4026-8717-731f033ed97d",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -2476,7 +2613,7 @@
               },
               "response": [
                 {
-                  "id": "5e0b4c0e-292a-42ef-8e7c-652aa8402a78",
+                  "id": "d2fd4898-39b5-44d9-876b-8fe862790218",
                   "name": "ListChangeSets",
                   "originalRequest": {
                     "method": "POST",
@@ -2530,9 +2667,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n\t\"ChangeSetSummaryList\": [\n\t\t{\n\t\t\t\"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n\t\t\t\"ChangeSetId\": \"test_ChangeSetId\",\n\t\t\t\"ChangeSetName\": \"ChannelOfferIngestionTests\",\n\t\t\t\"EndTime\": null,\n\t\t\t\"EntityIdList\": [\n\t\t\t\t\"offer-1234567890\"\n\t\t\t],\n\t\t\t\"FailureCode\": null,\n\t\t\t\"StartTime\": \"2024-10-01T18:30:10Z\",\n\t\t\t\"Status\": \"APPLYING\"\n\t\t}\n\t],\n\t\"NextToken\": \"Test_Token_AgV4ts3wXJgOPq66YrnFyVeWHYNdcYFiBAZ7gpONiNep09gAfQACAA5BV1NfQUNDT1VOVF9JRAAMMjczMTQxNjE2NDg2ABVhd3MtY3J5cHRvLXB1YmxpYy1rZXkAREFvb1JSMVFKWnpSeFYwUUd1OUU1W=\"\n}"
+                  "responseTime": null,
+                  "body": "{\n\t\"ChangeSetSummaryList\": [\n\t\t{\n\t\t\t\"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n\t\t\t\"ChangeSetId\": \"test_ChangeSetId\",\n\t\t\t\"ChangeSetName\": \"ChannelOfferIngestionTests\",\n\t\t\t\"EndTime\": null,\n\t\t\t\"EntityIdList\": [\n\t\t\t\t\"offer-1234567890\"\n\t\t\t],\n\t\t\t\"FailureCode\": null,\n\t\t\t\"StartTime\": \"2024-10-01T18:30:10Z\",\n\t\t\t\"Status\": \"APPLYING\"\n\t\t}\n\t],\n\t\"NextToken\": \"Test_Token_AgV4ts3wXJgOPq66YrnFyVeWHYNdcYFiBAZ7gpONiNep09gAfQACAA5BV1NfQUNDT1VOVF9JRAAMMjczMTQxNjE2NDg2ABVhd3MtY3J5cHRvLXB1YmxpYy1rZXkAREFvb1JSMVFKWnpSeFYwUUd1OUU1W=\"\n}",
+                  "createdAt": "2024-10-01T18:33:23.000Z",
+                  "updatedAt": "2024-10-01T18:36:28.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T20:14:09.000Z"
             },
             {
               "name": "CancelChangeSet",
@@ -2549,8 +2691,9 @@
                   }
                 }
               ],
-              "id": "8310242d-a9f2-4564-85f4-5fea47cfa864",
+              "id": "bcdb02e2-9981-425b-8fb7-c1d93d098891",
               "protocolProfileBehavior": {
+                "disableBodyPruning": false,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -2586,7 +2729,7 @@
               },
               "response": [
                 {
-                  "id": "62f71906-8419-4814-9430-4e2cd629ae95",
+                  "id": "addba779-fa08-4ede-950e-941b35ab6065",
                   "name": "CancelChangeSet",
                   "originalRequest": {
                     "method": "PATCH",
@@ -2646,12 +2789,19 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n   \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n   \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n   \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n   \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T18:37:46.000Z",
+                  "updatedAt": "2024-10-01T18:38:21.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T20:15:39.000Z"
             }
           ],
-          "id": "eba74992-fa68-4539-b1d6-48fa7d57cec5"
+          "id": "080d63f5-413e-4410-a3a4-20b9b4433b7e",
+          "createdAt": "2024-09-05T19:43:47.000Z",
+          "updatedAt": "2024-09-18T19:35:00.000Z"
         },
         {
           "name": "Resale Authorization",
@@ -2671,8 +2821,9 @@
                   }
                 }
               ],
-              "id": "13afadf5-efbe-4100-9b47-17b29ffcd303",
+              "id": "ae6ac3ae-fcb3-4cfa-a4f3-05b25b23cad0",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -2707,7 +2858,7 @@
               },
               "response": [
                 {
-                  "id": "f32cdadb-fd73-499c-a4d6-653318b3a333",
+                  "id": "9bbb5f65-80d1-4e13-b155-85457c692dbd",
                   "name": "DraftResaleauthAllProductType",
                   "originalRequest": {
                     "method": "POST",
@@ -2766,9 +2917,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"message\": \"The security token included in the request is invalid.\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"message\": \"The security token included in the request is invalid.\"\n}",
+                  "createdAt": "2024-10-01T18:41:30.000Z",
+                  "updatedAt": "2024-10-01T18:41:30.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:40:23.000Z"
             },
             {
               "name": "UpdateUnpublishedResaleAuthorization",
@@ -2785,8 +2941,9 @@
                   }
                 }
               ],
-              "id": "467714ef-e28b-4b80-b18b-2a97289f6555",
+              "id": "ae67ecea-9407-40f6-90ca-045ffa5077f1",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -2821,7 +2978,7 @@
               },
               "response": [
                 {
-                  "id": "2ab14ce4-4421-4880-8c0b-1d01b4b4fb6c",
+                  "id": "1b656d8f-7907-4e0f-8002-265ac7ec0f47",
                   "name": "UpdateUnpublishedResaleAuthorization",
                   "originalRequest": {
                     "method": "POST",
@@ -2880,9 +3037,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"message\": \"The security token included in the request is invalid.\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"message\": \"The security token included in the request is invalid.\"\n}",
+                  "createdAt": "2024-10-01T18:41:45.000Z",
+                  "updatedAt": "2024-10-01T18:41:45.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T20:23:19.000Z"
             },
             {
               "name": "RestrictResaleAuthorization",
@@ -2899,8 +3061,9 @@
                   }
                 }
               ],
-              "id": "e0a6ca54-53d6-4634-8867-8a888e83d323",
+              "id": "c643a39d-5f45-4883-a738-0e3b33ee8924",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -2935,7 +3098,7 @@
               },
               "response": [
                 {
-                  "id": "58077841-2735-42c7-b719-638a283187c2",
+                  "id": "8293f797-2f4d-40a4-9087-95ae686b4673",
                   "name": "RestrictResaleAuthorization",
                   "originalRequest": {
                     "method": "POST",
@@ -2994,9 +3157,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"message\": \"The security token included in the request is invalid.\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"message\": \"The security token included in the request is invalid.\"\n}",
+                  "createdAt": "2024-10-01T18:42:05.000Z",
+                  "updatedAt": "2024-10-01T18:42:05.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T20:26:21.000Z"
             },
             {
               "name": "PublishOnetimeResaleAuthSpecificBuyer",
@@ -3013,8 +3181,9 @@
                   }
                 }
               ],
-              "id": "effa9fc3-190d-4903-b1fd-a3574492e599",
+              "id": "f189b42d-a8ff-4766-8102-618aaf5aa08b",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -3049,7 +3218,7 @@
               },
               "response": [
                 {
-                  "id": "f6e41b30-9b06-40ca-92f0-359404707940",
+                  "id": "ba661a4e-aacb-46ac-a016-6fa36207d906",
                   "name": "PublishOnetimeResaleAuthSpecificBuyer",
                   "originalRequest": {
                     "method": "POST",
@@ -3108,9 +3277,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"message\": \"The security token included in the request is invalid.\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"message\": \"The security token included in the request is invalid.\"\n}",
+                  "createdAt": "2024-10-01T18:46:41.000Z",
+                  "updatedAt": "2024-10-01T18:46:41.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:40:54.000Z"
             },
             {
               "name": "PublishOnetimeResaleAuthFlexiblePayment",
@@ -3127,8 +3301,9 @@
                   }
                 }
               ],
-              "id": "ed082a1b-7d9b-42f7-8d0a-5894fde0c424",
+              "id": "2cf50486-0382-40fc-aa47-9cca3dbc26c0",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -3163,7 +3338,7 @@
               },
               "response": [
                 {
-                  "id": "03599dba-2d26-4acf-afc2-ce7b71de39cd",
+                  "id": "b905e4a0-9870-44a3-91c8-b33f1625420b",
                   "name": "PublishOnetimeResaleAuthFlexiblePayment",
                   "originalRequest": {
                     "method": "POST",
@@ -3222,9 +3397,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T18:46:59.000Z",
+                  "updatedAt": "2024-10-01T18:47:05.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:41:13.000Z"
             },
             {
               "name": "PublishMultiuseResaleAuthNoExpirydateSpecificBuyer",
@@ -3241,8 +3421,9 @@
                   }
                 }
               ],
-              "id": "365f7f61-9f43-4580-9e78-64576290661f",
+              "id": "25ffee74-c860-4b72-95f2-1c28e3236908",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -3277,7 +3458,7 @@
               },
               "response": [
                 {
-                  "id": "bf94132d-a0d0-4631-8355-e8dc31b66da5",
+                  "id": "1e98f085-9ac0-43d1-ae8e-59b91c3d842a",
                   "name": "PublishMultiuseResaleAuthNoExpirydateSpecificBuyer",
                   "originalRequest": {
                     "method": "POST",
@@ -3336,9 +3517,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T18:47:14.000Z",
+                  "updatedAt": "2024-10-01T18:47:24.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:41:23.000Z"
             },
             {
               "name": "PublishMultiuseResaleAuthExpirydateSpecificBuyer",
@@ -3355,8 +3541,9 @@
                   }
                 }
               ],
-              "id": "1399aa38-ed18-4b7f-84f4-a6cc22b89cc0",
+              "id": "8403425e-9f26-4544-9e56-eac26737e5cc",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -3391,7 +3578,7 @@
               },
               "response": [
                 {
-                  "id": "1f280c95-2f0e-4a49-8841-d922821ba741",
+                  "id": "b4d81ee0-1b1b-4240-956f-01cd7b158596",
                   "name": "PublishMultiuseResaleAuthExpirydateSpecificBuyer",
                   "originalRequest": {
                     "method": "POST",
@@ -3450,9 +3637,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T18:47:37.000Z",
+                  "updatedAt": "2024-10-01T18:47:47.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:41:35.000Z"
             },
             {
               "name": "OnetimeResaleauthRenewal",
@@ -3469,8 +3661,9 @@
                   }
                 }
               ],
-              "id": "0231da0d-9397-48ec-9bb1-20aca42e49fe",
+              "id": "5e055ff3-5200-427a-948b-66ce00b5bdb9",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -3505,7 +3698,7 @@
               },
               "response": [
                 {
-                  "id": "59ecd25b-295f-4e92-b75b-649d3d280f89",
+                  "id": "13593563-7e0c-4437-a029-bcbf01de9434",
                   "name": "OnetimeResaleauthRenewal",
                   "originalRequest": {
                     "method": "POST",
@@ -3564,9 +3757,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T18:48:07.000Z",
+                  "updatedAt": "2024-10-01T18:48:15.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:41:52.000Z"
             },
             {
               "name": "OnetimeResaleauthPrivateoffer",
@@ -3583,8 +3781,9 @@
                   }
                 }
               ],
-              "id": "2285dcb9-0b78-48f3-9e5c-0eed4d5ab332",
+              "id": "8ca5acc5-0e30-4b92-95b9-6c94ec6c6afc",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -3619,7 +3818,7 @@
               },
               "response": [
                 {
-                  "id": "f9ab9b13-3ae8-4f7d-b60e-9f75b025f261",
+                  "id": "9194ed06-c509-4d7a-8872-69ebfec94601",
                   "name": "OnetimeResaleauthPrivateoffer",
                   "originalRequest": {
                     "method": "POST",
@@ -3678,9 +3877,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T18:48:36.000Z",
+                  "updatedAt": "2024-10-01T18:48:44.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:42:07.000Z"
             },
             {
               "name": "OnetimeResaleauthCustomresellerContractdoc",
@@ -3697,8 +3901,9 @@
                   }
                 }
               ],
-              "id": "f4d52484-12eb-4f52-8496-86d225910ea0",
+              "id": "6ed4d4b7-d2d8-4039-8a4e-90de9eb988e5",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -3733,7 +3938,7 @@
               },
               "response": [
                 {
-                  "id": "2eb592ff-179d-4ab5-994e-95a4ca2b23cd",
+                  "id": "16f251e5-8548-4192-870c-ee0918b6d905",
                   "name": "OnetimeResaleauthCustomresellerContractdoc",
                   "originalRequest": {
                     "method": "POST",
@@ -3792,9 +3997,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T19:16:29.000Z",
+                  "updatedAt": "2024-10-01T19:16:36.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:42:23.000Z"
             },
             {
               "name": "OnetimeResaleauthCustomEula",
@@ -3811,8 +4021,9 @@
                   }
                 }
               ],
-              "id": "b7839e8b-1f80-4397-a168-cec1be3db6ad",
+              "id": "ce978fea-8f4e-4ba4-991b-2dce106595eb",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -3847,7 +4058,7 @@
               },
               "response": [
                 {
-                  "id": "98de40bf-70ff-4efb-8763-171d10a1868a",
+                  "id": "333e430d-d5dc-402c-9355-3b74455cb81a",
                   "name": "OnetimeResaleauthCustomEula",
                   "originalRequest": {
                     "method": "POST",
@@ -3906,9 +4117,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T19:16:47.000Z",
+                  "updatedAt": "2024-10-01T19:16:54.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:42:37.000Z"
             },
             {
               "name": "MultiuseResaleautoNoExpirydateCPPO",
@@ -3925,8 +4141,9 @@
                   }
                 }
               ],
-              "id": "3c24a07c-6be1-4232-bf9f-ac4ebd05546d",
+              "id": "ab61cb45-6919-4bf8-bc28-7153133d6013",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -3961,7 +4178,7 @@
               },
               "response": [
                 {
-                  "id": "5a88e6fe-7aaa-4eb6-8faf-b78eba13d6a2",
+                  "id": "4aa49eac-e1e6-4a0e-b030-5ef3acf6448e",
                   "name": "MultiuseResaleautoNoExpirydateCPPO",
                   "originalRequest": {
                     "method": "POST",
@@ -4020,9 +4237,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T19:17:06.000Z",
+                  "updatedAt": "2024-10-01T19:17:13.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:42:50.000Z"
             },
             {
               "name": "MultiuseResaleautoNoExpirydateCPPO",
@@ -4039,8 +4261,9 @@
                   }
                 }
               ],
-              "id": "da418d54-8101-45f7-8160-f2c048f5b114",
+              "id": "ae5a1fe5-8fb0-4a9c-9768-5593c0305dd2",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -4075,7 +4298,7 @@
               },
               "response": [
                 {
-                  "id": "6b5d7ec4-995d-4871-a623-3931a87ccf09",
+                  "id": "e3aaea8a-dfed-41ed-af56-c285cdece36f",
                   "name": "MultiuseResaleautoNoExpirydateCPPO",
                   "originalRequest": {
                     "method": "POST",
@@ -4134,9 +4357,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T19:17:23.000Z",
+                  "updatedAt": "2024-10-01T19:17:37.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:43:01.000Z"
             },
             {
               "name": "MultiuseResaleauthNoExpirydateCustomResellerContractdoc",
@@ -4153,8 +4381,9 @@
                   }
                 }
               ],
-              "id": "21c11ef2-a56c-4fe5-ad1a-3e4eaea8e144",
+              "id": "11429f4d-cc1b-4996-8a06-9fa3d2fb874d",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -4189,7 +4418,7 @@
               },
               "response": [
                 {
-                  "id": "b521632f-e988-453c-ae8c-46a5abeb8c6d",
+                  "id": "d155a836-94b7-4417-ae7f-d53cf4b7c3d7",
                   "name": "MultiuseResaleauthNoExpirydateCustomResellerContractdoc",
                   "originalRequest": {
                     "method": "POST",
@@ -4248,9 +4477,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T19:17:43.000Z",
+                  "updatedAt": "2024-10-01T19:17:51.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:43:16.000Z"
             },
             {
               "name": "MultiuseResaleauthNoExpirdateCustomEula",
@@ -4267,8 +4501,9 @@
                   }
                 }
               ],
-              "id": "cbfe26dd-7f6f-4157-ac51-c19982300cd9",
+              "id": "1c451767-a214-4c43-a8bf-8443abb5591c",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -4303,7 +4538,7 @@
               },
               "response": [
                 {
-                  "id": "dff3d32d-a006-496a-86a7-ce06dbc78bdf",
+                  "id": "58abe00f-69ed-47d7-856e-2d425a9ddd84",
                   "name": "MultiuseResaleauthNoExpirdateCustomEula",
                   "originalRequest": {
                     "method": "POST",
@@ -4362,9 +4597,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T20:36:23.000Z",
+                  "updatedAt": "2024-10-01T20:36:41.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:43:25.000Z"
             },
             {
               "name": "ListResaleAuthorization",
@@ -4381,8 +4621,9 @@
                   }
                 }
               ],
-              "id": "27ae8b3a-d70c-42c5-83dd-fcb16e341319",
+              "id": "e1bc78af-4245-4d03-832b-9747890cab82",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -4417,7 +4658,7 @@
               },
               "response": [
                 {
-                  "id": "1c47f9ca-d871-462d-849b-579d26d02067",
+                  "id": "49b57a23-9e03-4736-a03b-eba901e83c14",
                   "name": "ListResaleAuthorization",
                   "originalRequest": {
                     "method": "POST",
@@ -4476,9 +4717,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n\t\"EntitySummaryList\": [\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ResaleAuthorization/resaleauthz-111111111111\",\n\t\t\t\"EntityId\": \"resaleauthz-resaleauthz-111111111111\",\n\t\t\t\"EntityType\": \"ResaleAuthorization\",\n\t\t\t\"LastModifiedDate\": \"2024-09-06T15:12:28Z\",\n\t\t\t\"Name\": \"test\",\n\t\t\t\"OfferSummary\": null,\n\t\t\t\"ResaleAuthorizationSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2099-12-31T23:59:59.999Z\",\n\t\t\t\t\"CreatedDate\": \"2024-09-06T15:06:16.325Z\",\n\t\t\t\t\"ManufacturerAccountId\": \"111111111111\",\n\t\t\t\t\"ManufacturerLegalName\": \"ChannelCP.Inc\",\n\t\t\t\t\"Name\": \"test\",\n\t\t\t\t\"OfferExtendedStatus\": \"Completed-Usable\",\n\t\t\t\t\"ProductId\": \"prod-11111111111\",\n\t\t\t\t\"ProductName\": \"Channel CAPI Integ Test Product (AMI)\",\n\t\t\t\t\"ResellerAccountID\": \"222222222222\",\n\t\t\t\t\"ResellerLegalName\": \"ChannelISV.Inc\",\n\t\t\t\t\"Status\": \"Active\"\n\t\t\t},\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": null\n\t\t},\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ResaleAuthorization/resaleauthz-222222222222\",\n\t\t\t\"EntityId\": \"resaleauthz-222222222222\",\n\t\t\t\"EntityType\": \"ResaleAuthorization\",\n\t\t\t\"LastModifiedDate\": \"2024-09-05T21:32:28Z\",\n\t\t\t\"Name\": \"ResaleAgreementTwinkleTesting\",\n\t\t\t\"OfferSummary\": null,\n\t\t\t\"ResaleAuthorizationSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2099-12-31T23:59:59.999Z\",\n\t\t\t\t\"CreatedDate\": \"2024-08-01T17:23:24.896Z\",\n\t\t\t\t\"ManufacturerAccountId\": \"111111111111\",\n\t\t\t\t\"ManufacturerLegalName\": \"ChannelCP.Inc\",\n\t\t\t\t\"Name\": \"ResaleAgreementTwinkleTesting\",\n\t\t\t\t\"OfferExtendedStatus\": \"Completed-Usable\",\n\t\t\t\t\"ProductId\": \"prod-11111111111\",\n\t\t\t\t\"ProductName\": \"Channel CAPI Integ Test Product (AMI)\",\n\t\t\t\t\"ResellerAccountID\": \"222222222222\",\n\t\t\t\t\"ResellerLegalName\": \"ChannelISV.Inc\",\n\t\t\t\t\"Status\": \"Active\"\n\t\t\t},\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": null\n\t\t}\n\t],\n\t\"NextToken\": \"Test_Token_rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJzcgAOamF\"\n}"
+                  "responseTime": null,
+                  "body": "{\n\t\"EntitySummaryList\": [\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ResaleAuthorization/resaleauthz-111111111111\",\n\t\t\t\"EntityId\": \"resaleauthz-resaleauthz-111111111111\",\n\t\t\t\"EntityType\": \"ResaleAuthorization\",\n\t\t\t\"LastModifiedDate\": \"2024-09-06T15:12:28Z\",\n\t\t\t\"Name\": \"test\",\n\t\t\t\"OfferSummary\": null,\n\t\t\t\"ResaleAuthorizationSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2099-12-31T23:59:59.999Z\",\n\t\t\t\t\"CreatedDate\": \"2024-09-06T15:06:16.325Z\",\n\t\t\t\t\"ManufacturerAccountId\": \"111111111111\",\n\t\t\t\t\"ManufacturerLegalName\": \"ChannelCP.Inc\",\n\t\t\t\t\"Name\": \"test\",\n\t\t\t\t\"OfferExtendedStatus\": \"Completed-Usable\",\n\t\t\t\t\"ProductId\": \"prod-11111111111\",\n\t\t\t\t\"ProductName\": \"Channel CAPI Integ Test Product (AMI)\",\n\t\t\t\t\"ResellerAccountID\": \"222222222222\",\n\t\t\t\t\"ResellerLegalName\": \"ChannelISV.Inc\",\n\t\t\t\t\"Status\": \"Active\"\n\t\t\t},\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": null\n\t\t},\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ResaleAuthorization/resaleauthz-222222222222\",\n\t\t\t\"EntityId\": \"resaleauthz-222222222222\",\n\t\t\t\"EntityType\": \"ResaleAuthorization\",\n\t\t\t\"LastModifiedDate\": \"2024-09-05T21:32:28Z\",\n\t\t\t\"Name\": \"ResaleAgreementTwinkleTesting\",\n\t\t\t\"OfferSummary\": null,\n\t\t\t\"ResaleAuthorizationSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2099-12-31T23:59:59.999Z\",\n\t\t\t\t\"CreatedDate\": \"2024-08-01T17:23:24.896Z\",\n\t\t\t\t\"ManufacturerAccountId\": \"111111111111\",\n\t\t\t\t\"ManufacturerLegalName\": \"ChannelCP.Inc\",\n\t\t\t\t\"Name\": \"ResaleAgreementTwinkleTesting\",\n\t\t\t\t\"OfferExtendedStatus\": \"Completed-Usable\",\n\t\t\t\t\"ProductId\": \"prod-11111111111\",\n\t\t\t\t\"ProductName\": \"Channel CAPI Integ Test Product (AMI)\",\n\t\t\t\t\"ResellerAccountID\": \"222222222222\",\n\t\t\t\t\"ResellerLegalName\": \"ChannelISV.Inc\",\n\t\t\t\t\"Status\": \"Active\"\n\t\t\t},\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": null\n\t\t}\n\t],\n\t\"NextToken\": \"Test_Token_rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJzcgAOamF\"\n}",
+                  "createdAt": "2024-10-01T20:39:21.000Z",
+                  "updatedAt": "2024-10-01T20:46:31.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:07:04.000Z"
             },
             {
               "name": "MultiuseResaleauthExpirydateCPPO",
@@ -4495,8 +4741,9 @@
                   }
                 }
               ],
-              "id": "3c6f6a6f-e33b-4e92-aa8c-0203ca35f8a9",
+              "id": "962f336b-32eb-45d5-80ce-7fc2886cc29c",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -4531,7 +4778,7 @@
               },
               "response": [
                 {
-                  "id": "99a68883-9a1a-4bd9-ada3-2f7b63a1975c",
+                  "id": "cb35950a-5198-4c95-8a3b-269de872e761",
                   "name": "MultiuseResaleauthExpirydateCPPO",
                   "originalRequest": {
                     "method": "POST",
@@ -4590,9 +4837,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T20:46:49.000Z",
+                  "updatedAt": "2024-10-01T20:47:00.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:43:47.000Z"
             },
             {
               "name": "MultiuseResaleauthExpirydateCustomEula",
@@ -4609,8 +4861,9 @@
                   }
                 }
               ],
-              "id": "754c5267-2f4b-42f2-8688-53de0547b7d7",
+              "id": "44178822-59e2-4d97-9c61-b174f1487833",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -4645,7 +4898,7 @@
               },
               "response": [
                 {
-                  "id": "cd614139-a047-4f7a-bf1e-191ef64f1ffe",
+                  "id": "38ff80ec-d776-4251-a553-cae0d0e907f7",
                   "name": "MultiuseResaleauthExpirydateCustomEula",
                   "originalRequest": {
                     "method": "POST",
@@ -4704,9 +4957,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T20:49:20.000Z",
+                  "updatedAt": "2024-10-01T20:49:29.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:44:07.000Z"
             },
             {
               "name": "MultiuseResaleauthExpirydateCustomresellerContractdoc",
@@ -4723,8 +4981,9 @@
                   }
                 }
               ],
-              "id": "7b832aea-32f5-41c7-9928-240f50d536a8",
+              "id": "853802aa-d08c-4447-a44d-f46ae1a574e9",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -4759,7 +5018,7 @@
               },
               "response": [
                 {
-                  "id": "a5b1e6d9-07c2-4b4d-bb06-2a51fe1e87cd",
+                  "id": "2aad8b7b-b020-4108-b67a-979690c46bd5",
                   "name": "MultiuseResaleauthExpirydateCustomresellerContractdoc",
                   "originalRequest": {
                     "method": "POST",
@@ -4818,12 +5077,19 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T20:49:39.000Z",
+                  "updatedAt": "2024-10-01T20:49:48.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:44:21.000Z"
             }
           ],
-          "id": "d0d1c0ff-95c0-4a5c-8287-03be49466c2d"
+          "id": "99d263c2-0c36-48ae-9eeb-aa7c4dd4eab5",
+          "createdAt": "2024-09-05T19:43:47.000Z",
+          "updatedAt": "2024-09-05T19:43:47.000Z"
         },
         {
           "name": "Offers",
@@ -4843,8 +5109,9 @@
                   }
                 }
               ],
-              "id": "be1649bf-a691-43d4-889b-140de9696305",
+              "id": "16398f23-0569-4ab9-8863-9c0baf877467",
               "protocolProfileBehavior": {
+                "disableBodyPruning": false,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -4875,7 +5142,7 @@
               },
               "response": [
                 {
-                  "id": "2ff0ce2e-a2e7-4bb7-8684-e1b60df873d6",
+                  "id": "7a712add-25b1-4a29-b106-dcfe7dc40503",
                   "name": "DescribeOffer",
                   "originalRequest": {
                     "method": "GET",
@@ -4930,9 +5197,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n\t\"Details\": \"{\\\"Id\\\":\\\"offer-euxmbalqomroa\\\",\\\"Name\\\":\\\"CAPI Integ Test Product (SAAS) Test Offer\\\",\\\"Description\\\":\\\"CAPI Integ Test Product (SAAS) Test Offer\\\",\\\"ProductId\\\":\\\"product-111111111111\\\",\\\"MarkupPercentage\\\":\\\"5.0\\\",\\\"Terms\\\":[{\\\"Type\\\":\\\"LegalTerm\\\",\\\"Documents\\\":[{\\\"Type\\\":\\\"CustomEula\\\",\\\"Url\\\":\\\"https://aws-mp-offer-legal-artifacts-us-east-1-prod.s3.amazonaws.com/offer-euxmbalqomroa/dd555292-38ec-4df1-ab5c-415f703d5182?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEEsaCXVz\\\"}]},{\\\"Type\\\":\\\"FixedUpfrontPricingTerm\\\",\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Price\\\":\\\"0\\\",\\\"Grants\\\":[{\\\"DimensionKey\\\":\\\"mdrbasic\\\",\\\"MaxQuantity\\\":2},{\\\"DimensionKey\\\":\\\"Custom\\\",\\\"MaxQuantity\\\":1},{\\\"DimensionKey\\\":\\\"CustomDimension2\\\",\\\"MaxQuantity\\\":3}]},{\\\"Type\\\":\\\"ValidityTerm\\\",\\\"AgreementDuration\\\":\\\"P12M\\\"},{\\\"Type\\\":\\\"PaymentScheduleTerm\\\",\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Schedule\\\":[{\\\"ChargeDate\\\":\\\"2025-08-01T00:00:00.000Z\\\",\\\"ChargeAmount\\\":\\\"10.5\\\"}]}],\\\"Rules\\\":[{\\\"Type\\\":\\\"AvailabilityRule\\\",\\\"AvailabilityEndDate\\\":\\\"2025-07-01T23:59:59.999Z\\\"},{\\\"Type\\\":\\\"TargetingRule\\\",\\\"PositiveTargeting\\\":{\\\"BuyerAccounts\\\":[\\\"222222222222\\\"]}}],\\\"State\\\":\\\"Released\\\",\\\"ResaleAuthorizationId\\\":\\\"resaleauthz-111111111111\\\"}\",\n\t\"DetailsDocument\": {\n\t\t\"Id\": \"offer-euxmbalqomroa\",\n\t\t\"Name\": \"CAPI Integ Test Product (SAAS) Test Offer\",\n\t\t\"Description\": \"CAPI Integ Test Product (SAAS) Test Offer\",\n\t\t\"ProductId\": \"prod-11111111111\",\n\t\t\"MarkupPercentage\": \"5.0\",\n\t\t\"Terms\": [\n\t\t\t{\n\t\t\t\t\"Type\": \"LegalTerm\",\n\t\t\t\t\"Documents\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"Type\": \"CustomEula\",\n\t\t\t\t\t\t\"Url\": \"https://aws-mp-offer-legal-artifacts-us-east-1-prod.s3.amazonaws.com/offer-euxmbalqomroa/dd555292-38ec-4df1-ab5c-415f703d5182?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEEsaCXVz\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"Type\": \"FixedUpfrontPricingTerm\",\n\t\t\t\t\"CurrencyCode\": \"USD\",\n\t\t\t\t\"Price\": \"0\",\n\t\t\t\t\"Grants\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"DimensionKey\": \"mdrbasic\",\n\t\t\t\t\t\t\"MaxQuantity\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"DimensionKey\": \"Custom\",\n\t\t\t\t\t\t\"MaxQuantity\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"DimensionKey\": \"CustomDimension2\",\n\t\t\t\t\t\t\"MaxQuantity\": 3\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"Type\": \"ValidityTerm\",\n\t\t\t\t\"AgreementDuration\": \"P12M\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"Type\": \"PaymentScheduleTerm\",\n\t\t\t\t\"CurrencyCode\": \"USD\",\n\t\t\t\t\"Schedule\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"ChargeDate\": \"2025-08-01T00:00:00.000Z\",\n\t\t\t\t\t\t\"ChargeAmount\": \"10.5\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t\"Rules\": [\n\t\t\t{\n\t\t\t\t\"Type\": \"AvailabilityRule\",\n\t\t\t\t\"AvailabilityEndDate\": \"2025-07-01T23:59:59.999Z\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"Type\": \"TargetingRule\",\n\t\t\t\t\"PositiveTargeting\": {\n\t\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\t\"222222222222\"\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t}\n\t\t],\n\t\t\"State\": \"Released\",\n\t\t\"ResaleAuthorizationId\": \"resaleauthz-111111111111\"\n\t},\n\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-1234567890\",\n\t\"EntityIdentifier\": \"offer-1234567890@1\",\n\t\"EntityType\": \"Offer@1.0\",\n\t\"LastModifiedDate\": \"2024-10-01T20:49:21Z\"\n}"
+                  "responseTime": null,
+                  "body": "{\n\t\"Details\": \"{\\\"Id\\\":\\\"offer-euxmbalqomroa\\\",\\\"Name\\\":\\\"CAPI Integ Test Product (SAAS) Test Offer\\\",\\\"Description\\\":\\\"CAPI Integ Test Product (SAAS) Test Offer\\\",\\\"ProductId\\\":\\\"product-111111111111\\\",\\\"MarkupPercentage\\\":\\\"5.0\\\",\\\"Terms\\\":[{\\\"Type\\\":\\\"LegalTerm\\\",\\\"Documents\\\":[{\\\"Type\\\":\\\"CustomEula\\\",\\\"Url\\\":\\\"https://aws-mp-offer-legal-artifacts-us-east-1-prod.s3.amazonaws.com/offer-euxmbalqomroa/dd555292-38ec-4df1-ab5c-415f703d5182?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEEsaCXVz\\\"}]},{\\\"Type\\\":\\\"FixedUpfrontPricingTerm\\\",\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Price\\\":\\\"0\\\",\\\"Grants\\\":[{\\\"DimensionKey\\\":\\\"mdrbasic\\\",\\\"MaxQuantity\\\":2},{\\\"DimensionKey\\\":\\\"Custom\\\",\\\"MaxQuantity\\\":1},{\\\"DimensionKey\\\":\\\"CustomDimension2\\\",\\\"MaxQuantity\\\":3}]},{\\\"Type\\\":\\\"ValidityTerm\\\",\\\"AgreementDuration\\\":\\\"P12M\\\"},{\\\"Type\\\":\\\"PaymentScheduleTerm\\\",\\\"CurrencyCode\\\":\\\"USD\\\",\\\"Schedule\\\":[{\\\"ChargeDate\\\":\\\"2025-08-01T00:00:00.000Z\\\",\\\"ChargeAmount\\\":\\\"10.5\\\"}]}],\\\"Rules\\\":[{\\\"Type\\\":\\\"AvailabilityRule\\\",\\\"AvailabilityEndDate\\\":\\\"2025-07-01T23:59:59.999Z\\\"},{\\\"Type\\\":\\\"TargetingRule\\\",\\\"PositiveTargeting\\\":{\\\"BuyerAccounts\\\":[\\\"222222222222\\\"]}}],\\\"State\\\":\\\"Released\\\",\\\"ResaleAuthorizationId\\\":\\\"resaleauthz-111111111111\\\"}\",\n\t\"DetailsDocument\": {\n\t\t\"Id\": \"offer-euxmbalqomroa\",\n\t\t\"Name\": \"CAPI Integ Test Product (SAAS) Test Offer\",\n\t\t\"Description\": \"CAPI Integ Test Product (SAAS) Test Offer\",\n\t\t\"ProductId\": \"prod-11111111111\",\n\t\t\"MarkupPercentage\": \"5.0\",\n\t\t\"Terms\": [\n\t\t\t{\n\t\t\t\t\"Type\": \"LegalTerm\",\n\t\t\t\t\"Documents\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"Type\": \"CustomEula\",\n\t\t\t\t\t\t\"Url\": \"https://aws-mp-offer-legal-artifacts-us-east-1-prod.s3.amazonaws.com/offer-euxmbalqomroa/dd555292-38ec-4df1-ab5c-415f703d5182?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEEsaCXVz\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"Type\": \"FixedUpfrontPricingTerm\",\n\t\t\t\t\"CurrencyCode\": \"USD\",\n\t\t\t\t\"Price\": \"0\",\n\t\t\t\t\"Grants\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"DimensionKey\": \"mdrbasic\",\n\t\t\t\t\t\t\"MaxQuantity\": 2\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"DimensionKey\": \"Custom\",\n\t\t\t\t\t\t\"MaxQuantity\": 1\n\t\t\t\t\t},\n\t\t\t\t\t{\n\t\t\t\t\t\t\"DimensionKey\": \"CustomDimension2\",\n\t\t\t\t\t\t\"MaxQuantity\": 3\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"Type\": \"ValidityTerm\",\n\t\t\t\t\"AgreementDuration\": \"P12M\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"Type\": \"PaymentScheduleTerm\",\n\t\t\t\t\"CurrencyCode\": \"USD\",\n\t\t\t\t\"Schedule\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"ChargeDate\": \"2025-08-01T00:00:00.000Z\",\n\t\t\t\t\t\t\"ChargeAmount\": \"10.5\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t}\n\t\t],\n\t\t\"Rules\": [\n\t\t\t{\n\t\t\t\t\"Type\": \"AvailabilityRule\",\n\t\t\t\t\"AvailabilityEndDate\": \"2025-07-01T23:59:59.999Z\"\n\t\t\t},\n\t\t\t{\n\t\t\t\t\"Type\": \"TargetingRule\",\n\t\t\t\t\"PositiveTargeting\": {\n\t\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\t\"222222222222\"\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t}\n\t\t],\n\t\t\"State\": \"Released\",\n\t\t\"ResaleAuthorizationId\": \"resaleauthz-111111111111\"\n\t},\n\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-1234567890\",\n\t\"EntityIdentifier\": \"offer-1234567890@1\",\n\t\"EntityType\": \"Offer@1.0\",\n\t\"LastModifiedDate\": \"2024-10-01T20:49:21Z\"\n}",
+                  "createdAt": "2024-10-01T20:54:41.000Z",
+                  "updatedAt": "2024-10-01T20:57:45.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:11:52.000Z"
             },
             {
               "name": "ListAllOffers",
@@ -4949,8 +5221,9 @@
                   }
                 }
               ],
-              "id": "d2f76832-1e66-4fc9-b932-4e20975c2eb6",
+              "id": "c942acf5-0ae4-46b2-840e-f1e4d67ab13d",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -4985,7 +5258,7 @@
               },
               "response": [
                 {
-                  "id": "5dc2db23-cefe-42ba-8519-874ef9dcb3e8",
+                  "id": "d6744fc9-50d5-4336-bb5c-df6a6952cbea",
                   "name": "ListAllOffers",
                   "originalRequest": {
                     "method": "POST",
@@ -5044,9 +5317,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n\t\"EntitySummaryList\": [\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-1234567890\",\n\t\t\t\"EntityId\": \"offer-1234567890\",\n\t\t\t\"EntityType\": \"Offer\",\n\t\t\t\"LastModifiedDate\": \"2024-10-01T20:49:21Z\",\n\t\t\t\"Name\": \"CAPI Integ Test Product (SAAS) Test Offer\",\n\t\t\t\"OfferSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2025-07-01T23:59:59Z\",\n\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\"222222222222\"\n\t\t\t\t],\n\t\t\t\t\"Name\": \"CAPI Integ Test Product (SAAS) Test Offer\",\n\t\t\t\t\"ProductId\": \"product-111111111111\",\n\t\t\t\t\"ReleaseDate\": \"2024-10-01T20:49:17Z\",\n\t\t\t\t\"ResaleAuthorizationId\": \"resaleauthz-111111111111\",\n\t\t\t\t\"State\": \"Released\",\n\t\t\t\t\"Targeting\": [\n\t\t\t\t\t\"BuyerAccounts\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"ResaleAuthorizationSummary\": null,\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": \"Private\"\n\t\t},\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-0987654321\",\n\t\t\t\"EntityId\": \"offer-0987654321\",\n\t\t\t\"EntityType\": \"Offer\",\n\t\t\t\"LastModifiedDate\": \"2024-10-01T20:49:00Z\",\n\t\t\t\"Name\": \"CAPI Integ Test Product (AMI Discount) Test Offer\",\n\t\t\t\"OfferSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2025-07-01T23:59:59Z\",\n\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\"222222222222\"\n\t\t\t\t],\n\t\t\t\t\"Name\": \"CAPI Integ Test Product (AMI Discount) Test Offer\",\n\t\t\t\t\"ProductId\": \"product-222222222222\",\n\t\t\t\t\"ReleaseDate\": \"2024-10-01T20:48:55Z\",\n\t\t\t\t\"ResaleAuthorizationId\": \"resaleauthz-222222222222\",\n\t\t\t\t\"State\": \"Released\",\n\t\t\t\t\"Targeting\": [\n\t\t\t\t\t\"BuyerAccounts\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"ResaleAuthorizationSummary\": null,\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": \"Private\"\n\t\t}\n\t],\n\t\"NextToken\": \"Test_Token_rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJzcgAOamF2YS5sYW5nLkx\"\n}"
+                  "responseTime": null,
+                  "body": "{\n\t\"EntitySummaryList\": [\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-1234567890\",\n\t\t\t\"EntityId\": \"offer-1234567890\",\n\t\t\t\"EntityType\": \"Offer\",\n\t\t\t\"LastModifiedDate\": \"2024-10-01T20:49:21Z\",\n\t\t\t\"Name\": \"CAPI Integ Test Product (SAAS) Test Offer\",\n\t\t\t\"OfferSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2025-07-01T23:59:59Z\",\n\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\"222222222222\"\n\t\t\t\t],\n\t\t\t\t\"Name\": \"CAPI Integ Test Product (SAAS) Test Offer\",\n\t\t\t\t\"ProductId\": \"product-111111111111\",\n\t\t\t\t\"ReleaseDate\": \"2024-10-01T20:49:17Z\",\n\t\t\t\t\"ResaleAuthorizationId\": \"resaleauthz-111111111111\",\n\t\t\t\t\"State\": \"Released\",\n\t\t\t\t\"Targeting\": [\n\t\t\t\t\t\"BuyerAccounts\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"ResaleAuthorizationSummary\": null,\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": \"Private\"\n\t\t},\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-0987654321\",\n\t\t\t\"EntityId\": \"offer-0987654321\",\n\t\t\t\"EntityType\": \"Offer\",\n\t\t\t\"LastModifiedDate\": \"2024-10-01T20:49:00Z\",\n\t\t\t\"Name\": \"CAPI Integ Test Product (AMI Discount) Test Offer\",\n\t\t\t\"OfferSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2025-07-01T23:59:59Z\",\n\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\"222222222222\"\n\t\t\t\t],\n\t\t\t\t\"Name\": \"CAPI Integ Test Product (AMI Discount) Test Offer\",\n\t\t\t\t\"ProductId\": \"product-222222222222\",\n\t\t\t\t\"ReleaseDate\": \"2024-10-01T20:48:55Z\",\n\t\t\t\t\"ResaleAuthorizationId\": \"resaleauthz-222222222222\",\n\t\t\t\t\"State\": \"Released\",\n\t\t\t\t\"Targeting\": [\n\t\t\t\t\t\"BuyerAccounts\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"ResaleAuthorizationSummary\": null,\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": \"Private\"\n\t\t}\n\t],\n\t\"NextToken\": \"Test_Token_rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJzcgAOamF2YS5sYW5nLkx\"\n}",
+                  "createdAt": "2024-10-01T20:50:48.000Z",
+                  "updatedAt": "2024-10-01T20:54:02.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:12:37.000Z"
             },
             {
               "name": "ListPrivateOffers",
@@ -5063,8 +5341,9 @@
                   }
                 }
               ],
-              "id": "118eacf1-1282-477a-8fa1-efb86e0d11eb",
+              "id": "d1d36e04-3c13-4640-b1e2-7a7b1f9695e5",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -5099,7 +5378,7 @@
               },
               "response": [
                 {
-                  "id": "4a382335-59e4-45a9-be95-ef48f696a060",
+                  "id": "d14ffd5d-e607-456c-8645-278f15e5b7a5",
                   "name": "ListPrivateOffers",
                   "originalRequest": {
                     "method": "POST",
@@ -5158,9 +5437,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n\t\"EntitySummaryList\": [\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-1234567890\",\n\t\t\t\"EntityId\": \"offer-1234567890\",\n\t\t\t\"EntityType\": \"Offer\",\n\t\t\t\"LastModifiedDate\": \"2024-05-02T07:48:09Z\",\n\t\t\t\"Name\": null,\n\t\t\t\"OfferSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2040-12-25T23:59:59Z\",\n\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\"222222222222\"\n\t\t\t\t],\n\t\t\t\t\"Name\": \"CAPI Integ Test Product (AMI Custom Price) Test Offer\",\n\t\t\t\t\"ProductId\": \"product-111111111111\",\n\t\t\t\t\"ReleaseDate\": \"2024-05-02T07:48:04Z\",\n\t\t\t\t\"ResaleAuthorizationId\": \"resaleauthz-1111111111111\",\n\t\t\t\t\"State\": \"Released\",\n\t\t\t\t\"Targeting\": [\n\t\t\t\t\t\"BuyerAccounts\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"ResaleAuthorizationSummary\": null,\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": null\n\t\t},\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-0987654321\",\n\t\t\t\"EntityId\": \"offer-0987654321\",\n\t\t\t\"EntityType\": \"Offer\",\n\t\t\t\"LastModifiedDate\": \"2024-06-08T16:56:18Z\",\n\t\t\t\"Name\": null,\n\t\t\t\"OfferSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2025-07-01T23:59:59Z\",\n\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\"222222222222\"\n\t\t\t\t],\n\t\t\t\t\"Name\": \"CAPI-ABO-contract-fps\",\n\t\t\t\t\"ProductId\": \"product-111111111111\",\n\t\t\t\t\"ReleaseDate\": \"2024-06-08T16:56:13Z\",\n\t\t\t\t\"ResaleAuthorizationId\": \"resaleauthz-1111111111111\",\n\t\t\t\t\"State\": \"Released\",\n\t\t\t\t\"Targeting\": [\n\t\t\t\t\t\"BuyerAccounts\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"ResaleAuthorizationSummary\": null,\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": null\n\t\t}\n\t],\n\t\"NextToken\": \"Test_Token_rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJ0ABNvZmZlci0y==\"\n}"
+                  "responseTime": null,
+                  "body": "{\n\t\"EntitySummaryList\": [\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-1234567890\",\n\t\t\t\"EntityId\": \"offer-1234567890\",\n\t\t\t\"EntityType\": \"Offer\",\n\t\t\t\"LastModifiedDate\": \"2024-05-02T07:48:09Z\",\n\t\t\t\"Name\": null,\n\t\t\t\"OfferSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2040-12-25T23:59:59Z\",\n\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\"222222222222\"\n\t\t\t\t],\n\t\t\t\t\"Name\": \"CAPI Integ Test Product (AMI Custom Price) Test Offer\",\n\t\t\t\t\"ProductId\": \"product-111111111111\",\n\t\t\t\t\"ReleaseDate\": \"2024-05-02T07:48:04Z\",\n\t\t\t\t\"ResaleAuthorizationId\": \"resaleauthz-1111111111111\",\n\t\t\t\t\"State\": \"Released\",\n\t\t\t\t\"Targeting\": [\n\t\t\t\t\t\"BuyerAccounts\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"ResaleAuthorizationSummary\": null,\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": null\n\t\t},\n\t\t{\n\t\t\t\"AmiProductSummary\": null,\n\t\t\t\"ContainerProductSummary\": null,\n\t\t\t\"DataProductSummary\": null,\n\t\t\t\"EntityArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/Offer/offer-0987654321\",\n\t\t\t\"EntityId\": \"offer-0987654321\",\n\t\t\t\"EntityType\": \"Offer\",\n\t\t\t\"LastModifiedDate\": \"2024-06-08T16:56:18Z\",\n\t\t\t\"Name\": null,\n\t\t\t\"OfferSummary\": {\n\t\t\t\t\"AvailabilityEndDate\": \"2025-07-01T23:59:59Z\",\n\t\t\t\t\"BuyerAccounts\": [\n\t\t\t\t\t\"222222222222\"\n\t\t\t\t],\n\t\t\t\t\"Name\": \"CAPI-ABO-contract-fps\",\n\t\t\t\t\"ProductId\": \"product-111111111111\",\n\t\t\t\t\"ReleaseDate\": \"2024-06-08T16:56:13Z\",\n\t\t\t\t\"ResaleAuthorizationId\": \"resaleauthz-1111111111111\",\n\t\t\t\t\"State\": \"Released\",\n\t\t\t\t\"Targeting\": [\n\t\t\t\t\t\"BuyerAccounts\"\n\t\t\t\t]\n\t\t\t},\n\t\t\t\"ResaleAuthorizationSummary\": null,\n\t\t\t\"SaaSProductSummary\": null,\n\t\t\t\"TypeAttributes\": null,\n\t\t\t\"Visibility\": null\n\t\t}\n\t],\n\t\"NextToken\": \"Test_Token_rO0ABXVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAAJ0ABNvZmZlci0y==\"\n}",
+                  "createdAt": "2024-10-01T20:58:30.000Z",
+                  "updatedAt": "2024-10-01T21:00:51.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:13:29.000Z"
             },
             {
               "name": "CreateDraftPrivateOffer",
@@ -5178,8 +5462,9 @@
                   }
                 }
               ],
-              "id": "18d746b4-603a-4fda-b7b3-cef667a5ca94",
+              "id": "5da43ed3-d717-43b4-8e40-15a71b8d4b28",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -5214,7 +5499,7 @@
               },
               "response": [
                 {
-                  "id": "ec1b64d1-e022-4a48-8bb4-5a6c0ae9d278",
+                  "id": "063a5f9d-a6ad-465f-bf71-d4223f9ece02",
                   "name": "CreateDraftPrivateOffer",
                   "originalRequest": {
                     "method": "POST",
@@ -5273,9 +5558,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:02:39.000Z",
+                  "updatedAt": "2024-10-01T21:02:48.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2026-01-09T20:53:51.000Z"
             },
             {
               "name": "UpdateRefundPolicy",
@@ -5292,8 +5582,9 @@
                   }
                 }
               ],
-              "id": "0bb9bcd6-1127-4edb-a32d-1d239c802f89",
+              "id": "b52a7bc2-e2a9-4487-a51f-e2084a7f89c8",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -5328,7 +5619,7 @@
               },
               "response": [
                 {
-                  "id": "421dbfcd-9eed-4f5e-aa85-7842256ffddb",
+                  "id": "59bdd31b-48a8-4f98-ae78-8f0c894f87ac",
                   "name": "UpdateRefundPolicy",
                   "originalRequest": {
                     "method": "POST",
@@ -5387,9 +5678,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:03:00.000Z",
+                  "updatedAt": "2024-10-01T21:03:07.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:15:49.000Z"
             },
             {
               "name": "UpdateOfferWithHourlyAnnualPricing",
@@ -5406,8 +5702,9 @@
                   }
                 }
               ],
-              "id": "1b634c75-d4a7-4cd3-8d88-54e916390278",
+              "id": "6ed99483-d645-415d-bd20-0a9d6076ea03",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -5442,7 +5739,7 @@
               },
               "response": [
                 {
-                  "id": "f062dad2-6184-43a8-80eb-bbfb11c31514",
+                  "id": "1a063571-5b6f-4abb-ba97-b7756360535c",
                   "name": "UpdateOfferWithHourlyAnnualPricing",
                   "originalRequest": {
                     "method": "POST",
@@ -5501,9 +5798,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:04:18.000Z",
+                  "updatedAt": "2024-10-01T21:04:26.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:16:17.000Z"
             },
             {
               "name": "UpdateOfferWithContractAndPayAsYouGoPricing",
@@ -5520,8 +5822,9 @@
                   }
                 }
               ],
-              "id": "da98840c-a917-4851-91b0-10f33bee835c",
+              "id": "a68a1666-5d3e-4d39-b7bf-8b7fdb1a17b8",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -5556,7 +5859,7 @@
               },
               "response": [
                 {
-                  "id": "9b81e1e2-31e3-4cc8-8cdf-58a3968fa53a",
+                  "id": "4e0d415d-5bb7-4797-b816-0e8b389feef6",
                   "name": "UpdateOfferWithContractAndPayAsYouGoPricing",
                   "originalRequest": {
                     "method": "POST",
@@ -5615,9 +5918,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:04:37.000Z",
+                  "updatedAt": "2024-10-01T21:04:44.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:16:51.000Z"
             },
             {
               "name": "UpdateOfferTargeting",
@@ -5634,8 +5942,9 @@
                   }
                 }
               ],
-              "id": "9cf97233-ec17-4064-a18d-8b77bf3cc927",
+              "id": "4863f64d-d310-4a58-97d7-260fa2e8903f",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -5670,7 +5979,7 @@
               },
               "response": [
                 {
-                  "id": "13de8629-c83c-463b-b7cf-ec767fef7038",
+                  "id": "22533590-e022-42ec-aec9-dcb2dd3a1bf7",
                   "name": "UpdateOfferTargeting",
                   "originalRequest": {
                     "method": "POST",
@@ -5729,9 +6038,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:05:06.000Z",
+                  "updatedAt": "2024-10-01T21:05:12.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:17:35.000Z"
             },
             {
               "name": "UpdateOfferNameAndDescription",
@@ -5748,8 +6062,9 @@
                   }
                 }
               ],
-              "id": "0847837c-21aa-40c9-bd1d-48c21f914bfe",
+              "id": "b4ed257e-08ef-4983-8bcc-aad6f3ae77ce",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -5784,7 +6099,7 @@
               },
               "response": [
                 {
-                  "id": "5ad9f519-6108-4ad3-a6d1-11693798393c",
+                  "id": "5836b7af-0ee5-4b3d-bb9b-3c134a3bd676",
                   "name": "UpdateOfferNameAndDescription",
                   "originalRequest": {
                     "method": "POST",
@@ -5843,9 +6158,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:05:29.000Z",
+                  "updatedAt": "2024-10-01T21:05:38.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:18:24.000Z"
             },
             {
               "name": "UpdateOfferExpirationDateOfPrivateOffer",
@@ -5862,8 +6182,9 @@
                   }
                 }
               ],
-              "id": "b6f0b4d0-87ad-47ac-8c44-772ce1947d9e",
+              "id": "03f4f9ca-0c71-4704-be86-41e903fbb077",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -5898,7 +6219,7 @@
               },
               "response": [
                 {
-                  "id": "1d206e3e-697a-4307-b2f1-0382575f0964",
+                  "id": "9a3b619b-8924-4767-be5c-76f8073e0fdf",
                   "name": "UpdateOfferExpirationDateOfPrivateOffer",
                   "originalRequest": {
                     "method": "POST",
@@ -5957,9 +6278,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:05:50.000Z",
+                  "updatedAt": "2024-10-01T21:05:58.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:18:56.000Z"
             },
             {
               "name": "UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaas",
@@ -5976,11 +6302,11 @@
                   }
                 }
               ],
-              "id": "9ca032e6-4039-4e5d-8ad1-0edd3dbdef9e",
+              "id": "95dc4ce9-c056-4217-9c07-4afa7b6f8d2b",
               "protocolProfileBehavior": {
-                "followRedirects": true,
+                "disableCookies": false,
                 "disableUrlEncoding": false,
-                "disableCookies": false
+                "followRedirects": true
               },
               "request": {
                 "method": "POST",
@@ -6012,7 +6338,7 @@
               },
               "response": [
                 {
-                  "id": "2ea16086-8624-4b70-84b9-a0b6dec4a60b",
+                  "id": "d39cc961-c831-4ce8-9801-b5e9eac40a22",
                   "name": "UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaas",
                   "originalRequest": {
                     "method": "POST",
@@ -6071,9 +6397,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:06:15.000Z",
+                  "updatedAt": "2026-11-12T04:51:58.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2026-11-12T04:51:58.000Z"
             },
             {
               "name": "ExpirePrivateOffer",
@@ -6090,8 +6421,9 @@
                   }
                 }
               ],
-              "id": "70863edc-7001-4750-b3ee-694b3a333c9a",
+              "id": "501a7be1-a617-4887-a3c1-2585f113bbcb",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -6125,7 +6457,7 @@
               },
               "response": [
                 {
-                  "id": "abc363f5-62fc-42c7-be42-1f9b6d1dfd91",
+                  "id": "896a2742-b27d-4537-a8f2-46e2d7b448cb",
                   "name": "ExpirePrivateOffer",
                   "originalRequest": {
                     "method": "POST",
@@ -6184,9 +6516,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:06:34.000Z",
+                  "updatedAt": "2024-10-01T21:06:41.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-01T21:07:40.000Z"
             },
             {
               "name": "UpdateEula",
@@ -6203,8 +6540,9 @@
                   }
                 }
               ],
-              "id": "bb9b60e7-28cf-47c4-bcb3-e62ce49557d6",
+              "id": "cad6f306-acb5-4655-a0cb-990ba650f3c6",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -6238,7 +6576,7 @@
               },
               "response": [
                 {
-                  "id": "c9a13fe0-1dac-4017-9abd-b5ecab6ee15e",
+                  "id": "93538898-13ff-4b20-a107-fbca45fd1e20",
                   "name": "UpdateEula",
                   "originalRequest": {
                     "method": "POST",
@@ -6297,9 +6635,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T21:07:54.000Z",
+                  "updatedAt": "2024-10-01T21:08:02.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-01T21:08:07.000Z"
             },
             {
               "name": "CreateSaasProductCustomDimensionAndPrivateOffer",
@@ -6316,8 +6659,9 @@
                   }
                 }
               ],
-              "id": "abb55c5c-749c-4826-903b-7bac310e8c9c",
+              "id": "7343beeb-d373-458f-8328-f81fc7c132b6",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -6351,7 +6695,7 @@
               },
               "response": [
                 {
-                  "id": "66ff2349-aaec-416c-91f4-3c4b1c3ad046",
+                  "id": "3c18bbb3-d38b-46d6-a5f6-4b9631476237",
                   "name": "CreateSaasProductCustomDimensionAndPrivateOffer",
                   "originalRequest": {
                     "method": "POST",
@@ -6410,9 +6754,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:00:26.000Z",
+                  "updatedAt": "2024-10-01T22:00:41.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:45:31.000Z"
             },
             {
               "name": "CreateReplacementPrivateOfferWithContractPricing",
@@ -6429,8 +6778,9 @@
                   }
                 }
               ],
-              "id": "8a932481-90ff-4134-bdc2-15dd4b90b483",
+              "id": "772f78b2-3b44-438a-9501-2a6b09ce2308",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -6465,7 +6815,7 @@
               },
               "response": [
                 {
-                  "id": "0287b349-7a91-4250-9816-e6c8d9a9efbd",
+                  "id": "f60865fd-1cb2-44e2-a820-bde1043be528",
                   "name": "CreateReplacementPrivateOfferWithContractPricing",
                   "originalRequest": {
                     "method": "POST",
@@ -6524,9 +6874,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:00:51.000Z",
+                  "updatedAt": "2024-10-01T22:00:59.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:20:01.000Z"
             },
             {
               "name": "(Deprecated) CreatePublicFreeTrialOfferWithSubscriptionPricingForSaas",
@@ -6543,11 +6898,11 @@
                   }
                 }
               ],
-              "id": "8e8d9642-4bca-4edd-b04d-371b6877d0e4",
+              "id": "b5a21433-175a-4409-bf5a-b0c2844721ca",
               "protocolProfileBehavior": {
-                "followRedirects": true,
+                "disableCookies": false,
                 "disableUrlEncoding": false,
-                "disableCookies": false
+                "followRedirects": true
               },
               "request": {
                 "method": "POST",
@@ -6579,7 +6934,7 @@
               },
               "response": [
                 {
-                  "id": "3d7f3206-299a-452b-a4c5-898c56c3089a",
+                  "id": "60d692ee-d874-44fd-9842-19f710c54e17",
                   "name": "CreatePublicFreeTrialOfferWithSubscriptionPricingForSaas",
                   "originalRequest": {
                     "method": "POST",
@@ -6638,9 +6993,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:01:23.000Z",
+                  "updatedAt": "2024-10-01T22:01:36.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2026-11-12T04:51:58.000Z"
             },
             {
               "name": "CreatePrivateOfferWithTieredContractPricingForSaas",
@@ -6657,8 +7017,9 @@
                   }
                 }
               ],
-              "id": "b4ea6df5-333d-40a6-8ea1-fe7b7e1f2060",
+              "id": "eec599e3-eee8-4395-8609-d9ed3098cc0a",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -6693,7 +7054,7 @@
               },
               "response": [
                 {
-                  "id": "905478da-dcf6-43cc-816d-f9cc881e6a91",
+                  "id": "63089039-71b6-4100-8ae2-2835557a0667",
                   "name": "CreatePrivateOfferWithTieredContractPricingForSaas",
                   "originalRequest": {
                     "method": "POST",
@@ -6752,9 +7113,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:01:43.000Z",
+                  "updatedAt": "2024-10-01T22:01:52.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:46:06.000Z"
             },
             {
               "name": "CreatePrivateOfferWithSubscriptionPricingForSaas",
@@ -6771,8 +7137,9 @@
                   }
                 }
               ],
-              "id": "9ab87073-b703-4beb-87c9-b4a22b5957f9",
+              "id": "fcbbcc6a-d23c-4022-b7a9-9ff873e7d954",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -6807,7 +7174,7 @@
               },
               "response": [
                 {
-                  "id": "cf49813a-4592-4fd0-b51d-630ebf0b59db",
+                  "id": "e69f11ff-fc63-411f-8b98-77d905c0e454",
                   "name": "CreatePrivateOfferWithSubscriptionPricingForSaas",
                   "originalRequest": {
                     "method": "POST",
@@ -6866,9 +7233,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:02:22.000Z",
+                  "updatedAt": "2024-10-01T22:02:30.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:46:19.000Z"
             },
             {
               "name": "CreatePrivateOfferWithHourlyPricingForAmi",
@@ -6885,8 +7257,9 @@
                   }
                 }
               ],
-              "id": "79b2a004-0361-40e3-9fde-edaa81d02c27",
+              "id": "4a83959c-e4ca-467f-875c-5ba15453e53a",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -6921,7 +7294,7 @@
               },
               "response": [
                 {
-                  "id": "8b830e41-0c84-49e8-afbc-3f46e8502576",
+                  "id": "dfc0e05a-ede0-4b19-8073-ce974ae5e6fe",
                   "name": "CreatePrivateOfferWithHourlyPricingForAmi",
                   "originalRequest": {
                     "method": "POST",
@@ -6980,9 +7353,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:02:44.000Z",
+                  "updatedAt": "2024-10-01T22:02:52.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T15:55:35.000Z"
             },
             {
               "name": "CreatePrivateOfferWithHourlyAnnualPricingForAmiProduct",
@@ -6999,8 +7377,9 @@
                   }
                 }
               ],
-              "id": "787ebb0a-3c4d-41d9-a233-10ea72a392cf",
+              "id": "f60a25c0-397e-4a71-8d11-428849d9171d",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -7035,7 +7414,7 @@
               },
               "response": [
                 {
-                  "id": "e5bf9b8e-93c2-471c-857b-47586e4cba1a",
+                  "id": "01b785f2-a161-48cb-aec2-67aa0a3eb39c",
                   "name": "CreatePrivateOfferWithHourlyAnnualPricingForAmiProduct",
                   "originalRequest": {
                     "method": "POST",
@@ -7094,9 +7473,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:03:03.000Z",
+                  "updatedAt": "2024-10-01T22:03:11.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:46:38.000Z"
             },
             {
               "name": "CreatePrivateOfferWithHourlyAnnualPricingAndFlexiblePaymentScheduleForAmi",
@@ -7113,8 +7497,9 @@
                   }
                 }
               ],
-              "id": "ec790737-edbd-4672-a835-89085fd1cb1b",
+              "id": "e8a0dcaa-3427-46e2-802c-6c0262475076",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -7149,7 +7534,7 @@
               },
               "response": [
                 {
-                  "id": "f9c458ff-897b-4489-ae24-a21e52f98bdb",
+                  "id": "a2777a40-b0a8-4843-b47a-7944c1a644ed",
                   "name": "CreatePrivateOfferWithHourlyAnnualPricingAndFlexiblePaymentScheduleForAmi",
                   "originalRequest": {
                     "method": "POST",
@@ -7208,9 +7593,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:03:23.000Z",
+                  "updatedAt": "2024-10-01T22:03:31.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:46:56.000Z"
             },
             {
               "name": "CreatePrivateOfferWithContractWithPayAsYouGoPricingForSaas",
@@ -7227,8 +7617,9 @@
                   }
                 }
               ],
-              "id": "784fec39-3601-43c8-bed0-0da2ed693545",
+              "id": "d032c00e-ad94-4514-b2a5-1013a9fb665f",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -7263,7 +7654,7 @@
               },
               "response": [
                 {
-                  "id": "a13715ae-f4a9-4fb5-8484-9d9311d89921",
+                  "id": "f0da951f-5324-49ee-9e82-96b145639e2c",
                   "name": "CreatePrivateOfferWithContractWithPayAsYouGoPricingForSaas",
                   "originalRequest": {
                     "method": "POST",
@@ -7322,9 +7713,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:03:46.000Z",
+                  "updatedAt": "2024-10-01T22:03:54.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:47:10.000Z"
             },
             {
               "name": "CreatePrivateOfferWithContractPricingWithFlexiblePaymentScheduleForSaas",
@@ -7341,8 +7737,9 @@
                   }
                 }
               ],
-              "id": "19ba4c11-d25a-4360-a439-871cae9324ec",
+              "id": "a4118c6e-47d4-4557-a79c-8d4950ebb21c",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -7377,7 +7774,7 @@
               },
               "response": [
                 {
-                  "id": "00fe2501-0fa6-4520-ad7f-51baede1d8ea",
+                  "id": "3d6606b0-a12b-4538-bfba-923ee8b130c3",
                   "name": "CreatePrivateOfferWithContractPricingWithFlexiblePaymentScheduleForSaas",
                   "originalRequest": {
                     "method": "POST",
@@ -7436,9 +7833,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:04:07.000Z",
+                  "updatedAt": "2024-10-01T22:04:14.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:47:23.000Z"
             },
             {
               "name": "CreatePrivateOfferWithContractPricingForContainerProduct",
@@ -7455,8 +7857,9 @@
                   }
                 }
               ],
-              "id": "7cd74e26-32e3-4ae4-a762-cc6362bff407",
+              "id": "e55f8a18-b01b-49da-8d68-f6f4fefaa7e8",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -7491,7 +7894,7 @@
               },
               "response": [
                 {
-                  "id": "482d2a3e-23cc-4a54-88b0-827e4ccaa362",
+                  "id": "a9ed86c3-bd7e-4d6e-bae3-ec4c59bf8329",
                   "name": "CreatePrivateOfferWithContractPricingForContainerProduct",
                   "originalRequest": {
                     "method": "POST",
@@ -7550,9 +7953,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:04:25.000Z",
+                  "updatedAt": "2024-10-01T22:04:34.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:47:35.000Z"
             },
             {
               "name": "CreatePrivateOfferWithContractPricingForAmiProduct",
@@ -7569,8 +7977,9 @@
                   }
                 }
               ],
-              "id": "7d321c3a-f41c-482c-ba38-31133d773c3d",
+              "id": "4c89a95d-858c-4cf9-bb70-1ce289442e04",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -7605,7 +8014,7 @@
               },
               "response": [
                 {
-                  "id": "31a5367c-3258-4743-ac04-04629fde162a",
+                  "id": "d2a00da2-84ef-4253-8b93-12ac2a246b3b",
                   "name": "CreatePrivateOfferWithContractPricingForAmiProduct",
                   "originalRequest": {
                     "method": "POST",
@@ -7664,13 +8073,20 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:04:45.000Z",
+                  "updatedAt": "2024-10-01T22:04:52.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T19:47:51.000Z"
             }
           ],
-          "id": "6066e45b-a8aa-41e9-a049-444522083ae4",
-          "description": "AWS Marketplace Offer related API actions."
+          "id": "fd9ebe78-2f9e-41f8-8930-0f8b7dfce3c1",
+          "description": "AWS Marketplace Offer related API actions.",
+          "createdAt": "2024-09-05T19:43:47.000Z",
+          "updatedAt": "2025-08-18T15:45:59.000Z"
         },
         {
           "name": "Channel Partner Offers",
@@ -7690,8 +8106,9 @@
                   }
                 }
               ],
-              "id": "ff9ea2a3-ba14-474d-ad25-b549e04a4dee",
+              "id": "625fe176-3fe1-4394-898c-43596e4bcb84",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -7726,7 +8143,7 @@
               },
               "response": [
                 {
-                  "id": "439f590b-be43-4a02-9468-002d240298dd",
+                  "id": "23997d15-5493-4021-9fce-a90eea1b4c56",
                   "name": "CreateDraftCppoOffer",
                   "originalRequest": {
                     "method": "POST",
@@ -7785,9 +8202,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:05:03.000Z",
+                  "updatedAt": "2024-10-01T22:05:11.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:49:24.000Z"
             },
             {
               "name": "UpdateCppoExpiryDate",
@@ -7804,8 +8226,9 @@
                   }
                 }
               ],
-              "id": "17d66270-1148-4be0-acf5-126dc8b8c763",
+              "id": "f65268e4-b207-4807-8320-3f38e8b6d5dd",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -7840,7 +8263,7 @@
               },
               "response": [
                 {
-                  "id": "f0017ab9-16e6-41bc-9664-ba265df7cf0c",
+                  "id": "0f9341f6-0c24-4777-b0a6-049e7be14bde",
                   "name": "UpdateCppoExpiryDate",
                   "originalRequest": {
                     "method": "POST",
@@ -7899,9 +8322,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:05:35.000Z",
+                  "updatedAt": "2024-10-01T22:05:42.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:49:49.000Z"
             },
             {
               "name": "PublishCppoPiceMarkupObject",
@@ -7918,8 +8346,9 @@
                   }
                 }
               ],
-              "id": "f67d00e2-cb8e-45df-8fd2-e05df4124d1d",
+              "id": "fe44ffb4-f7b1-49f1-ba57-af2d8f214ee3",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -7954,7 +8383,7 @@
               },
               "response": [
                 {
-                  "id": "adbe9dfe-c81a-4a4c-b903-718b2811e8f4",
+                  "id": "0c90413c-51a1-494d-97b0-e6f79b6ee0be",
                   "name": "PublishCppoPiceMarkupObject",
                   "originalRequest": {
                     "method": "POST",
@@ -8013,9 +8442,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:05:53.000Z",
+                  "updatedAt": "2024-10-01T22:06:00.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:50:45.000Z"
             },
             {
               "name": "PublishCppoEula",
@@ -8032,8 +8466,9 @@
                   }
                 }
               ],
-              "id": "e1c871de-08a3-4aa4-aeeb-059d05ee28ba",
+              "id": "26210d2c-834d-491d-bb7b-81d2a396e138",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -8068,7 +8503,7 @@
               },
               "response": [
                 {
-                  "id": "75280353-f508-4ca3-9686-c6e87796edb5",
+                  "id": "9dd4bb49-1ee0-4fb5-8a80-7b3d7bd0d667",
                   "name": "PublishCppoEula",
                   "originalRequest": {
                     "method": "POST",
@@ -8127,9 +8562,14 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:06:10.000Z",
+                  "updatedAt": "2024-10-01T22:06:17.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-03T23:51:06.000Z"
             },
             {
               "name": "CreateResaleAuthorizationReplacementOffer",
@@ -8146,8 +8586,9 @@
                   }
                 }
               ],
-              "id": "8831952a-579d-47d8-a451-c840685a3053",
+              "id": "73440101-ff5f-4c57-86af-e6bd616b6c52",
               "protocolProfileBehavior": {
+                "disableBodyPruning": true,
                 "followRedirects": true,
                 "disableUrlEncoding": false,
                 "disableCookies": false
@@ -8182,7 +8623,7 @@
               },
               "response": [
                 {
-                  "id": "a607c1fe-ba30-4c5b-9900-3d6aeb64ac70",
+                  "id": "4e3be7a0-1b5a-409d-ba2b-c9341f2039df",
                   "name": "CreateResaleAuthorizationReplacementOffer",
                   "originalRequest": {
                     "method": "POST",
@@ -8241,15 +8682,24 @@
                     }
                   ],
                   "cookie": [],
-                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}"
+                  "responseTime": null,
+                  "body": "{\n    \"ChangeSetArn\": \"arn:aws:aws-marketplace:us-east-1:111111111111:AWSMarketplace/ChangeSet/test_ChangeSetId\",\n    \"ChangeSetId\": \"test_ChangeSetId\"\n}",
+                  "createdAt": "2024-10-01T22:06:29.000Z",
+                  "updatedAt": "2024-10-01T22:06:47.000Z"
                 }
-              ]
+              ],
+              "createdAt": "2024-09-05T19:43:47.000Z",
+              "updatedAt": "2024-10-04T01:01:58.000Z"
             }
           ],
-          "id": "eefad5b6-380a-4adf-a8a2-cdaa8b2db3fa"
+          "id": "8eeebfb0-ff6e-469e-852e-b5aa6f972d35",
+          "createdAt": "2024-09-05T19:43:47.000Z",
+          "updatedAt": "2024-10-04T01:01:38.000Z"
         }
       ],
-      "id": "58fe673a-0383-46cc-9854-864f263b1ed6"
+      "id": "4e264ccc-9215-4dda-9053-665e67ff73f5",
+      "createdAt": "2024-09-05T19:43:47.000Z",
+      "updatedAt": "2024-09-27T00:03:39.000Z"
     }
   ],
   "auth": {
@@ -8303,7 +8753,6 @@
   ],
   "variable": [
     {
-      "id": "5237014a-8752-48de-8cc8-07f0f07aaa00",
       "key": "nextToken",
       "value": "",
       "type": "string"

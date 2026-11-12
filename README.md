@@ -34,6 +34,24 @@ with its own README and dependencies.
 |-------------|-------------|
 | [Bulk billing adjustments](./applications/billing-adjustments/README.md) | Process bulk billing adjustments (refunds) for AWS Marketplace sellers — validate invoices, submit adjustments in batches, reconcile a refund file against the service, and track status. Includes a shared engine, a CLI, a web UI, and AWS deployment templates. |
 
+## Postman collections
+
+The [`PostmanCollections/postman/collections/`](./PostmanCollections/postman/collections) folder contains the
+AWS Marketplace Postman collections that are published in the AWS Marketplace workspace on the Postman API Network:
+
+- AWS Marketplace Catalog API
+- AWS Marketplace Agreement API
+- AWS Marketplace Discovery API
+- AWS Marketplace Self-service Cancellation And Billing Adjustment
+- AWS Marketplace Labs by Use Cases
+
+When a change to a collection is merged to `main`, a GitHub Actions workflow updates the published collection.
+To change a collection, open a pull request that edits its JSON file instead of editing the collection in Postman.
+
+If a published collection was changed in Postman since the last update, the workflow stops without overwriting
+those changes. To keep them, run `python3 .github/scripts/postman_sync.py pull` with `POSTMAN_API_KEY` set, and
+commit the updated JSON files in a pull request.
+
 ### Submit defects & questions
 If you find any defects with the APIs, need help troubleshooting, or have general questions or feedback, [use this form to contact us](https://aws.amazon.com/marketplace/management/contact-us/)
 
