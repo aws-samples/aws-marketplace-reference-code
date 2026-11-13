@@ -4,9 +4,10 @@ name: Postman sync
 # PostmanCollections/postman/collections/ after changes are merged to main.
 #
 # Before updating, the workflow checks the published collection for changes
-# made in Postman since the last sync. If it finds any, it stops without
-# overwriting them. To keep them, run `python3 .github/scripts/postman_sync.py pull`
-# locally, commit the result in a pull request, and merge it.
+# made in Postman since the last sync that aren't in this push. If it finds
+# any, it stops without overwriting them. To keep them, run
+# `python3 .github/scripts/postman_sync.py pull` on a branch from main, commit
+# the result, and merge it in a pull request with a merge commit.
 
 on:
   push:
