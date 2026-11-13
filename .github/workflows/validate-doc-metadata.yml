@@ -1,29 +1,22 @@
-name: Validate doc metadata
+name: Validate Documentation Metadata
 
-# Runs the AWS Doc SDK Examples check-in tests on every pull request:
-# metadata in .doc_gen/metadata, snippet tags, snippet_files paths, banned words,
-# and strings that look like secret keys. See
-# https://github.com/awsdocs/aws-doc-sdk-examples-tools#check-in-tests
-# Allowed strings for the secret check are in .doc_gen/validation.yaml.
-
-on:
-  pull_request:
-    branches: ["main"]
-  push:
-    branches: ["main"]
+on:  # yamllint disable-line rule:truthy
   workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
 
 jobs:
-  validate:
+  validate-doc-metadata:
+    name: Validate Doc Metadata
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check out the repository
+      - name: checkout repo content
         uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Validate metadata
-        # Release 2026.45.0. To update, use the commit of a newer release tag.
-        uses: awsdocs/aws-doc-sdk-examples-tools@e69bef285b048c5282fb2dd381e4b96d7d27a27d
+      - name: validate metadata
+        uses: awsdocs/aws-doc-sdk-examples-tools@main
