@@ -12,10 +12,12 @@ Commands
 
 Safety checks before `sync` updates a collection:
   * The file's info._postman_id must match the target collection UID.
-  * Drift check: the published collection must still match the file at BASE_SHA
-    (the commit before this change). If someone changed the collection in
-    Postman since the last sync, the run stops and lists the changed items,
-    instead of overwriting them. Set ALLOW_OVERWRITE=true to overwrite anyway.
+  * Drift check: each item in the published collection must match the file at
+    BASE_SHA (the last synced version), or a version of the file in this change
+    (the file being synced, or any commit after BASE_SHA, such as a commit that
+    ran `pull`). Otherwise someone changed it in Postman since the last sync,
+    and the run stops and lists the changed items instead of overwriting them.
+    Set ALLOW_OVERWRITE=true to overwrite anyway.
   * The update must not remove more than MAX_REMOVED_RATIO of the existing
     items. Set ALLOW_BULK_REMOVE=true to override.
 
@@ -126,15 +128,29 @@ def flatten(items, prefix=""):
     return out
 
 
-def differences(published, baseline):
-    """List the items that differ between two collections."""
+def top_level(collection):
+    return normalize({k: v for k, v in collection.items() if k != "item"})
+
+
+def differences(published, baseline, pulled=()):
+    """List the items in the published collection that were changed outside GitHub.
+
+    An item counts as changed if it differs from the baseline (the last synced
+    version) and also from every version in `pulled` (versions of the file that are
+    part of this change, for example a commit that ran the pull command). So an
+    edit made in Postman and then pulled into GitHub isn't reported.
+    """
     a, b = flatten(published.get("item", [])), flatten(baseline.get("item", []))
-    changes = [f"  added in Postman:   {p}" for p in sorted(a.keys() - b.keys())]
-    changes += [f"  removed in Postman: {p}" for p in sorted(b.keys() - a.keys())]
-    changes += [f"  changed in Postman: {p}" for p in sorted(a.keys() & b.keys()) if a[p] != b[p]]
-    top_a = normalize({k: v for k, v in published.items() if k != "item"})
-    top_b = normalize({k: v for k, v in baseline.items() if k != "item"})
-    if top_a != top_b:
+    accepted = [flatten(v.get("item", [])) for v in pulled]
+    changes = []
+    for p in sorted(a.keys() | b.keys()):
+        current = a.get(p)
+        if current == b.get(p) or any(current == v.get(p) for v in accepted):
+            continue
+        kind = "added in Postman:  " if p not in b else "removed in Postman:" if p not in a else "changed in Postman:"
+        changes.append(f"  {kind} {p}")
+    top = top_level(published)
+    if top != top_level(baseline) and all(top != top_level(v) for v in pulled):
         changes.append("  changed in Postman: (collection settings, description, auth, or variables)")
     return changes
 
@@ -146,20 +162,27 @@ def file_at(sha, path):
     return json.loads(result.stdout) if result.returncode == 0 else None
 
 
-def drift_check(path, uid, published, base_sha, allow_overwrite):
+def versions_since(base_sha, path):
+    """Versions of the file in the commits after base_sha, newest first."""
+    result = subprocess.run(["git", "rev-list", f"{base_sha}..HEAD", "--", path], capture_output=True, text=True)
+    commits = result.stdout.split() if result.returncode == 0 else []
+    return [v for v in (file_at(sha, path) for sha in commits) if v is not None]
+
+
+def drift_check(path, uid, published, base_sha, allow_overwrite, current_file):
     baseline = file_at(base_sha, path)
     if baseline is None or not uid.endswith(baseline.get("info", {}).get("_postman_id") or "-"):
         print(f"Drift check skipped: no earlier version of {path} for this collection at {base_sha or 'BASE_SHA'}.")
         return
-    changes = differences(published, baseline)
+    changes = differences(published, baseline, [current_file] + versions_since(base_sha, path))
     if not changes:
         print("Drift check passed: the published collection has no changes made outside GitHub.")
         return
     report = "\n".join(changes[:50]) + ("\n  ..." if len(changes) > 50 else "")
     message = (f"The published collection was changed in Postman since the last sync "
                f"({len(changes)} items):\n{report}\n"
-               "To keep these changes, run `python3 .github/scripts/postman_sync.py pull`, "
-               "commit the result in a pull request, and merge it.")
+               "To keep these changes, run `python3 .github/scripts/postman_sync.py pull` on a branch "
+               "from main, commit the result, and merge it in a pull request with a merge commit.")
     if allow_overwrite:
         print(message + "\nALLOW_OVERWRITE=true: overwriting them.")
     else:
@@ -174,7 +197,7 @@ def sync(path, uid, key, env):
         sys.exit(f"{path}: info._postman_id {file_id!r} doesn't match target {uid}")
 
     published = call("GET", uid, key)["collection"]
-    drift_check(path, uid, published, env["base_sha"], env["allow_overwrite"])
+    drift_check(path, uid, published, env["base_sha"], env["allow_overwrite"], collection)
 
     before, local = item_ids(published["item"]), item_ids(collection["item"])
     removed, added = before - local, local - before

@@ -48,9 +48,13 @@ AWS Marketplace Postman collections that are published in the AWS Marketplace wo
 When a change to a collection is merged to `main`, a GitHub Actions workflow updates the published collection.
 To change a collection, open a pull request that edits its JSON file instead of editing the collection in Postman.
 
-If a published collection was changed in Postman since the last update, the workflow stops without overwriting
-those changes. To keep them, run `python3 .github/scripts/postman_sync.py pull` with `POSTMAN_API_KEY` set, and
-commit the updated JSON files in a pull request.
+Before you change a collection, create a branch from `main` and run `python3 .github/scripts/postman_sync.py pull`
+with `POSTMAN_API_KEY` set. If `git diff` shows changes, someone edited the published collection in Postman.
+Commit them on their own ("Pull changes made in Postman"), then make your changes on top. Merge the pull request
+with a merge commit, not a squash merge, so the workflow can see the pulled changes.
+
+If a published collection was changed in Postman and the changes weren't pulled, the workflow stops without
+overwriting them.
 
 ### Submit defects & questions
 If you find any defects with the APIs, need help troubleshooting, or have general questions or feedback, [use this form to contact us](https://aws.amazon.com/marketplace/management/contact-us/)
