@@ -93,7 +93,9 @@ def normalize(value):
     if isinstance(value, dict):
         out = {}
         for k, v in value.items():
-            if k in IGNORED_FOR_COMPARE:
+            # Postman's own "_postman_*" fields (for example _postman_previewlanguage,
+            # which Postman fills in when it saves a response) are display settings.
+            if k in IGNORED_FOR_COMPARE or k.startswith("_postman_"):
                 continue
             if k == "url" and isinstance(v, dict) and "raw" in v:
                 v = v["raw"]
