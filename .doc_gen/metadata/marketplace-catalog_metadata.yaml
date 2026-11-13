@@ -358,9 +358,9 @@ marketplace-catalog_CreatePublicFreeTrialOfferWithSubscriptionPricingForSaasProd
     marketplace-catalog: !!set
       StartChangeSet: null
   synopsis: create a public free trial offer with subscription pricing for a SaaS product. This example is deprecated, because standalone free trial offers for SaaS subscription products can no longer be created. Use <emphasis>Add a free trial that converts to a paid subscription to the public offer of a SaaS subscription product</emphasis> instead.
-  title: (Deprecated) Create a public free trial offer with subscription pricing for a SaaS product
+  title: Deprecated - Create a public free trial offer with subscription pricing for a SaaS product
     using an &AWS; SDK
-  title_abbrev: (Deprecated) Create a public free trial offer with subscription pricing for a SaaS product
+  title_abbrev: Deprecated - Create a public free trial offer with subscription pricing for a SaaS product
 marketplace-catalog_UpdateFreeTrialDurationOfPublicFreeTrialOfferForSaasProduct:
   category: Offers
   languages:
