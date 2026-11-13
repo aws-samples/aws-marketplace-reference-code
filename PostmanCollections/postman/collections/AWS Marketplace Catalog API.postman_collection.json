@@ -6884,7 +6884,7 @@
               "updatedAt": "2024-10-03T23:20:01.000Z"
             },
             {
-              "name": "(Deprecated) CreatePublicFreeTrialOfferWithSubscriptionPricingForSaas",
+              "name": "Deprecated - CreatePublicFreeTrialOfferWithSubscriptionPricingForSaas",
               "event": [
                 {
                   "listen": "test",
