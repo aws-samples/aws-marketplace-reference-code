@@ -1,0 +1,78 @@
+name: Pull from Postman
+
+# Brings changes made in the published Postman collections into a branch, without
+# a Postman API key on your computer. Run it on your branch before you change a
+# collection:
+#
+#   Actions > Pull from Postman > Run workflow > Branch: <your branch>
+#
+# The workflow runs `python3 .github/scripts/postman_sync.py pull` on the branch.
+# If the published collections differ from the files on the branch, it commits
+# "Pull changes made in Postman" to the branch. Then run `git pull` and make your
+# changes on top. It doesn't run on the default branch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to pull the Postman changes into (not main)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: postman-pull-${{ inputs.branch }}
+  cancel-in-progress: false
+
+jobs:
+  pull:
+    if: github.repository == 'aws-samples/aws-marketplace-reference-code'
+    runs-on: ubuntu-latest
+    environment: postman-publish
+    steps:
+      - name: Check the branch
+        env:
+          BRANCH: ${{ inputs.branch }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          if [ "$BRANCH" = "$DEFAULT_BRANCH" ]; then
+            echo "::error::Pull from Postman doesn't run on $DEFAULT_BRANCH. Create a branch, push it, and run the workflow on that branch."
+            exit 1
+          fi
+          if ! git check-ref-format --branch "$BRANCH" > /dev/null 2>&1; then
+            echo "::error::'$BRANCH' isn't a valid branch name."
+            exit 1
+          fi
+
+      - name: Check out the branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Pull the published collections
+        env:
+          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+        run: python3 .github/scripts/postman_sync.py pull
+
+      - name: Commit the changes
+        env:
+          BRANCH: ${{ inputs.branch }}
+        run: |
+          git add -A PostmanCollections/postman/collections
+          if git diff --cached --quiet; then
+            echo "No changes in Postman. The collections on $BRANCH match the published collections." | tee -a "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          {
+            echo "Committed \"Pull changes made in Postman\" to $BRANCH:"
+            echo '```'
+            git diff --cached --stat
+            echo '```'
+            echo "Run \`git pull\` on $BRANCH, then make your changes on top."
+          } | tee -a "$GITHUB_STEP_SUMMARY"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "Pull changes made in Postman"
+          git push origin "HEAD:refs/heads/$BRANCH"
