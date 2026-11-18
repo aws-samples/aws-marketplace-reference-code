@@ -2,4 +2,6 @@ allow_list:
   - "ListProductPublicOrPrivateReleasedOffers"
   - "ListAgreementCancellationRequestsRequest"
   - "ListAgreementCancellationRequestsCommand"
-
+  - "GetAgreementRequestApprovalPlansResponse"
+  - "paginateGetAgreementRequestApprovalPlans"
+  - "agreementApprovalId=GetAgreementApproval"

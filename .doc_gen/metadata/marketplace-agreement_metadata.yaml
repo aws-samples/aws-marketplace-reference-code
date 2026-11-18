@@ -1688,7 +1688,7 @@ marketplace-agreement_ListAgreementApprovals:
   services:
     marketplace-agreement: !!set
       ListAgreementApprovals: null
-  synopsis: list the agreement approvals I requested, or that I decide as the administrator of my AWS Organization.
+  synopsis: list the agreement approvals I requested, or that I decide as the administrator of my organization.
   title: List agreement approvals using an &AWS; SDK
   title_abbrev: List agreement approvals
 marketplace-agreement_AcceptAgreementApproval:
@@ -1724,7 +1724,7 @@ marketplace-agreement_AcceptAgreementApproval:
   services:
     marketplace-agreement: !!set
       AcceptAgreementApproval: null
-  synopsis: approve an agreement approval as the administrator of my AWS Organization.
+  synopsis: approve an agreement approval as the administrator of my organization.
   title: Approve an agreement approval using an &AWS; SDK
   title_abbrev: Approve an agreement approval
 marketplace-agreement_RejectAgreementApproval:
@@ -1760,6 +1760,6 @@ marketplace-agreement_RejectAgreementApproval:
   services:
     marketplace-agreement: !!set
       RejectAgreementApproval: null
-  synopsis: reject an agreement approval as the administrator of my AWS Organization.
+  synopsis: reject an agreement approval as the administrator of my organization.
   title: Reject an agreement approval using an &AWS; SDK
   title_abbrev: Reject an agreement approval
