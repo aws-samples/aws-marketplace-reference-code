@@ -190,6 +190,16 @@ It is important to note, in each changeset.json file there are one or more **Det
 |[Get details of a specific agreement payment request](./src/agreements_api/buyer/paymentRequest/get_agreement_payment_request.py)|
 |[List all agreement payment requests for agreements I participate in as acceptor](./src/agreements_api/buyer/paymentRequest/list_agreement_payment_requests.py)|
 |[Reject an agreement payment request initiated by the seller](./src/agreements_api/buyer/paymentRequest/reject_agreement_payment_request.py)|
+|[List my agreement requests, filtered by status](./src/agreements_api/buyer/agreementRequest/list_agreement_requests.py)|
+|[Get details of an agreement request, including whether it requires approval and its expected charges](./src/agreements_api/buyer/agreementRequest/get_agreement_request.py)|
+|[Get the terms requested in an agreement request](./src/agreements_api/buyer/agreementRequest/get_agreement_request_terms.py)|
+|[Get the approval plans that apply to an agreement request](./src/agreements_api/buyer/agreementRequest/get_agreement_request_approval_plans.py)|
+|[Start the approval of an agreement request, optionally with purchase orders](./src/agreements_api/buyer/agreementRequest/start_agreement_approvals.py)|
+|[Cancel an agreement request that is pending approval](./src/agreements_api/buyer/agreementRequest/cancel_agreement_request.py)|
+|[Get details of an agreement approval, including its approver outcomes](./src/agreements_api/buyer/agreementApproval/get_agreement_approval.py)|
+|[List the agreement approvals I requested, or that I decide as the administrator of my AWS Organization](./src/agreements_api/buyer/agreementApproval/list_agreement_approvals.py)|
+|[Approve an agreement approval as the administrator of my AWS Organization](./src/agreements_api/buyer/agreementApproval/accept_agreement_approval.py)|
+|[Reject an agreement approval as the administrator of my AWS Organization](./src/agreements_api/buyer/agreementApproval/reject_agreement_approval.py)|
 
 ### Submit defects & questions
 If you find any defects with the APIs, need help troubleshooting, or have general questions or feedback, [use this form to contact us](https://aws.amazon.com/marketplace/management/contact-us/)

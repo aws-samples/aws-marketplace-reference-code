@@ -168,6 +168,16 @@ mvn clean compile assembly:single
 |[Get details of a specific agreement payment request](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/paymentRequest/GetAgreementPaymentRequest.java)|
 |[List all agreement payment requests for agreements I participate in as acceptor](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/paymentRequest/ListAgreementPaymentRequests.java)|
 |[Reject an agreement payment request initiated by the seller](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/paymentRequest/RejectAgreementPaymentRequest.java)|
+|[List my agreement requests, filtered by status](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/ListAgreementRequests.java)|
+|[Get details of an agreement request, including whether it requires approval and its expected charges](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/GetAgreementRequest.java)|
+|[Get the terms requested in an agreement request](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/GetAgreementRequestTerms.java)|
+|[Get the approval plans that apply to an agreement request](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/GetAgreementRequestApprovalPlans.java)|
+|[Start the approval of an agreement request, optionally with purchase orders](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/StartAgreementApprovals.java)|
+|[Cancel an agreement request that is pending approval](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/CancelAgreementRequest.java)|
+|[Get details of an agreement approval, including its approver outcomes](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementApproval/GetAgreementApproval.java)|
+|[List the agreement approvals I requested, or that I decide as the administrator of my AWS Organization](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementApproval/ListAgreementApprovals.java)|
+|[Approve an agreement approval as the administrator of my AWS Organization](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementApproval/AcceptAgreementApproval.java)|
+|[Reject an agreement approval as the administrator of my AWS Organization](./src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementApproval/RejectAgreementApproval.java)|
 
 ### Submit defects & questions
 If you find any defects with the APIs, need help troubleshooting, or have general questions or feedback, [use this form to contact us](https://aws.amazon.com/marketplace/management/contact-us/)

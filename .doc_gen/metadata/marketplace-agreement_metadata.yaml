@@ -1403,3 +1403,363 @@ marketplace-agreement_SearchAgreementsByLastUpdateDate:
   synopsis: search for agreements by the date they were last updated.
   title: Search for agreements by last update date using an &AWS; SDK
   title_abbrev: Search for agreements by last update date
+marketplace-agreement_ListAgreementRequests:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/ListAgreementRequests.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementRequest/list_agreement_requests.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementRequest/ListAgreementRequests.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      ListAgreementRequests: null
+  synopsis: list my agreement requests, filtered by status.
+  title: List agreement requests using an &AWS; SDK
+  title_abbrev: List agreement requests
+marketplace-agreement_GetAgreementRequest:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/GetAgreementRequest.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementRequest/get_agreement_request.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementRequest/GetAgreementRequest.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      GetAgreementRequest: null
+  synopsis: get details of an agreement request, including whether it requires approval and its expected charges.
+  title: Get details of an agreement request using an &AWS; SDK
+  title_abbrev: Get details of an agreement request
+marketplace-agreement_GetAgreementRequestTerms:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/GetAgreementRequestTerms.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementRequest/get_agreement_request_terms.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementRequest/GetAgreementRequestTerms.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      GetAgreementRequestTerms: null
+  synopsis: get the terms requested in an agreement request.
+  title: Get the terms of an agreement request using an &AWS; SDK
+  title_abbrev: Get the terms of an agreement request
+marketplace-agreement_GetAgreementRequestApprovalPlans:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/GetAgreementRequestApprovalPlans.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementRequest/get_agreement_request_approval_plans.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementRequest/GetAgreementRequestApprovalPlans.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      GetAgreementRequestApprovalPlans: null
+  synopsis: get the approval plans that apply to an agreement request.
+  title: Get the approval plans of an agreement request using an &AWS; SDK
+  title_abbrev: Get the approval plans of an agreement request
+marketplace-agreement_StartAgreementApprovals:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/StartAgreementApprovals.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementRequest/start_agreement_approvals.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementRequest/StartAgreementApprovals.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      StartAgreementApprovals: null
+  synopsis: start the approval of an agreement request, optionally with purchase orders.
+  title: Start the approval of an agreement request using an &AWS; SDK
+  title_abbrev: Start the approval of an agreement request
+marketplace-agreement_CancelAgreementRequest:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementRequest/CancelAgreementRequest.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementRequest/cancel_agreement_request.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementRequest/CancelAgreementRequest.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      CancelAgreementRequest: null
+  synopsis: cancel an agreement request that is pending approval.
+  title: Cancel an agreement request using an &AWS; SDK
+  title_abbrev: Cancel an agreement request
+marketplace-agreement_GetAgreementApproval:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementApproval/GetAgreementApproval.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementApproval/get_agreement_approval.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementApproval/GetAgreementApproval.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      GetAgreementApproval: null
+  synopsis: get details of an agreement approval, including its approver outcomes.
+  title: Get details of an agreement approval using an &AWS; SDK
+  title_abbrev: Get details of an agreement approval
+marketplace-agreement_ListAgreementApprovals:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementApproval/ListAgreementApprovals.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementApproval/list_agreement_approvals.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementApproval/ListAgreementApprovals.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      ListAgreementApprovals: null
+  synopsis: list the agreement approvals I requested, or that I decide as the administrator of my organization.
+  title: List agreement approvals using an &AWS; SDK
+  title_abbrev: List agreement approvals
+marketplace-agreement_AcceptAgreementApproval:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementApproval/AcceptAgreementApproval.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementApproval/accept_agreement_approval.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementApproval/AcceptAgreementApproval.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      AcceptAgreementApproval: null
+  synopsis: approve an agreement approval as the administrator of my organization.
+  title: Approve an agreement approval using an &AWS; SDK
+  title_abbrev: Approve an agreement approval
+marketplace-agreement_RejectAgreementApproval:
+  category: Agreements
+  languages:
+    Java:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - java/src/main/java/com/example/awsmarketplace/agreementapi/buyer/agreementApproval/RejectAgreementApproval.java
+        sdk_version: 2
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/java#agreement-api-reference-code
+    Python:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - python/src/agreements_api/buyer/agreementApproval/reject_agreement_approval.py
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python#agreement-api-reference-code
+    JavaScript:
+      versions:
+      - excerpts:
+        - description: ''
+          snippet_files:
+          - javascript/agreementApproval/RejectAgreementApproval.js
+        sdk_version: 3
+        github_name: "&MKTlong; API Reference Code Library"
+        github: https://github.com/aws-samples/aws-marketplace-reference-code/tree/main/javascript
+  services:
+    marketplace-agreement: !!set
+      RejectAgreementApproval: null
+  synopsis: reject an agreement approval as the administrator of my organization.
+  title: Reject an agreement approval using an &AWS; SDK
+  title_abbrev: Reject an agreement approval
