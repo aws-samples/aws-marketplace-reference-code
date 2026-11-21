@@ -959,8 +959,6 @@ marketplace-catalog_DescribeProduct:
           - python/src/catalog_api/products/describe_product/describe_product.py
         sdk_version: 3
         github_name: "&MKTlong; API Reference Code Library"
-        github_name: "&MKTlong; API Reference Code Library"
-        github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
         github: https://github.com/aws-samples/aws-marketplace-reference-code/blob/main/python##catalog-api-reference-code
   services:
     marketplace-catalog: !!set
